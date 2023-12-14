@@ -5,4 +5,22 @@ edit: https://github.com/lfinke00/Bookdown-Project/edit/main/%s
 view: https://github.com/lfinke00/Bookdown-Project/blob/main/%s
 language:
   ui:
-    chapter_name: "Chapter Homework "
+    rmd_files: [
+  "index.Rmd",
+  "intro.Rmd",
+  "Week3.Rmd",
+  "wordprocess.Rmd",
+  "graphics.Rmd",
+  "ggplot2.Rmd",
+  "trellis.Rmd",
+  "Lab-1 (1).Rmd",
+  "Actual Lab 2.Rmd",
+  "Lab 3 (1).Rmd",
+  "Lab 4.Rmd",
+  "midterm 2023.Rmd",
+  "HW6PDF (2).Rmd",
+  "STL (2).Rmd"
+  ]
+
+before_chapter_script: "_FrontMatter.R"
+
