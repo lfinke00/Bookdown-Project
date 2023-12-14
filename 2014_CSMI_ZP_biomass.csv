@@ -1,0 +1,849 @@
+month,region,depth_strata,family,mean_biom,total_biom
+April,Detroit,Deep,Bosminidae,0.31992804,0.63985608
+April,Detroit,Deep,Centropagidae,0.077178787,0.154357574
+April,Detroit,Deep,Cyclopoidae,0.11859704,0.355791121
+April,Detroit,Deep,Daphnidae,0.179260709,0.537782126
+April,Detroit,Deep,Diaptomidae,0.691639956,4.149839739
+April,Detroit,Deep,Unidentified Calanoids,0.200790451,0.401580903
+April,Detroit,Deep,Unidentified Cyclopoids,0.135134316,0.270268632
+April,Detroit,Middle,Bosminidae,0.006461714,0.012923428
+April,Detroit,Middle,Centropagidae,0.140952952,0.281905905
+April,Detroit,Middle,Cyclopoidae,0.044431207,0.133293621
+April,Detroit,Middle,Daphnidae,0.006271212,0.025084847
+April,Detroit,Middle,Diaptomidae,0.486929284,2.921575704
+April,Detroit,Middle,Macrothricidae,0.000505748,0.000505748
+April,Detroit,Middle,Unidentified Calanoids,0.085324727,0.170649453
+April,Detroit,Middle,Unidentified Cyclopoids,0.081037433,0.162074867
+April,Detroit,Shallow,Bosminidae,0.003895973,0.003895973
+April,Detroit,Shallow,Centropagidae,0.247404878,0.494809756
+April,Detroit,Shallow,Cyclopoidae,0.056767457,0.227069827
+April,Detroit,Shallow,Diaptomidae,0.392443055,2.354658329
+April,Detroit,Shallow,Macrothricidae,0.000627485,0.00125497
+April,Detroit,Shallow,Unidentified Calanoids,0.051357726,0.102715452
+April,Detroit,Shallow,Unidentified Cyclopoids,0.065515242,0.131030484
+April,Fairport,Deep,Bosminidae,0.289006349,1.156025398
+April,Fairport,Deep,Cyclopoidae,9.776993228,39.10797291
+April,Fairport,Deep,Daphnidae,0.44415965,0.888319301
+April,Fairport,Deep,Diaptomidae,14.15341065,28.3068213
+April,Fairport,Deep,Temoridae,0.286978904,0.573957809
+April,Fairport,Deep,Unidentified Cyclopoids,2.774785292,5.549570585
+April,Fairport,Middle,Bosminidae,0.900334825,2.701004475
+April,Fairport,Middle,Cyclopoidae,22.76687251,91.06749004
+April,Fairport,Middle,Daphnidae,1.081714527,3.24514358
+April,Fairport,Middle,Diaptomidae,18.34170313,73.36681254
+April,Fairport,Middle,Macrothricidae,0.028286584,0.028286584
+April,Fairport,Middle,Unidentified Cyclopoids,7.452213316,14.90442663
+April,Fairport,Shallow,Bosminidae,0.411261837,1.645047349
+April,Fairport,Shallow,Centropagidae,0.177181475,0.354362951
+April,Fairport,Shallow,Cyclopoidae,0.582199282,3.493195692
+April,Fairport,Shallow,Daphnidae,0.051897291,0.207589164
+April,Fairport,Shallow,Diaptomidae,1.845787288,14.76629831
+April,Fairport,Shallow,Unidentified Calanoids,0.833262619,1.666525237
+April,Fairport,Shallow,Unidentified Cyclopoids,1.856825348,3.713650696
+April,Lorain,Deep,Bosminidae,0.110925117,0.443700466
+April,Lorain,Deep,Cyclopoidae,3.43477108,17.1738554
+April,Lorain,Deep,Daphnidae,0.139059307,0.556237228
+April,Lorain,Deep,Diaptomidae,1.327213055,5.308852219
+April,Lorain,Deep,Unidentified Cyclopoids,2.492993025,4.985986049
+April,Lorain,Middle,Bosminidae,0.207886617,0.831546469
+April,Lorain,Middle,Chydoridae,0.38945626,0.38945626
+April,Lorain,Middle,Cyclopoidae,8.305714711,33.22285885
+April,Lorain,Middle,Daphnidae,0.195793524,0.391587049
+April,Lorain,Middle,Diaptomidae,4.044957407,20.22478703
+April,Lorain,Middle,Unidentified Cyclopoids,2.679221071,5.358442143
+April,Lorain,Shallow,Bosminidae,0.172712697,0.51813809
+April,Lorain,Shallow,Cyclopoidae,3.01784178,15.0892089
+April,Lorain,Shallow,Daphnidae,0.226698911,0.680096732
+April,Lorain,Shallow,Diaptomidae,2.400705773,9.602823092
+April,Lorain,Shallow,Unidentified Calanoids,0.044262477,0.044262477
+April,Lorain,Shallow,Unidentified Cyclopoids,1.99373497,1.99373497
+April,Maumee,Deep,Bosminidae,0.118893716,0.237787432
+April,Maumee,Deep,Centropagidae,0.048876309,0.097752618
+April,Maumee,Deep,Chydoridae,0.000307421,0.000307421
+April,Maumee,Deep,Cyclopoidae,0.08736118,0.349444722
+April,Maumee,Deep,Daphnidae,0.031976666,0.127906666
+April,Maumee,Deep,Diaptomidae,0.122631984,0.735791907
+April,Maumee,Deep,Unidentified Calanoids,0.017377923,0.034755846
+April,Maumee,Deep,Unidentified Cyclopoids,0.036645779,0.073291559
+April,Maumee,Middle,Bosminidae,0.440741679,0.881483358
+April,Maumee,Middle,Centropagidae,0.474756973,0.949513946
+April,Maumee,Middle,Chydoridae,0.000481801,0.000481801
+April,Maumee,Middle,Cyclopoidae,0.219181749,0.657545246
+April,Maumee,Middle,Daphnidae,0.18527052,0.370541039
+April,Maumee,Middle,Diaptomidae,1.174834353,7.049006119
+April,Maumee,Middle,Unidentified Calanoids,0.078729761,0.157459521
+April,Maumee,Middle,Unidentified Cyclopoids,0.096080766,0.192161531
+April,Maumee,Shallow,Bosminidae,0.260011369,0.780034108
+April,Maumee,Shallow,Centropagidae,0.039743619,0.039743619
+April,Maumee,Shallow,Chydoridae,0.001617667,0.003235334
+April,Maumee,Shallow,Cyclopoidae,0.030648436,0.306484356
+April,Maumee,Shallow,Daphnidae,0.044672661,0.134017984
+April,Maumee,Shallow,Diaptomidae,0.091035671,0.637249694
+April,Maumee,Shallow,Macrothricidae,0.0042156,0.008431201
+April,Maumee,Shallow,Unidentified Calanoids,0.009017062,0.018034124
+April,Maumee,Shallow,Unidentified Cyclopoids,0.153119458,0.306238916
+August,Detroit,Deep,Bosminidae,0.509780994,2.039123977
+August,Detroit,Deep,Cyclopoidae,0.095953063,0.191906126
+August,Detroit,Deep,Daphnidae,0.764817558,3.05927023
+August,Detroit,Deep,Diaptomidae,0.124615701,0.373847104
+August,Detroit,Deep,Leptodoridae,0.169537361,0.339074722
+August,Detroit,Deep,Sididae,0.443258762,0.886517524
+August,Detroit,Deep,Temoridae,0.147723789,0.590895155
+August,Detroit,Deep,Unidentified Calanoids,0.427131959,0.854263919
+August,Detroit,Deep,Unidentified Cyclopoids,0.567087919,1.134175838
+August,Detroit,Middle,Bosminidae,0.755678352,2.267035056
+August,Detroit,Middle,Chydoridae,0.002046423,0.002046423
+August,Detroit,Middle,Daphnidae,0.054841165,0.21936466
+August,Detroit,Middle,Diaptomidae,0.178784606,0.536353817
+August,Detroit,Middle,Leptodoridae,0.046017706,0.092035411
+August,Detroit,Middle,Sididae,0.143087971,0.286175943
+August,Detroit,Middle,Unidentified Calanoids,0.358793528,0.717587057
+August,Detroit,Middle,Unidentified Cyclopoids,0.157015566,0.314031131
+August,Detroit,Shallow,Bosminidae,0.168847813,0.337695626
+August,Detroit,Shallow,Chydoridae,0.002037139,0.002037139
+August,Detroit,Shallow,Daphnidae,0.014211408,0.014211408
+August,Detroit,Shallow,Diaptomidae,0.085197365,0.085197365
+August,Detroit,Shallow,Leptodoridae,0.00479912,0.00479912
+August,Detroit,Shallow,Sididae,0.028649851,0.028649851
+August,Detroit,Shallow,Temoridae,0.028219017,0.056438034
+August,Detroit,Shallow,Unidentified Calanoids,0.171924966,0.343849933
+August,Detroit,Shallow,Unidentified Cyclopoids,0.042269599,0.084539199
+August,Dunkirk,Deep,Bosminidae,0.225320636,0.225320636
+August,Dunkirk,Deep,Cercopagididae,0.395893827,0.791787654
+August,Dunkirk,Deep,Cyclopoidae,1.194239711,1.194239711
+August,Dunkirk,Deep,Daphnidae,0.411634176,0.411634176
+August,Dunkirk,Deep,Leptodoridae,0.147489558,0.147489558
+August,Dunkirk,Deep,Unidentified Calanoids,3.901950226,3.901950226
+August,Dunkirk,Deep,Unidentified Cyclopoids,0.602695262,0.602695262
+August,Dunkirk,Middle,Bosminidae,0.092876151,0.092876151
+August,Dunkirk,Middle,Cercopagididae,0.218191495,0.436382991
+August,Dunkirk,Middle,Cyclopoidae,0.262037112,0.262037112
+August,Dunkirk,Middle,Diaptomidae,2.303993525,2.303993525
+August,Dunkirk,Middle,Leptodoridae,0.151860233,0.151860233
+August,Dunkirk,Middle,Unidentified Calanoids,5.458514194,5.458514194
+August,Dunkirk,Middle,Unidentified Cyclopoids,1.041215543,1.041215543
+August,Dunkirk,Shallow,Bosminidae,0.062768418,0.062768418
+August,Dunkirk,Shallow,Cercopagididae,0.008138894,0.008138894
+August,Dunkirk,Shallow,Diaptomidae,1.106965805,1.106965805
+August,Dunkirk,Shallow,Leptodoridae,0.067529086,0.067529086
+August,Dunkirk,Shallow,Unidentified Calanoids,1.764251846,1.764251846
+August,Dunkirk,Shallow,Unidentified Cyclopoids,0.246904904,0.246904904
+August,Erie,Deep,Bosminidae,0.9195194,1.8390388
+August,Erie,Deep,Centropagidae,0.746458257,1.492916514
+August,Erie,Deep,Cercopagididae,0.171977727,0.687910906
+August,Erie,Deep,Cyclopoidae,0.200689553,0.80275821
+August,Erie,Deep,Daphnidae,3.645112992,7.290225983
+August,Erie,Deep,Diaptomidae,1.822058747,7.288234989
+August,Erie,Deep,Unidentified Calanoids,5.492808875,10.98561775
+August,Erie,Deep,Unidentified Cyclopoids,2.980584886,5.961169772
+August,Erie,Middle,Cercopagididae,0.264428219,1.057712878
+August,Erie,Middle,Cyclopoidae,0.048585315,0.048585315
+August,Erie,Middle,Daphnidae,2.038064966,4.076129931
+August,Erie,Middle,Diaptomidae,0.463992108,1.855968432
+August,Erie,Middle,Leptodoridae,0.009018611,0.009018611
+August,Erie,Middle,Unidentified Calanoids,2.943784635,5.887569269
+August,Erie,Middle,Unidentified Cyclopoids,0.286820054,0.573640108
+August,Erie,Shallow,Bosminidae,0.020444717,0.020444717
+August,Erie,Shallow,Cercopagididae,0.062093487,0.186280462
+August,Erie,Shallow,Daphnidae,1.83631316,3.672626319
+August,Erie,Shallow,Diaptomidae,2.216898857,4.433797714
+August,Erie,Shallow,Unidentified Calanoids,6.155001236,12.31000247
+August,Erie,Shallow,Unidentified Cyclopoids,0.286831136,0.573662272
+August,Fairport,Deep,Bosminidae,2.22342049,2.22342049
+August,Fairport,Deep,Cercopagididae,0.75787851,3.031514041
+August,Fairport,Deep,Cyclopoidae,0.570480416,1.711441247
+August,Fairport,Deep,Daphnidae,23.14030101,23.14030101
+August,Fairport,Deep,Diaptomidae,10.28052432,20.56104863
+August,Fairport,Deep,Unidentified Calanoids,3.996528455,7.99305691
+August,Fairport,Deep,Unidentified Cyclopoids,2.204047624,4.408095248
+August,Fairport,Middle,Bosminidae,0.599191047,1.198382094
+August,Fairport,Middle,Cercopagididae,0.761206132,3.044824529
+August,Fairport,Middle,Cyclopoidae,0.903947936,1.807895872
+August,Fairport,Middle,Daphnidae,12.67863607,25.35727214
+August,Fairport,Middle,Diaptomidae,14.29799653,57.19198612
+August,Fairport,Middle,Unidentified Calanoids,1.379177818,2.758355637
+August,Fairport,Shallow,Bosminidae,1.386934463,2.773868926
+August,Fairport,Shallow,Cercopagididae,0.010080707,0.010080707
+August,Fairport,Shallow,Cyclopoidae,0.084356893,0.084356893
+August,Fairport,Shallow,Daphnidae,4.579811807,9.159623614
+August,Fairport,Shallow,Diaptomidae,9.699701402,29.0991042
+August,Fairport,Shallow,Leptodoridae,0.323384763,0.646769526
+August,Fairport,Shallow,Sididae,0.208152679,0.416305358
+August,Fairport,Shallow,Unidentified Calanoids,12.19487648,24.38975296
+August,Fairport,Shallow,Unidentified Cyclopoids,7.920674842,15.84134968
+August,Lorain,Deep,Bosminidae,0.716694497,1.433388995
+August,Lorain,Deep,Cercopagididae,0.271441107,1.085764428
+August,Lorain,Deep,Cyclopoidae,0.857833985,3.431335941
+August,Lorain,Deep,Daphnidae,12.10574277,24.21148555
+August,Lorain,Deep,Diaptomidae,1.870380449,11.22228269
+August,Lorain,Deep,Leptodoridae,0.005397498,0.005397498
+August,Lorain,Deep,Unidentified Calanoids,5.185972651,10.3719453
+August,Lorain,Deep,Unidentified Cyclopoids,3.185526837,6.371053673
+August,Lorain,Middle,Bosminidae,5.973745916,17.92123775
+August,Lorain,Middle,Cercopagididae,1.032220963,4.128883851
+August,Lorain,Middle,Cyclopoidae,0.448845092,1.346535275
+August,Lorain,Middle,Daphnidae,21.95723595,43.9144719
+August,Lorain,Middle,Diaptomidae,8.651692026,25.95507608
+August,Lorain,Middle,Unidentified Calanoids,9.612135935,19.22427187
+August,Lorain,Middle,Unidentified Cyclopoids,5.618807512,11.23761502
+August,Lorain,Shallow,Bosminidae,0.191491293,0.382982586
+August,Lorain,Shallow,Cercopagididae,0.332611443,1.330445773
+August,Lorain,Shallow,Cyclopoidae,0.726699969,0.726699969
+August,Lorain,Shallow,Daphnidae,7.25402289,14.50804578
+August,Lorain,Shallow,Diaptomidae,3.28482577,6.56965154
+August,Lorain,Shallow,Leptodoridae,0.003672932,0.003672932
+August,Lorain,Shallow,Unidentified Calanoids,6.461205899,12.9224118
+August,Lorain,Shallow,Unidentified Cyclopoids,1.575001444,3.150002889
+August,Maumee,Deep,Bosminidae,2.100450503,8.401802013
+August,Maumee,Deep,Cyclopoidae,0.082510764,0.165021527
+August,Maumee,Deep,Daphnidae,0.752366636,3.009466542
+August,Maumee,Deep,Diaptomidae,0.533260957,1.599782872
+August,Maumee,Deep,Leptodoridae,0.042929961,0.085859922
+August,Maumee,Deep,Sididae,0.354370615,0.708741231
+August,Maumee,Deep,Temoridae,0.51319191,2.052767642
+August,Maumee,Deep,Unidentified Calanoids,2.050940692,4.101881384
+August,Maumee,Deep,Unidentified Cyclopoids,0.649089723,1.298179446
+August,Maumee,Middle,Bosminidae,83.88760419,167.7752084
+August,Maumee,Middle,Cyclopoidae,1.225147866,2.450295732
+August,Maumee,Middle,Daphnidae,8.784489572,17.56897914
+August,Maumee,Middle,Diaptomidae,0.654104685,0.654104685
+August,Maumee,Middle,Leptodoridae,1.663997796,3.327995592
+August,Maumee,Middle,Sididae,14.91871933,29.83743865
+August,Maumee,Middle,Unidentified Calanoids,27.14839524,27.14839524
+August,Maumee,Middle,Unidentified Cyclopoids,5.467951669,10.93590334
+August,Maumee,Shallow,Bosminidae,219.0923426,438.1846852
+August,Maumee,Shallow,Cercopagididae,0.06282159,0.06282159
+August,Maumee,Shallow,Cyclopoidae,11.81777299,23.63554599
+August,Maumee,Shallow,Daphnidae,9.623158626,19.24631725
+August,Maumee,Shallow,Diaptomidae,10.19864386,20.39728772
+August,Maumee,Shallow,Leptodoridae,1.805639126,3.611278252
+August,Maumee,Shallow,Sididae,22.58846974,45.17693949
+August,Maumee,Shallow,Unidentified Calanoids,4.818488269,9.636976538
+August,Maumee,Shallow,Unidentified Cyclopoids,7.172309103,14.34461821
+July,Detroit,Deep,Bosminidae,0.186703493,0.373406985
+July,Detroit,Deep,Cyclopoidae,0.042744381,0.299210666
+July,Detroit,Deep,Daphnidae,0.465950186,0.931900372
+July,Detroit,Deep,Diaptomidae,0.123206229,0.492824915
+July,Detroit,Deep,Leptodoridae,0.787103551,1.574207103
+July,Detroit,Deep,Sididae,0.068162116,0.136324232
+July,Detroit,Deep,Temoridae,0.384393237,1.537572947
+July,Detroit,Deep,Unidentified Calanoids,1.450910668,2.901821336
+July,Detroit,Deep,Unidentified Cyclopoids,0.316431708,0.632863416
+July,Detroit,Middle,Bosminidae,0.247009799,0.741029398
+July,Detroit,Middle,Chydoridae,0.00357324,0.010719721
+July,Detroit,Middle,Cyclopoidae,0.032006329,0.064012657
+July,Detroit,Middle,Daphnidae,0.006125493,0.018376478
+July,Detroit,Middle,Diaptomidae,0.069633958,0.278535832
+July,Detroit,Middle,Leptodoridae,0.036302445,0.036302445
+July,Detroit,Middle,Temoridae,0.051130546,0.204522184
+July,Detroit,Middle,Unidentified Calanoids,0.613717778,1.227435557
+July,Detroit,Middle,Unidentified Cyclopoids,0.089096649,0.178193297
+July,Detroit,Middle,NA,0.001031397,0.001031397
+July,Detroit,Shallow,Bosminidae,0.920305605,1.840611211
+July,Detroit,Shallow,Cyclopoidae,0.025297884,0.126489422
+July,Detroit,Shallow,Diaptomidae,0.086837149,0.521022893
+July,Detroit,Shallow,Sididae,0.065566964,0.131133929
+July,Detroit,Shallow,Temoridae,0.049590579,0.198362316
+July,Detroit,Shallow,Unidentified Calanoids,1.214004133,2.428008266
+July,Detroit,Shallow,Unidentified Cyclopoids,0.11623504,0.23247008
+July,Dunkirk,Deep,Bosminidae,0.260895865,0.260895865
+July,Dunkirk,Deep,Cercopagididae,0.295233932,0.590467864
+July,Dunkirk,Deep,Cyclopoidae,0.009046096,0.009046096
+July,Dunkirk,Deep,Daphnidae,5.76304979,5.76304979
+July,Dunkirk,Deep,Diaptomidae,0.702993437,1.405986874
+July,Dunkirk,Deep,Unidentified Calanoids,1.112205935,1.112205935
+July,Dunkirk,Deep,Unidentified Cyclopoids,0.0212668,0.0212668
+July,Dunkirk,Middle,Bosminidae,0.098698117,0.098698117
+July,Dunkirk,Middle,Cercopagididae,0.460659718,0.921319435
+July,Dunkirk,Middle,Cyclopoidae,0.009574076,0.009574076
+July,Dunkirk,Middle,Daphnidae,2.61538683,2.61538683
+July,Dunkirk,Middle,Diaptomidae,0.569176648,1.138353296
+July,Dunkirk,Middle,Leptodoridae,0.001723434,0.001723434
+July,Dunkirk,Middle,Unidentified Calanoids,1.124027642,1.124027642
+July,Dunkirk,Middle,Unidentified Cyclopoids,0.038846546,0.038846546
+July,Dunkirk,Shallow,Bosminidae,0.187667315,0.187667315
+July,Dunkirk,Shallow,Cercopagididae,0.109212681,0.218425362
+July,Dunkirk,Shallow,Cyclopoidae,0.117284891,0.117284891
+July,Dunkirk,Shallow,Daphnidae,1.745347823,3.490695646
+July,Dunkirk,Shallow,Diaptomidae,1.854910615,1.854910615
+July,Dunkirk,Shallow,Leptodoridae,0.043115004,0.043115004
+July,Dunkirk,Shallow,Unidentified Calanoids,0.7816034,0.7816034
+July,Dunkirk,Shallow,Unidentified Cyclopoids,0.254695377,0.254695377
+July,Erie,Deep,Bosminidae,19.5327988,39.06559761
+July,Erie,Deep,Cercopagididae,0.295760807,1.183043229
+July,Erie,Deep,Cyclopoidae,0.385437707,1.541750829
+July,Erie,Deep,Daphnidae,1.690288604,3.380577207
+July,Erie,Deep,Diaptomidae,5.523252612,16.56975784
+July,Erie,Deep,Unidentified Calanoids,1.092067137,2.184134274
+July,Erie,Deep,Unidentified Cyclopoids,9.922070972,19.84414194
+July,Erie,Middle,Bosminidae,0.045796167,0.045796167
+July,Erie,Middle,Cercopagididae,0.689921166,1.379842332
+July,Erie,Middle,Daphnidae,30.7592432,30.7592432
+July,Erie,Middle,Diaptomidae,1.81027687,3.620553741
+July,Erie,Middle,Leptodoridae,0.008458832,0.008458832
+July,Erie,Middle,Unidentified Calanoids,7.926644472,7.926644472
+July,Erie,Middle,Unidentified Cyclopoids,0.195122276,0.195122276
+July,Erie,Shallow,Bosminidae,0.0384723,0.0384723
+July,Erie,Shallow,Cyclopoidae,0.808649574,0.808649574
+July,Erie,Shallow,Daphnidae,9.438807179,18.87761436
+July,Erie,Shallow,Diaptomidae,4.342223801,8.684447602
+July,Erie,Shallow,Unidentified Calanoids,7.062350916,7.062350916
+July,Erie,Shallow,Unidentified Cyclopoids,0.435821101,0.435821101
+July,Fairport,Deep,Bosminidae,1.437345304,2.874690608
+July,Fairport,Deep,Cercopagididae,0.772643861,3.090575443
+July,Fairport,Deep,Daphnidae,5.286521061,10.57304212
+July,Fairport,Deep,Diaptomidae,23.28428718,46.56857436
+July,Fairport,Deep,Unidentified Calanoids,9.758890586,19.51778117
+July,Fairport,Deep,Unidentified Cyclopoids,18.64262485,37.2852497
+July,Fairport,Middle,Bosminidae,0.386838904,0.386838904
+July,Fairport,Middle,Cercopagididae,0.761075298,1.522150596
+July,Fairport,Middle,Cyclopoidae,0.073258677,0.073258677
+July,Fairport,Middle,Daphnidae,6.087228457,6.087228457
+July,Fairport,Middle,Diaptomidae,8.949718287,8.949718287
+July,Fairport,Middle,Unidentified Calanoids,2.691664198,2.691664198
+July,Fairport,Middle,Unidentified Cyclopoids,1.822442192,1.822442192
+July,Fairport,Shallow,Bosminidae,0.051432393,0.051432393
+July,Fairport,Shallow,Cercopagididae,1.059115248,4.236460991
+July,Fairport,Shallow,Cyclopoidae,0.490328535,0.98065707
+July,Fairport,Shallow,Daphnidae,33.93367929,67.86735859
+July,Fairport,Shallow,Diaptomidae,4.19444448,12.58333344
+July,Fairport,Shallow,Leptodoridae,0.02532832,0.05065664
+July,Fairport,Shallow,Sididae,0.105544027,0.105544027
+July,Fairport,Shallow,Unidentified Calanoids,9.755077834,19.51015567
+July,Fairport,Shallow,Unidentified Cyclopoids,0.681251632,1.362503265
+July,Lorain,Deep,Bosminidae,1.933090515,3.866181031
+July,Lorain,Deep,Cercopagididae,0.786572617,3.146290469
+July,Lorain,Deep,Cyclopoidae,0.151096119,0.755480594
+July,Lorain,Deep,Daphnidae,23.6418547,47.2837094
+July,Lorain,Deep,Diaptomidae,3.140434085,12.56173634
+July,Lorain,Deep,Unidentified Calanoids,2.497866711,4.995733422
+July,Lorain,Deep,Unidentified Cyclopoids,8.956211656,17.91242331
+July,Lorain,Middle,Bosminidae,0.049061612,0.098123224
+July,Lorain,Middle,Cercopagididae,0.511005545,2.04402218
+July,Lorain,Middle,Cyclopoidae,0.032891474,0.032891474
+July,Lorain,Middle,Daphnidae,22.51367921,45.02735841
+July,Lorain,Middle,Diaptomidae,0.433423713,1.733694854
+July,Lorain,Middle,Unidentified Calanoids,0.896066522,1.792133044
+July,Lorain,Middle,Unidentified Cyclopoids,0.980158321,1.960316643
+July,Lorain,Shallow,Bosminidae,0.120337785,0.240675569
+July,Lorain,Shallow,Cercopagididae,0.483688605,1.934754422
+July,Lorain,Shallow,Cyclopoidae,0.083638621,0.083638621
+July,Lorain,Shallow,Daphnidae,17.82657836,35.65315672
+July,Lorain,Shallow,Diaptomidae,1.4548436,8.729061599
+July,Lorain,Shallow,Unidentified Calanoids,1.057950278,2.115900557
+July,Lorain,Shallow,Unidentified Cyclopoids,1.529564884,3.059129768
+July,Maumee,Deep,Bosminidae,0.426855243,1.28056573
+July,Maumee,Deep,Chydoridae,0.006431312,0.006431312
+July,Maumee,Deep,Cyclopoidae,0.040631597,0.162526389
+July,Maumee,Deep,Daphnidae,0.026937108,0.026937108
+July,Maumee,Deep,Diaptomidae,0.040539553,0.162158212
+July,Maumee,Deep,Leptodoridae,0.105246141,0.210492282
+July,Maumee,Deep,Sididae,0.042265374,0.042265374
+July,Maumee,Deep,Temoridae,0.083961716,0.335846863
+July,Maumee,Deep,Unidentified Calanoids,1.387217371,2.774434743
+July,Maumee,Deep,Unidentified Cyclopoids,0.118703488,0.237406976
+July,Maumee,Middle,Bosminidae,0.449600236,0.899200473
+July,Maumee,Middle,Cyclopoidae,2.289621259,6.868863777
+July,Maumee,Middle,Daphnidae,34.58942051,69.17884102
+July,Maumee,Middle,Diaptomidae,4.297774456,8.595548912
+July,Maumee,Middle,Leptodoridae,0.428951254,0.857902507
+July,Maumee,Middle,Sididae,1.105546983,1.105546983
+July,Maumee,Middle,Unidentified Calanoids,6.294430958,12.58886192
+July,Maumee,Middle,Unidentified Cyclopoids,8.550438932,17.10087786
+July,Maumee,Shallow,Bosminidae,3.565349349,7.130698698
+July,Maumee,Shallow,Cyclopoidae,3.764435825,7.528871649
+July,Maumee,Shallow,Daphnidae,37.27608302,74.55216605
+July,Maumee,Shallow,Diaptomidae,57.76915411,57.76915411
+July,Maumee,Shallow,Leptodoridae,0.020137281,0.020137281
+July,Maumee,Shallow,Sididae,17.02879467,17.02879467
+July,Maumee,Shallow,Temoridae,0.775333501,1.550667002
+July,Maumee,Shallow,Unidentified Calanoids,5.861211307,5.861211307
+July,Maumee,Shallow,Unidentified Cyclopoids,14.64146992,14.64146992
+June,Detroit,Deep,Bosminidae,0.082132115,0.16426423
+June,Detroit,Deep,Cyclopoidae,0.116469215,0.116469215
+June,Detroit,Deep,Daphnidae,17.53823985,35.07647969
+June,Detroit,Deep,Leptodoridae,0.07670234,0.153404681
+June,Detroit,Deep,Sididae,0.202786716,0.405573432
+June,Detroit,Deep,Unidentified Calanoids,0.253264755,0.506529511
+June,Detroit,Deep,Unidentified Cyclopoids,0.403711276,0.807422552
+June,Detroit,Middle,Bosminidae,0.040567889,0.081135777
+June,Detroit,Middle,Chydoridae,0.000268249,0.000268249
+June,Detroit,Middle,Cyclopoidae,0.008015691,0.032062764
+June,Detroit,Middle,Daphnidae,0.145216379,0.580865515
+June,Detroit,Middle,Diaptomidae,0.017761894,0.071047575
+June,Detroit,Middle,Leptodoridae,0.498397866,0.996795732
+June,Detroit,Middle,Macrothricidae,0.001744637,0.001744637
+June,Detroit,Middle,Sididae,0.00295272,0.00295272
+June,Detroit,Middle,Temoridae,0.022906175,0.0916247
+June,Detroit,Middle,Unidentified Calanoids,0.385682097,0.771364193
+June,Detroit,Middle,Unidentified Cyclopoids,0.04042805,0.0808561
+June,Detroit,Shallow,Bosminidae,0.028447135,0.056894271
+June,Detroit,Shallow,Centropagidae,0.012356107,0.012356107
+June,Detroit,Shallow,Chydoridae,9.54E-05,9.54E-05
+June,Detroit,Shallow,Cyclopoidae,0.004447552,0.013342655
+June,Detroit,Shallow,Daphnidae,0.008513706,0.034054823
+June,Detroit,Shallow,Diaptomidae,0.010809345,0.075665418
+June,Detroit,Shallow,Holopedidae,0.000282866,0.000282866
+June,Detroit,Shallow,Leptodoridae,0.021870928,0.043741857
+June,Detroit,Shallow,Sididae,0.002695008,0.002695008
+June,Detroit,Shallow,Temoridae,0.003827982,0.015311927
+June,Detroit,Shallow,Unidentified Calanoids,0.174552377,0.174552377
+June,Detroit,Shallow,Unidentified Cyclopoids,0.022927222,0.022927222
+June,Dunkirk,Deep,Bosminidae,10.49757143,20.99514285
+June,Dunkirk,Deep,Cercopagididae,0.037689181,0.037689181
+June,Dunkirk,Deep,Cyclopoidae,0.681529816,0.681529816
+June,Dunkirk,Deep,Daphnidae,7.699678838,15.39935768
+June,Dunkirk,Deep,Diaptomidae,4.835335315,9.670670629
+June,Dunkirk,Deep,Leptodoridae,0.010063679,0.010063679
+June,Dunkirk,Deep,Unidentified Calanoids,5.016692767,5.016692767
+June,Dunkirk,Deep,Unidentified Cyclopoids,12.41311975,12.41311975
+June,Dunkirk,Middle,Bosminidae,11.69654742,23.39309484
+June,Dunkirk,Middle,Cercopagididae,0.028575589,0.057151178
+June,Dunkirk,Middle,Cyclopoidae,0.607244002,1.214488003
+June,Dunkirk,Middle,Daphnidae,10.00834501,20.01669003
+June,Dunkirk,Middle,Diaptomidae,2.335320679,4.670641357
+June,Dunkirk,Middle,Leptodoridae,0.056369467,0.056369467
+June,Dunkirk,Middle,Unidentified Calanoids,10.87725729,10.87725729
+June,Dunkirk,Middle,Unidentified Cyclopoids,17.165756,17.165756
+June,Dunkirk,Shallow,Bosminidae,5.130689996,10.26137999
+June,Dunkirk,Shallow,Daphnidae,9.129133882,18.25826776
+June,Dunkirk,Shallow,Diaptomidae,4.589746023,4.589746023
+June,Dunkirk,Shallow,Leptodoridae,0.167004331,0.167004331
+June,Dunkirk,Shallow,Sididae,0.387987555,0.387987555
+June,Dunkirk,Shallow,Unidentified Calanoids,7.424999433,7.424999433
+June,Dunkirk,Shallow,Unidentified Cyclopoids,4.279594073,4.279594073
+June,Erie,Deep,Bosminidae,43.07525789,129.2257737
+June,Erie,Deep,Cyclopoidae,3.157896359,6.315792719
+June,Erie,Deep,Daphnidae,8.046109667,32.18443867
+June,Erie,Deep,Diaptomidae,3.800986411,3.800986411
+June,Erie,Deep,Leptodoridae,0.058053344,0.116106688
+June,Erie,Deep,Unidentified Calanoids,13.55454362,27.10908724
+June,Erie,Deep,Unidentified Cyclopoids,44.52477712,89.04955424
+June,Erie,Middle,Bosminidae,44.37855065,88.75710129
+June,Erie,Middle,Cercopagididae,0.047901967,0.095803935
+June,Erie,Middle,Cyclopoidae,1.912535515,3.82507103
+June,Erie,Middle,Daphnidae,4.482157686,13.44647306
+June,Erie,Middle,Diaptomidae,6.434719425,12.86943885
+June,Erie,Middle,Leptodoridae,0.100315838,0.200631677
+June,Erie,Middle,Unidentified Calanoids,21.98811625,43.9762325
+June,Erie,Middle,Unidentified Cyclopoids,53.52798519,107.0559704
+June,Erie,Shallow,Bosminidae,194.2892866,388.5785732
+June,Erie,Shallow,Cyclopoidae,3.469140569,3.469140569
+June,Erie,Shallow,Daphnidae,6.540058617,13.08011723
+June,Erie,Shallow,Diaptomidae,25.8415248,77.52457439
+June,Erie,Shallow,Leptodoridae,0.078672453,0.157344906
+June,Erie,Shallow,Unidentified Calanoids,49.03318148,98.06636296
+June,Erie,Shallow,Unidentified Cyclopoids,105.1512668,210.3025337
+June,Fairport,Deep,Bosminidae,18.24637422,72.98549686
+June,Fairport,Deep,Cyclopoidae,2.677659435,13.38829718
+June,Fairport,Deep,Daphnidae,18.7838434,93.91921702
+June,Fairport,Deep,Diaptomidae,5.048454932,10.09690986
+June,Fairport,Deep,Unidentified Calanoids,25.67881925,51.35763849
+June,Fairport,Deep,Unidentified Cyclopoids,61.43925342,122.8785068
+June,Fairport,Middle,Bosminidae,87.4245917,174.8491834
+June,Fairport,Middle,Chydoridae,0.7967443,0.7967443
+June,Fairport,Middle,Cyclopoidae,2.723773652,5.447547304
+June,Fairport,Middle,Daphnidae,15.89847819,79.49239094
+June,Fairport,Middle,Diaptomidae,13.91694065,41.75082196
+June,Fairport,Middle,Leptodoridae,0.054640246,0.109280491
+June,Fairport,Middle,Unidentified Calanoids,13.16026837,26.32053673
+June,Fairport,Middle,Unidentified Cyclopoids,103.3821266,206.7642532
+June,Fairport,Shallow,Bosminidae,38.36481434,38.36481434
+June,Fairport,Shallow,Cyclopoidae,2.651965235,2.651965235
+June,Fairport,Shallow,Daphnidae,12.24361256,24.48722511
+June,Fairport,Shallow,Diaptomidae,30.50847774,30.50847774
+June,Fairport,Shallow,Leptodoridae,0.010169665,0.010169665
+June,Fairport,Shallow,Unidentified Calanoids,20.12018727,20.12018727
+June,Fairport,Shallow,Unidentified Cyclopoids,87.2160743,87.2160743
+June,Lorain,Deep,Bosminidae,13.54873768,54.19495073
+June,Lorain,Deep,Cercopagididae,0.016350264,0.032700527
+June,Lorain,Deep,Cyclopoidae,5.633911282,11.26782256
+June,Lorain,Deep,Daphnidae,4.936954529,24.68477264
+June,Lorain,Deep,Diaptomidae,8.875018265,17.75003653
+June,Lorain,Deep,Leptodoridae,0.074239083,0.148478165
+June,Lorain,Deep,Unidentified Calanoids,11.59320316,23.18640633
+June,Lorain,Deep,Unidentified Cyclopoids,82.33255897,164.6651179
+June,Lorain,Middle,Bosminidae,5.308788153,21.23515261
+June,Lorain,Middle,Cercopagididae,0.032337775,0.06467555
+June,Lorain,Middle,Cyclopoidae,2.723897415,5.44779483
+June,Lorain,Middle,Daphnidae,5.424981013,21.69992405
+June,Lorain,Middle,Diaptomidae,1.850116884,7.400467536
+June,Lorain,Middle,Leptodoridae,0.162261546,0.324523091
+June,Lorain,Middle,Sididae,1.585699337,1.585699337
+June,Lorain,Middle,Unidentified Calanoids,10.49105766,20.98211531
+June,Lorain,Middle,Unidentified Cyclopoids,82.4711426,164.9422852
+June,Lorain,Shallow,Bosminidae,6.117317907,18.35195372
+June,Lorain,Shallow,Cyclopoidae,1.326129366,2.652258732
+June,Lorain,Shallow,Daphnidae,4.525095261,18.10038104
+June,Lorain,Shallow,Diaptomidae,1.634210926,9.805265554
+June,Lorain,Shallow,Leptodoridae,0.216992773,0.433985546
+June,Lorain,Shallow,Sididae,1.58968862,1.58968862
+June,Lorain,Shallow,Temoridae,1.314025088,5.256100351
+June,Lorain,Shallow,Unidentified Calanoids,13.77385089,27.54770178
+June,Lorain,Shallow,Unidentified Cyclopoids,48.82767933,97.65535865
+June,Maumee,Deep,Bosminidae,0.029805473,0.059610945
+June,Maumee,Deep,Cyclopoidae,0.139351256,0.139351256
+June,Maumee,Deep,Daphnidae,9.262577972,18.52515594
+June,Maumee,Deep,Leptodoridae,0.254019916,0.508039831
+June,Maumee,Deep,Sididae,0.153393391,0.153393391
+June,Maumee,Deep,Unidentified Calanoids,0.091289537,0.091289537
+June,Maumee,Deep,Unidentified Cyclopoids,0.359688551,0.719377101
+June,Maumee,Middle,Bosminidae,0.209092515,0.836370061
+June,Maumee,Middle,Cyclopoidae,2.041242639,12.24745584
+June,Maumee,Middle,Daphnidae,14.32111963,28.64223927
+June,Maumee,Middle,Diaptomidae,1.66577179,3.331543579
+June,Maumee,Middle,Leptodoridae,0.131926657,0.263853313
+June,Maumee,Middle,Sididae,2.503926243,5.007852486
+June,Maumee,Middle,Temoridae,3.600438749,14.401755
+June,Maumee,Middle,Unidentified Calanoids,5.287652602,10.5753052
+June,Maumee,Middle,Unidentified Cyclopoids,15.57340956,31.14681913
+June,Maumee,Shallow,Bosminidae,2.303389351,6.910168053
+June,Maumee,Shallow,Chydoridae,0.008480519,0.008480519
+June,Maumee,Shallow,Cyclopoidae,2.3566567,11.7832835
+June,Maumee,Shallow,Daphnidae,16.63013769,33.26027538
+June,Maumee,Shallow,Diaptomidae,0.624826737,1.249653474
+June,Maumee,Shallow,Leptodoridae,0.007648277,0.007648277
+June,Maumee,Shallow,Sididae,1.638975651,3.277951302
+June,Maumee,Shallow,Temoridae,1.583399505,3.16679901
+June,Maumee,Shallow,Unidentified Calanoids,3.676190934,7.352381869
+June,Maumee,Shallow,Unidentified Cyclopoids,12.6873952,25.3747904
+May,Detroit,Deep,Bosminidae,0.047488149,0.094976299
+May,Detroit,Deep,Centropagidae,0.063499127,0.126998255
+May,Detroit,Deep,Chydoridae,0.000919596,0.000919596
+May,Detroit,Deep,Cyclopoidae,0.00700222,0.049015542
+May,Detroit,Deep,Daphnidae,0.024023337,0.072070011
+May,Detroit,Deep,Diaptomidae,0.076849093,0.461094555
+May,Detroit,Deep,Sididae,0.002308111,0.002308111
+May,Detroit,Deep,Unidentified Calanoids,0.16943847,0.338876941
+May,Detroit,Deep,Unidentified Cyclopoids,0.17176439,0.34352878
+May,Detroit,Middle,Bosminidae,0.003628077,0.007256153
+May,Detroit,Middle,Cyclopoidae,0.004231077,0.01269323
+May,Detroit,Middle,Daphnidae,0.000105996,0.000105996
+May,Detroit,Middle,Diaptomidae,0.057260039,0.343560235
+May,Detroit,Middle,Sididae,0.001753726,0.001753726
+May,Detroit,Middle,Temoridae,0.003753118,0.007506236
+May,Detroit,Middle,Unidentified Calanoids,0.00803101,0.016062019
+May,Detroit,Middle,Unidentified Cyclopoids,0.02690364,0.053807279
+May,Detroit,Shallow,Bosminidae,0.006328643,0.006328643
+May,Detroit,Shallow,Centropagidae,0.101469453,0.202938906
+May,Detroit,Shallow,Chydoridae,0.000529516,0.001059032
+May,Detroit,Shallow,Cyclopoidae,0.00981213,0.029436389
+May,Detroit,Shallow,Daphnidae,7.70E-05,7.70E-05
+May,Detroit,Shallow,Diaptomidae,0.107481594,0.644889562
+May,Detroit,Shallow,Temoridae,0.005126165,0.01025233
+May,Detroit,Shallow,Unidentified Calanoids,0.016903928,0.033807857
+May,Detroit,Shallow,Unidentified Cyclopoids,0.02802051,0.05604102
+May,Dunkirk,Deep,Bosminidae,0.329947326,0.659894652
+May,Dunkirk,Deep,Cyclopoidae,7.865689702,7.865689702
+May,Dunkirk,Deep,Diaptomidae,0.934042477,0.934042477
+May,Dunkirk,Deep,Leptodoridae,0.003940931,0.003940931
+May,Dunkirk,Deep,Unidentified Cyclopoids,13.73729973,13.73729973
+May,Dunkirk,Middle,Bosminidae,5.978749854,5.978749854
+May,Dunkirk,Middle,Cyclopoidae,6.777114093,6.777114093
+May,Dunkirk,Middle,Diaptomidae,2.162072929,4.324145857
+May,Dunkirk,Middle,Leptodoridae,0.000305827,0.000305827
+May,Dunkirk,Middle,Unidentified Calanoids,0.140207117,0.140207117
+May,Dunkirk,Middle,Unidentified Cyclopoids,18.35499152,18.35499152
+May,Dunkirk,Shallow,Bosminidae,0.277233804,0.277233804
+May,Dunkirk,Shallow,Cyclopoidae,0.090529562,0.090529562
+May,Dunkirk,Shallow,Unidentified Calanoids,0.304566527,0.304566527
+May,Dunkirk,Shallow,Unidentified Cyclopoids,9.477435043,9.477435043
+May,Erie,Deep,Bosminidae,0.043552809,0.087105619
+May,Erie,Deep,Cyclopoidae,4.23204094,8.46408188
+May,Erie,Deep,Diaptomidae,1.039539285,4.158157141
+May,Erie,Deep,Unidentified Cyclopoids,0.996642136,1.993284271
+May,Erie,Middle,Bosminidae,1.263196004,5.052784017
+May,Erie,Middle,Cyclopoidae,13.09872746,39.29618239
+May,Erie,Middle,Daphnidae,1.054258989,2.108517978
+May,Erie,Middle,Diaptomidae,3.242239158,16.21119579
+May,Erie,Middle,Unidentified Calanoids,0.041139798,0.041139798
+May,Erie,Middle,Unidentified Cyclopoids,27.20353236,54.40706471
+May,Erie,Shallow,Bosminidae,1.076493356,2.152986712
+May,Erie,Shallow,Cyclopoidae,0.085512904,0.342051615
+May,Erie,Shallow,Daphnidae,0.086092496,0.258277488
+May,Erie,Shallow,Diaptomidae,0.189485421,0.568456262
+May,Erie,Shallow,Unidentified Calanoids,0.111962381,0.223924762
+May,Erie,Shallow,Unidentified Cyclopoids,10.40817716,20.81635431
+May,Fairport,Deep,Bosminidae,0.428578933,1.285736798
+May,Fairport,Deep,Cyclopoidae,9.956997888,39.82799155
+May,Fairport,Deep,Daphnidae,0.208103829,0.624311488
+May,Fairport,Deep,Diaptomidae,7.513245622,22.53973687
+May,Fairport,Deep,Unidentified Cyclopoids,4.355125009,8.710250018
+May,Fairport,Middle,Bosminidae,1.989187925,7.9567517
+May,Fairport,Middle,Centropagidae,0.934826267,0.934826267
+May,Fairport,Middle,Cyclopoidae,1.361160891,8.166965345
+May,Fairport,Middle,Daphnidae,0.120801025,0.4832041
+May,Fairport,Middle,Diaptomidae,0.514103606,3.084621636
+May,Fairport,Middle,Leptodoridae,0.019720238,0.019720238
+May,Fairport,Middle,Unidentified Calanoids,2.08043592,4.16087184
+May,Fairport,Middle,Unidentified Cyclopoids,7.965235919,15.93047184
+May,Fairport,Shallow,Bosminidae,1.114443824,2.228887649
+May,Fairport,Shallow,Cyclopoidae,0.365115771,0.730231542
+May,Fairport,Shallow,Daphnidae,0.126932183,0.50772873
+May,Fairport,Shallow,Diaptomidae,0.324882548,1.624412739
+May,Fairport,Shallow,Unidentified Calanoids,0.670866788,1.341733576
+May,Fairport,Shallow,Unidentified Cyclopoids,2.397591541,4.795183081
+May,Lorain,Deep,Bosminidae,0.440011837,1.760047346
+May,Lorain,Deep,Cyclopoidae,8.722644987,34.89057995
+May,Lorain,Deep,Daphnidae,0.689357519,2.757430078
+May,Lorain,Deep,Diaptomidae,5.649453007,22.59781203
+May,Lorain,Deep,Unidentified Cyclopoids,5.993947433,11.98789487
+May,Lorain,Middle,Bosminidae,0.620408958,1.861226874
+May,Lorain,Middle,Cyclopoidae,5.475468702,21.90187481
+May,Lorain,Middle,Daphnidae,0.146228392,0.438685176
+May,Lorain,Middle,Diaptomidae,3.978647503,19.89323751
+May,Lorain,Middle,Unidentified Calanoids,0.016047361,0.016047361
+May,Lorain,Middle,Unidentified Cyclopoids,5.38706056,10.77412112
+May,Lorain,Shallow,Bosminidae,0.518959106,2.075836423
+May,Lorain,Shallow,Cyclopoidae,3.06813522,15.3406761
+May,Lorain,Shallow,Daphnidae,0.143471581,0.430414744
+May,Lorain,Shallow,Diaptomidae,2.717275463,10.86910185
+May,Lorain,Shallow,Unidentified Cyclopoids,3.263678836,6.527357671
+May,Maumee,Deep,Bosminidae,0.275444556,0.826333667
+May,Maumee,Deep,Centropagidae,0.184455307,0.184455307
+May,Maumee,Deep,Cyclopoidae,0.017748396,0.124238769
+May,Maumee,Deep,Daphnidae,0.35092466,0.701849319
+May,Maumee,Deep,Diaptomidae,0.209340706,1.046703532
+May,Maumee,Deep,Unidentified Calanoids,1.387821081,2.775642161
+May,Maumee,Deep,Unidentified Cyclopoids,0.48038497,0.960769939
+May,Maumee,Middle,Bosminidae,1.03990819,2.079816381
+May,Maumee,Middle,Centropagidae,0.218283034,0.218283034
+May,Maumee,Middle,Cyclopoidae,0.075687145,0.454122873
+May,Maumee,Middle,Daphnidae,0.227103776,0.908415106
+May,Maumee,Middle,Diaptomidae,0.116571427,0.582857135
+May,Maumee,Middle,Leptodoridae,0.04629513,0.092590259
+May,Maumee,Middle,Sididae,0.253164235,0.506328471
+May,Maumee,Middle,Temoridae,0.054531535,0.218126139
+May,Maumee,Middle,Unidentified Calanoids,0.373403583,0.746807167
+May,Maumee,Middle,Unidentified Cyclopoids,0.994383486,1.988766972
+May,Maumee,Shallow,Bosminidae,0.951150698,3.804602791
+May,Maumee,Shallow,Cyclopoidae,0.186455773,1.305190409
+May,Maumee,Shallow,Daphnidae,0.183994498,0.735977993
+May,Maumee,Shallow,Diaptomidae,0.114719835,0.458879338
+May,Maumee,Shallow,Leptodoridae,0.001460329,0.001460329
+May,Maumee,Shallow,Sididae,0.150905147,0.301810295
+May,Maumee,Shallow,Unidentified Calanoids,0.5721155,1.144231
+May,Maumee,Shallow,Unidentified Cyclopoids,1.487157456,2.974314912
+October,Detroit,Deep,Bosminidae,0.125684861,0.502739443
+October,Detroit,Deep,Chydoridae,0.00182039,0.00182039
+October,Detroit,Deep,Cyclopoidae,0.002601898,0.005203796
+October,Detroit,Deep,Daphnidae,0.000336474,0.000672949
+October,Detroit,Deep,Diaptomidae,0.018720294,0.037440588
+October,Detroit,Deep,Leptodoridae,0.013431677,0.013431677
+October,Detroit,Deep,Temoridae,0.027841908,0.055683816
+October,Detroit,Deep,Unidentified Calanoids,0.292007485,0.58401497
+October,Detroit,Deep,Unidentified Cyclopoids,0.009049085,0.018098169
+October,Detroit,Middle,Bosminidae,0.130295423,0.521181691
+October,Detroit,Middle,Daphnidae,0.000500696,0.001001392
+October,Detroit,Middle,Diaptomidae,0.008358622,0.016717244
+October,Detroit,Middle,Unidentified Calanoids,0.191224467,0.382448933
+October,Detroit,Middle,Unidentified Cyclopoids,0.013869416,0.027738832
+October,Detroit,Shallow,Bosminidae,0.010109742,0.020219484
+October,Detroit,Shallow,Daphnidae,0.000323355,0.000646709
+October,Detroit,Shallow,Diaptomidae,0.08880422,0.08880422
+October,Detroit,Shallow,Unidentified Calanoids,0.208507967,0.417015934
+October,Detroit,Shallow,Unidentified Cyclopoids,0.011941005,0.023882009
+October,Erie,Deep,Bosminidae,0.035744765,0.035744765
+October,Erie,Deep,Cercopagididae,0.250960988,1.003843953
+October,Erie,Deep,Cyclopoidae,0.943657559,2.830972676
+October,Erie,Deep,Daphnidae,2.950259178,2.950259178
+October,Erie,Deep,Diaptomidae,1.956870756,3.913741512
+October,Erie,Deep,Unidentified Calanoids,6.747775118,13.49555024
+October,Erie,Deep,Unidentified Cyclopoids,2.317262669,4.634525338
+October,Erie,Middle,Cercopagididae,0.866314643,3.465258573
+October,Erie,Middle,Cyclopoidae,0.530840513,1.59252154
+October,Erie,Middle,Daphnidae,0.565279382,0.565279382
+October,Erie,Middle,Diaptomidae,0.830378561,2.491135682
+October,Erie,Middle,Unidentified Calanoids,8.792997515,17.58599503
+October,Erie,Middle,Unidentified Cyclopoids,1.369304126,2.738608253
+October,Erie,Shallow,Bosminidae,0.189456639,0.378913279
+October,Erie,Shallow,Cercopagididae,0.341592009,1.366368036
+October,Erie,Shallow,Cyclopoidae,0.191797169,0.383594339
+October,Erie,Shallow,Daphnidae,1.340526972,2.681053944
+October,Erie,Shallow,Diaptomidae,0.977730971,3.910923882
+October,Erie,Shallow,Unidentified Calanoids,9.934074997,19.86814999
+October,Erie,Shallow,Unidentified Cyclopoids,1.732500487,3.465000974
+October,Fairport,Deep,Cercopagididae,1.659161684,6.636646738
+October,Fairport,Deep,Cyclopoidae,0.310172139,1.550860694
+October,Fairport,Deep,Diaptomidae,2.122496847,4.244993694
+October,Fairport,Deep,Unidentified Calanoids,10.18472399,20.36944798
+October,Fairport,Deep,Unidentified Cyclopoids,4.251132491,8.502264983
+October,Fairport,Middle,Cercopagididae,0.608693415,1.21738683
+October,Fairport,Middle,Cyclopoidae,0.486944844,0.973889687
+October,Fairport,Middle,Daphnidae,3.380810334,3.380810334
+October,Fairport,Middle,Diaptomidae,2.35292979,2.35292979
+October,Fairport,Middle,Unidentified Calanoids,17.25037787,17.25037787
+October,Fairport,Middle,Unidentified Cyclopoids,3.649934665,3.649934665
+October,Fairport,Shallow,Bosminidae,0.093387686,0.093387686
+October,Fairport,Shallow,Cercopagididae,0.603185558,2.412742232
+October,Fairport,Shallow,Cyclopoidae,0.670702819,4.024216912
+October,Fairport,Shallow,Daphnidae,9.584133827,19.16826765
+October,Fairport,Shallow,Diaptomidae,2.64796331,7.943889931
+October,Fairport,Shallow,Unidentified Calanoids,11.29658596,22.59317191
+October,Fairport,Shallow,Unidentified Cyclopoids,7.63365197,15.26730394
+October,Lorain,Deep,Cercopagididae,2.457651056,9.830604222
+October,Lorain,Deep,Cyclopoidae,0.416473491,1.665893963
+October,Lorain,Deep,Daphnidae,11.2574409,22.5148818
+October,Lorain,Deep,Diaptomidae,1.882718711,3.765437421
+October,Lorain,Deep,Unidentified Calanoids,22.63183204,45.26366407
+October,Lorain,Deep,Unidentified Cyclopoids,5.314472926,10.62894585
+October,Lorain,Middle,Cercopagididae,1.084344609,4.337378435
+October,Lorain,Middle,Cyclopoidae,0.564943331,2.259773326
+October,Lorain,Middle,Daphnidae,8.73909885,17.4781977
+October,Lorain,Middle,Diaptomidae,6.663570798,13.3271416
+October,Lorain,Middle,Unidentified Calanoids,14.34962954,28.69925909
+October,Lorain,Middle,Unidentified Cyclopoids,7.462855663,14.92571133
+October,Lorain,Shallow,Cercopagididae,0.860393456,1.720786912
+October,Lorain,Shallow,Cyclopoidae,0.230026711,0.230026711
+October,Lorain,Shallow,Daphnidae,2.506096476,2.506096476
+October,Lorain,Shallow,Diaptomidae,3.078291852,3.078291852
+October,Lorain,Shallow,Leptodoridae,0.002240677,0.002240677
+October,Lorain,Shallow,Unidentified Calanoids,7.23336367,7.23336367
+October,Lorain,Shallow,Unidentified Cyclopoids,1.209046509,1.209046509
+October,Maumee,Deep,Bosminidae,0.291283358,1.16513343
+October,Maumee,Deep,Cercopagididae,0.016665684,0.016665684
+October,Maumee,Deep,Daphnidae,0.103963497,0.623780985
+October,Maumee,Deep,Diaptomidae,0.091553199,0.366212797
+October,Maumee,Deep,Leptodoridae,0.045905708,0.091811415
+October,Maumee,Deep,Temoridae,0.309895251,1.239581002
+October,Maumee,Deep,Unidentified Calanoids,0.4417704,0.883540801
+October,Maumee,Deep,Unidentified Cyclopoids,0.156005707,0.312011415
+October,Maumee,Middle,Bosminidae,0.157223667,0.314447334
+October,Maumee,Middle,Daphnidae,0.119109942,0.357329826
+October,Maumee,Middle,Diaptomidae,0.159104143,0.159104143
+October,Maumee,Middle,Leptodoridae,0.102017852,0.102017852
+October,Maumee,Middle,Sididae,0.285260552,0.285260552
+October,Maumee,Middle,Temoridae,0.367385119,0.734770238
+October,Maumee,Middle,Unidentified Calanoids,1.700228804,1.700228804
+October,Maumee,Middle,Unidentified Cyclopoids,0.290460747,0.290460747
+October,Maumee,Shallow,Bosminidae,1.071521045,4.28608418
+October,Maumee,Shallow,Cercopagididae,0.01815492,0.01815492
+October,Maumee,Shallow,Daphnidae,0.509002605,1.01800521
+October,Maumee,Shallow,Diaptomidae,2.068437107,2.068437107
+October,Maumee,Shallow,Leptodoridae,1.45323252,2.90646504
+October,Maumee,Shallow,Temoridae,5.400766472,21.60306589
+October,Maumee,Shallow,Unidentified Calanoids,7.866413362,15.73282672
+October,Maumee,Shallow,Unidentified Cyclopoids,1.347401728,2.694803456
+September,Detroit,Deep,Bosminidae,1.012086516,4.048346065
+September,Detroit,Deep,Cyclopoidae,0.379987504,0.759975009
+September,Detroit,Deep,Daphnidae,1.704694482,6.818777929
+September,Detroit,Deep,Diaptomidae,1.851802166,7.407208664
+September,Detroit,Deep,Leptodoridae,0.305343896,0.610687792
+September,Detroit,Deep,Sididae,1.411957468,2.823914935
+September,Detroit,Deep,Unidentified Calanoids,4.310332979,8.620665958
+September,Detroit,Deep,Unidentified Cyclopoids,1.314245744,2.628491488
+September,Detroit,Middle,Bosminidae,0.707154266,2.828617064
+September,Detroit,Middle,Cyclopoidae,0.05479074,0.109581481
+September,Detroit,Middle,Daphnidae,0.011377278,0.068263666
+September,Detroit,Middle,Diaptomidae,0.171960386,0.687841542
+September,Detroit,Middle,Holopedidae,0.005201115,0.005201115
+September,Detroit,Middle,Leptodoridae,0.089672385,0.17934477
+September,Detroit,Middle,Sididae,0.041687585,0.08337517
+September,Detroit,Middle,Unidentified Calanoids,0.650757088,1.301514176
+September,Detroit,Middle,Unidentified Cyclopoids,0.162261705,0.32452341
+September,Detroit,Shallow,Bosminidae,1.136748344,2.273496688
+September,Detroit,Shallow,Cyclopoidae,0.017333012,0.034666023
+September,Detroit,Shallow,Leptodoridae,0.007649143,0.015298287
+September,Detroit,Shallow,Sididae,0.045000182,0.045000182
+September,Detroit,Shallow,Unidentified Calanoids,1.417808045,2.83561609
+September,Detroit,Shallow,Unidentified Cyclopoids,0.153650226,0.307300452
+September,Dunkirk,Deep,Bosminidae,0.438318574,0.438318574
+September,Dunkirk,Deep,Cercopagididae,0.566670383,1.133340766
+September,Dunkirk,Deep,Daphnidae,0.061853175,0.061853175
+September,Dunkirk,Deep,Diaptomidae,0.117333151,0.117333151
+September,Dunkirk,Deep,Unidentified Calanoids,3.81422499,3.81422499
+September,Dunkirk,Deep,Unidentified Cyclopoids,0.113051984,0.113051984
+September,Dunkirk,Middle,Bosminidae,0.455236664,0.455236664
+September,Dunkirk,Middle,Cercopagididae,0.098381634,0.196763269
+September,Dunkirk,Middle,Daphnidae,0.09591227,0.09591227
+September,Dunkirk,Middle,Diaptomidae,0.327902985,0.327902985
+September,Dunkirk,Middle,Unidentified Calanoids,5.201692787,5.201692787
+September,Dunkirk,Middle,Unidentified Cyclopoids,0.343498723,0.343498723
+September,Dunkirk,Shallow,Bosminidae,0.216262991,0.216262991
+September,Dunkirk,Shallow,Cercopagididae,0.021671131,0.021671131
+September,Dunkirk,Shallow,Daphnidae,0.568672272,0.568672272
+September,Dunkirk,Shallow,Diaptomidae,3.384220774,3.384220774
+September,Dunkirk,Shallow,Leptodoridae,0.042210066,0.042210066
+September,Dunkirk,Shallow,Unidentified Calanoids,4.077309551,4.077309551
+September,Dunkirk,Shallow,Unidentified Cyclopoids,0.184279632,0.184279632
+September,Erie,Deep,Bosminidae,0.198192574,0.396385148
+September,Erie,Deep,Cercopagididae,0.775518809,3.102075236
+September,Erie,Deep,Daphnidae,0.144626479,0.289252958
+September,Erie,Deep,Diaptomidae,4.146652969,8.293305937
+September,Erie,Deep,Unidentified Calanoids,3.128379286,6.256758572
+September,Erie,Deep,Unidentified Cyclopoids,0.185716416,0.371432832
+September,Erie,Middle,Cercopagididae,0.643616765,2.574467061
+September,Erie,Middle,Daphnidae,0.465976324,0.931952648
+September,Erie,Middle,Diaptomidae,2.830560567,8.491681702
+September,Erie,Middle,Unidentified Calanoids,4.136977927,8.273955854
+September,Erie,Middle,Unidentified Cyclopoids,0.514812221,1.029624441
+September,Erie,Shallow,Cercopagididae,0.03893021,0.11679063
+September,Erie,Shallow,Daphnidae,9.512105719,19.02421144
+September,Erie,Shallow,Diaptomidae,9.459855527,28.37956658
+September,Erie,Shallow,Leptodoridae,0.060217837,0.120435674
+September,Erie,Shallow,Unidentified Calanoids,16.11067439,32.22134878
+September,Erie,Shallow,Unidentified Cyclopoids,0.853215785,1.70643157
+September,Fairport,Deep,Bosminidae,1.566456981,3.132913961
+September,Fairport,Deep,Cercopagididae,0.960581781,3.842327125
+September,Fairport,Deep,Daphnidae,3.817808489,7.635616978
+September,Fairport,Deep,Diaptomidae,14.10570293,28.21140586
+September,Fairport,Deep,Unidentified Calanoids,15.00470405,30.00940811
+September,Fairport,Deep,Unidentified Cyclopoids,1.833522041,3.667044081
+September,Fairport,Middle,Cercopagididae,0.613874194,2.455496777
+September,Fairport,Middle,Daphnidae,1.610448786,3.220897571
+September,Fairport,Middle,Diaptomidae,3.143860328,9.431580983
+September,Fairport,Middle,Leptodoridae,0.001103051,0.001103051
+September,Fairport,Middle,Unidentified Calanoids,3.673861077,7.347722153
+September,Fairport,Middle,Unidentified Cyclopoids,0.492351169,0.984702337
+September,Fairport,Shallow,Bosminidae,1.556149799,1.556149799
+September,Fairport,Shallow,Cercopagididae,0.044712955,0.178851819
+September,Fairport,Shallow,Cyclopoidae,0.046119225,0.046119225
+September,Fairport,Shallow,Daphnidae,2.027934338,4.055868676
+September,Fairport,Shallow,Diaptomidae,6.26197431,12.52394862
+September,Fairport,Shallow,Leptodoridae,0.047477656,0.094955312
+September,Fairport,Shallow,Unidentified Calanoids,10.26939407,20.53878813
+September,Fairport,Shallow,Unidentified Cyclopoids,0.682742069,1.365484137
+September,Lorain,Deep,Cercopagididae,0.632326917,2.529307667
+September,Lorain,Deep,Cyclopoidae,0.040851383,0.081702766
+September,Lorain,Deep,Daphnidae,2.305470492,4.610940984
+September,Lorain,Deep,Diaptomidae,7.555621972,15.11124394
+September,Lorain,Deep,Unidentified Calanoids,6.834023626,13.66804725
+September,Lorain,Deep,Unidentified Cyclopoids,1.912128208,3.824256417
+September,Lorain,Middle,Cercopagididae,0.384712247,1.538848987
+September,Lorain,Middle,Daphnidae,15.86337825,31.72675649
+September,Lorain,Middle,Diaptomidae,11.89197591,35.67592774
+September,Lorain,Middle,Leptodoridae,0.049031202,0.098062404
+September,Lorain,Middle,Unidentified Calanoids,14.22660293,28.45320586
+September,Lorain,Middle,Unidentified Cyclopoids,1.643473825,3.28694765
+September,Lorain,Shallow,Bosminidae,0.533833225,1.06766645
+September,Lorain,Shallow,Cercopagididae,1.71237547,6.84950188
+September,Lorain,Shallow,Daphnidae,19.16025726,38.32051451
+September,Lorain,Shallow,Diaptomidae,22.63014466,45.26028931
+September,Lorain,Shallow,Leptodoridae,0.176768553,0.353537107
+September,Lorain,Shallow,Unidentified Calanoids,29.41032212,58.82064424
+September,Lorain,Shallow,Unidentified Cyclopoids,2.766550379,5.533100758
+September,Maumee,Deep,Bosminidae,7.886784756,23.66035427
+September,Maumee,Deep,Cyclopoidae,1.443826288,2.887652575
+September,Maumee,Deep,Daphnidae,9.1760147,45.8800735
+September,Maumee,Deep,Diaptomidae,3.468966226,6.937932452
+September,Maumee,Deep,Holopedidae,0.031254461,0.031254461
+September,Maumee,Deep,Leptodoridae,2.596996516,5.193993031
+September,Maumee,Deep,Sididae,37.7371286,75.4742572
+September,Maumee,Deep,Unidentified Calanoids,21.50352252,43.00704505
+September,Maumee,Deep,Unidentified Cyclopoids,5.707748584,11.41549717
+September,Maumee,Middle,Bosminidae,19.95555616,39.91111233
+September,Maumee,Middle,Cyclopoidae,4.329212809,8.658425619
+September,Maumee,Middle,Daphnidae,4.253299458,17.01319783
+September,Maumee,Middle,Diaptomidae,24.11214523,48.22429045
+September,Maumee,Middle,Leptodoridae,0.493696921,0.987393842
+September,Maumee,Middle,Sididae,24.85900277,49.71800554
+September,Maumee,Middle,Unidentified Calanoids,4.920177447,9.840354894
+September,Maumee,Middle,Unidentified Cyclopoids,3.91538799,7.83077598
+September,Maumee,Shallow,Bosminidae,14.9631936,59.8527744
+September,Maumee,Shallow,Cyclopoidae,2.994653253,5.989306505
+September,Maumee,Shallow,Daphnidae,3.208302322,19.24981393
+September,Maumee,Shallow,Diaptomidae,12.88215425,25.7643085
+September,Maumee,Shallow,Leptodoridae,1.18615372,2.372307439
+September,Maumee,Shallow,Sididae,20.02317955,40.0463591
+September,Maumee,Shallow,Unidentified Calanoids,11.42410759,22.84821518
+September,Maumee,Shallow,Unidentified Cyclopoids,4.150391562,8.300783124

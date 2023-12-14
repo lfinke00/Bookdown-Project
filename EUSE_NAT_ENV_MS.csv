@@ -1,0 +1,263 @@
+SUID,CITY,STAID,sname,AnnMeanT,AnnMeanP,DomEcoReg
+ACFB,ATL,2204230,"Big Cotton Indian Cr at GA 138, nr Stockbridge, GA",16.48281,128.4667,ECO_45
+ACFB,ATL,2204468,"Walnut Creek at Airline Road, near Mcdonough, GA",16.5804,126.2006,ECO_45
+ACFB,ATL,2206314,"Jackson Creek at Lester Road, near Lilburn, GA",15.9831,137.5165,ECO_45
+ACFB,ATL,2208150,"Alcovy River at New Hope Road, near Grayson, GA",15.85126,133.4106,ECO_45
+ACFB,ATL,2213450,"Little Tobesofkee Creek near Bolingbroke, GA",17.33668,123.7296,ECO_45
+ACFB,ATL,2217293,"Little Mulberry River at GA 211, nr Hoschton, GA",15.86217,132.6933,ECO_45
+ACFB,ATL,2217471,"Beech Creek at GA 211, near Statham, GA",16.21777,127.5183,ECO_45
+ACFB,ATL,2218700,"Apalachee River near Bethlehem, GA",16.01019,131.4435,ECO_45
+ACFB,ATL,2221000,"Murder Creek near Monticello, GA",17.03933,122.0024,ECO_45
+ACFB,ATL,2334885,"Suwanee Creek at Suwanee, GA",15.58589,138.3833,ECO_45
+ACFB,ATL,2335870,"Sope Creek near Marietta, GA",15.61743,139.834,ECO_45
+ACFB,ATL,2335910,"Rottenwood C (Interstate N Pkwy) nr Smyrna, GA",15.74428,139.2784,ECO_45
+ACFB,ATL,2336635,"Nickajack Creek at US 78/278, near Mableton, GA",15.8969,136.9575,ECO_45
+ACFB,ATL,2336728,"Utoy Creek at Great Southwest Pkwy nr Atlanta, GA",16.1526,134.1034,ECO_45
+ACFB,ATL,2336822,"Mill Creek at Morning Side Dr, near Hiram, GA",15.68102,138.9707,ECO_45
+ACFB,ATL,2336876,"Powder Springs Cr Oglesby Rd, Powder Springs, GA",15.73393,138.2499,ECO_45
+ACFB,ATL,2336968,"Noses Creek at Powder Springs Rd,Powder Springs, GA",15.73423,138.1393,ECO_45
+ACFB,ATL,2337395,"Dog River at North Helton Road, near Winston, GA",15.7407,140.0299,ECO_45
+ACFB,ATL,2338280,"Whooping Creek at GA 5, near Whitesburg, GA",16.03601,137.3183,ECO_45
+ACFB,ATL,2338375,"Centralhatchee Cr Armstrong Mill Rd, Ctrlhtche, GA",16.02593,138.6126,ECO_45
+ACFB,ATL,2338523,"Hillabahatchee Creek at Thaxton Rd, nr Franklin,GA",15.92513,139.9412,ECO_45
+ACFB,ATL,2339480,"Oseligee Creek at County Rd 92 near Fredonia, AL",16.69274,140.7899,ECO_45
+ACFB,ATL,2340282,"House Creek at GA 103, near Whitesville, GA",17.09117,133.5815,ECO_45
+ACFB,ATL,2344340,"Morning Creek at GA 54, near Fayetteville, GA",16.32338,131.8575,ECO_45
+ACFB,ATL,2344480,"Shoal Creek near Griffin, GA",16.65869,128.0549,ECO_45
+ACFB,ATL,2344737,"Whitewater Cr at Willow Pond Rd nr Fayetteville, GA",16.41682,130.2895,ECO_45
+ACFB,ATL,2344797,"White Oak Creek at Cannon Road, near Raymond, GA",16.46109,133.5812,ECO_45
+ACFB,ATL,2344887,"Red Oak Creek at GA 362, near Gay, GA",16.74838,132.3719,ECO_45
+ACFB,ATL,2346358,"Turnpike Creek near Milner, GA",16.77167,127.456,ECO_45
+ACFB,ATL,2347748,"Auchumpkee Cr at Allen Rd, near Roberta, GA",17.54682,122.979,ECO_45
+ALBE,RAL,2081190,"Tar River nr Berea, NC",14.25925,117.3073,ECO_45
+ALBE,RAL,2081510,"Foundry Branch at mouth near Oxford, NC",14.56661,115.1523,ECO_45
+ALBE,RAL,208500600,"Cates Creek nr Hillsborough, NC",14.60332,125.3307,ECO_45
+ALBE,RAL,208501535,"Strouds Cr at St Marys Rd nr Hillsborough, NC",14.58565,123.5609,ECO_45
+ALBE,RAL,2085430,"Deep Creek near Moriah, NC",14.33403,118.2378,ECO_45
+ALBE,RAL,208725055,"Black Cr at Weston Parkway nr Cary, NC",15.27441,118.1236,ECO_45
+ALBE,RAL,208726370,"Richlands Creek at Schenk Forest nr Cary, NC",15.30297,117.7947,ECO_45
+ALBE,RAL,208726995,"Hare Snipe Creek at SR 1822 nr Leesville, NC",15.20096,117.5663,ECO_45
+ALBE,RAL,2087304,"SW Prong Beaverdam Creek at Raleigh, NC",15.37343,116.5055,ECO_45
+ALBE,RAL,208732610,"Pigeon House Br at Crabtree Blvd at Raleigh, NC",15.47578,114.9722,ECO_45
+ALBE,RAL,2087580,"Swift Creek near Apex, NC",15.35956,119.1059,ECO_45
+ALBE,RAL,208758440,"Dutchmans Br at SR 1386 nr Mccullers Crossrds, NC",15.43043,119.8185,ECO_45
+ALBE,RAL,208794025,"Camp Branch ab SR 1390 nr Holly Springs, NC",15.44461,120.363,ECO_45
+ALBE,RAL,209517912,"N Buffalo Creek at Greensboro, NC",14.6278,120.2773,ECO_45
+ALBE,RAL,209647280,"Service Creek above Dry Creek at Burlington, NC",14.66705,118.7583,ECO_45
+ALBE,RAL,209647295,"Dry Cr above Service Creek at Burlington, NC",14.69931,118.7724,ECO_45
+ALBE,RAL,209651815,"Branch Creek Below NC 54 nr Graham, NC",14.70288,120.0816,ECO_45
+ALBE,RAL,209665940,"Rock Cr Trib at Stoney Cr Golf Crse nr Sedalia, NC",14.69126,118.6557,ECO_45
+ALBE,RAL,209665990,"Rock Cr above Rock Cr Trib nr Whitsett, NC",14.64323,118.4908,ECO_45
+ALBE,RAL,209679804,"Little Alamance Cr at SR 2309 nr Graham, NC",14.69357,119.8014,ECO_45
+ALBE,RAL,209695780,"Brooks Cr at Eddie Perry Rd nr Bynum, NC",15.28426,119.0498,ECO_45
+ALBE,RAL,209697900,"Pokeberry Creek nr Pittsboro, NC",15.25652,118.74,ECO_45
+ALBE,RAL,2097355,Bolin C Ab Franklin St nr Chapel Hill NC,15.07836,118.4747,ECO_45
+ALBE,RAL,2097464,"Morgan Creek near White Cross, NC",14.91673,121.0573,ECO_45
+ALBE,RAL,209750881,"Wilson Cr at mouth nr Chapel Hill, NC",15.17389,118.5244,ECO_45
+ALBE,RAL,2099238,"Bull Run at NC 29/70 nr Jamestown, NC",14.73384,119.0822,ECO_45
+ALBE,RAL,2099480,"Richland Creek nr Archdale, NC",14.85717,117.9969,ECO_45
+ALBE,RAL,2100294,"Hasketts Cr below Penwood Branch nr Asheboro, NC",15.18225,121.9814,ECO_45
+ALBE,RAL,2100634,"Vestal Creek nr Asheboro, NC",15.24972,121.6053,ECO_45
+ALBE,RAL,211583580,"Bowen Branch nr mouth at Winston-Salem, NC",14.3771,119.7903,ECO_45
+SPLT,DEN,6713500,"Cherry Creek at Denver, CO",9.915417,42.06901,ECO_25
+SPLT,DEN,3.93557E+14,"Dutch Creek at Weaver Park nr Columbine Valley, CO",9.173235,46.57735,ECO_25
+SPLT,DEN,3.93613E+14,"Cottonwood Ck ab Newark WY at Greenwood Village, CO",9.39455,45.55371,ECO_25
+SPLT,DEN,3.93948E+14,"Bear Creek bl Estes Rd at Lakewood, CO",9.019464,46.76035,ECO_25
+SPLT,DEN,3.94107E+14,Sanderson Gulch abv Lowell Ave at Denver,9.704521,43.95013,ECO_25
+SPLT,DEN,3.94409E+14,"Lakewood Gulch abv Knox St at Denver, CO",9.479523,44.36064,ECO_25
+SPLT,DEN,3.94553E+14,Lena Gulch at Lewis Meadows Park at Wheat Ridge CO,8.887539,46.74424,ECO_25
+SPLT,DEN,3.94629E+14,Clear Creek blw Kipling at Wheat Ridge CO,9.119665,45.88837,ECO_25
+SPLT,DEN,3.94919E+14,Ralston Creek abv Simms at Arvada CO,9.220909,45.38367,ECO_25
+SPLT,DEN,3.94921E+14,"Little Dry Ck bl Lowell St nr Westminster, CO",9.742702,43.15327,ECO_25
+SPLT,DEN,3.95324E+14,"Big Dry Ck bl Hyland Cr at Westminster, CO",9.368573,44.28818,ECO_25
+SPLT,DEN,3.95554E+14,"Rock Creek abv Rock Creek Pkwy, at Superior, CO",9.101161,44.97192,ECO_25
+SPLT,DEN,3.95707E+14,"Coal Creek abv Mccaslin Rd at Superior, CO",8.83912,45.76705,ECO_25
+SPLT,DEN,3.95958E+14,Dry Creek abv Baseline Rd nr Boulder CO,9.600856,42.79354,ECO_25
+SPLT,DEN,4E+14,S Boulder Cr at Baseline Road nr Boulder Colo,9.148764,44.38902,ECO_25
+SPLT,DEN,4.00023E+14,"Bear Cr abv Wellman Feeder Canal, at Boulder, CO",9.234113,43.30738,ECO_25
+SPLT,DEN,4.00217E+14,"Boulder Creek blw 61st Street, nr Boulder, CO",9.494295,42.63696,ECO_25
+SPLT,DEN,4.00607E+14,"Dry Creek blw Niwot Rd, at Niwot, CO",9.68518,40.47441,ECO_25
+SPLT,DEN,4.0081E+14,Left Hand Creek abv Pike Rd at Longmont CO,9.814017,39.59713,ECO_25
+SPLT,DEN,4.00855E+14,Dry Creek blw Airport Rd nr Longmont CO,9.803816,39.16082,ECO_25
+SPLT,DEN,4.00925E+14,Spring Gulch at Sandstone Ranch Pk nr Longmont CO,9.926014,38.11325,ECO_25
+SPLT,DEN,4.02549E+14,"Dry Creek at US 287, at Loveland, CO",9.435288,40.49228,ECO_25
+SPLT,DEN,4.03035E+14,"Mail Creek nr mouth at Fort Collins, CO",9.532567,39.8685,ECO_25
+SPLT,DEN,4.03048E+14,"Fossil Cr at College Ave, at Ft Collins, CO",9.374093,40.48161,ECO_25
+SPLT,DEN,4.03308E+14,"Boxelder Creek at mouth, nr Fort Collins, CO",8.296503,39.4683,ECO_25
+SPLT,DEN,4.03356E+14,"Spring Creek at Edora Park, at Ft Collins, CO",9.409401,39.82141,ECO_25
+SPLT,DEN,4.10714E+14,"Crow Cr abv Morrie Ave, at Cheyenne, WY",6.491912,42.80828,ECO_25
+SPLT,DEN,4.13659E+14,"Bear Cr abv Little Bear Cr, nr Phillips, WY",7.130457,45.83444,ECO_25
+TRIN,DFW,8049490,"Johnson Ck nr Duncan Perry Rd, Grand Prairie, TX",18.49495,98.61974,ECO_32
+TRIN,DFW,8049580,"Mountain Ck nr Venus, TX",18.39979,97.18565,ECO_32
+TRIN,DFW,8049955,"Fish Ck at Belt Line Rd, Grand Prairie, TX",18.5154,99.15717,ECO_32
+TRIN,DFW,8052740,"Doe Branch at Fishtrap Rd nr Prosper, TX",17.83507,109.8724,ECO_32
+TRIN,DFW,8057200,"White Rock Ck at Greenville Ave, Dallas, TX",17.95738,105.1171,ECO_32
+TRIN,DFW,8057431,"Fivemile Ck nr Simpson Stuart Rd, Dallas, TX",18.31076,103.6455,ECO_32
+TRIN,DFW,8057475,"Parsons Slough nr Davis Rd nr Crandall, TX",18.45676,103.2023,ECO_32
+TRIN,DFW,8059530,"Tickey Ck nr CR 400 nr Princeton, TX",17.74385,111.2528,ECO_32
+TRIN,DFW,8059571,"Wilson Ck nr Gray Branch Rd nr Mckinney, TX",17.64844,111.0492,ECO_32
+TRIN,DFW,8061536,"Spring Ck at Naaman School Rd nr Garland, TX",17.91386,105.8105,ECO_32
+TRIN,DFW,8061740,"Duck Ck at Town East Blvd nr Mesquite, TX",18.15642,105.3628,ECO_32
+TRIN,DFW,8061780,"Buffalo Ck nr Trinity Rd at Forney, TX",18.07099,109.2842,ECO_32
+TRIN,DFW,8061952,"South Mesquite Ck at Lawson Rd nr Mesquite, TX",18.32159,105.3545,ECO_32
+TRIN,DFW,8061995,"Mustang Ck at Fm 2757 nr Crandall, TX",18.21795,107.1349,ECO_32
+TRIN,DFW,8062020,"Buffalo Ck nr Fm 148 nr Crandall, TX",18.22652,106.6487,ECO_32
+TRIN,DFW,8062090,"Red Oak Ck nr Hampton Rd nr Red Oak, TX",18.18172,104.3783,ECO_32
+TRIN,DFW,8062525,"Walker Ck nr Oil Field Rd nr Rosser, TX",18.4501,102.7641,ECO_32
+TRIN,DFW,8062600,"Grays Ck at Cr 1603 nr Rice, TX",18.46548,105.184,ECO_32
+TRIN,DFW,8062805,"Williams Ck nr Fm 1836 nr Kemp, TX",18.07224,110.9067,ECO_32
+TRIN,DFW,8063047,"Bynum Ck nr Fm 308 nr Malone, TX",18.60244,99.22382,ECO_32
+TRIN,DFW,8063300,"Pin Oak Ck nr Fm 73 nr Coolidge, TX",18.66128,101.1153,ECO_32
+TRIN,DFW,8063510,"Little Pin Oak Ck nr Ih 45 nr Richland, TX",18.68217,103.73,ECO_32
+TRIN,DFW,8063555,"S Fk Chambers Ck nr CR 102 nr Maypearl, TX",18.48422,96.32722,ECO_32
+TRIN,DFW,8063565,"Mill Ck at Lowell Rd nr Milford, TX",18.46474,101.2846,ECO_32
+TRIN,DFW,8063574,"Big Onion Ck at Feaster Rd nr Bardwell, TX",18.4808,101.4411,ECO_32
+TRIN,DFW,8063595,"South Prong Ck at Fm 876 nr Waxahachie, TX",18.29108,105.1421,ECO_32
+TRIN,DFW,8063692,"Mustang Ck at Moseley Rd nr Ennis, TX",18.43546,103.6179,ECO_32
+TRIN,DFW,8064695,"Tehuacana Ck at Rural Rd 27 nr Wortham, TX",18.72451,104.1875,ECO_33
+WILL,POR,14199710,"Nate Creek near Colton, Oreg.",10.79452,162.5942,ECO_3
+WILL,POR,14205400,"East Fork Dairy Creek near Meacham Corner, OR",8.891111,173.0655,ECO_1
+WILL,POR,14206347,"Rock Creek at Quatama Road near Hillsboro, OR",11.11803,122.3743,ECO_3
+WILL,POR,14206435,"Beaverton Creek at Sw 216th Ave, nr Orenco, OR",11.46175,116.9389,ECO_3
+WILL,POR,14206750,"Chicken Creek near Sherwood, OR",11.38235,123.5698,ECO_3
+WILL,POR,14206950,"Fanno Creek at Durham, OR",11.57563,118.0413,ECO_3
+WILL,POR,14211315,"Tryon Creek blw Nettle Creek, near Lake Oswego, OR",11.50736,124.2943,ECO_3
+WILL,POR,4.34745E+14,"Silk Creek near Cottage Grove, OR",10.9704,140.694,ECO_3
+WILL,POR,4.35212E+14,"Lost Creek near Dexter, OR",9.690152,161.4071,ECO_4
+WILL,POR,4.40257E+14,"Amazon Creek near Danebo Road at Eugene, OR",11.33644,140.7153,ECO_3
+WILL,POR,4.43326E+14,"Oak Creek at Corvallis, OR",10.76874,166.2197,ECO_3
+WILL,POR,4.45029E+14,"Battle Creek near Turner, OR",11.06674,141.3892,ECO_3
+WILL,POR,4.45551E+14,"Pringle Creek at Salem, OR",11.47181,126.8177,ECO_3
+WILL,POR,4.50022E+14,"Claggett Creek at Keizer, OR",11.76343,116.3424,ECO_3
+WILL,POR,4.50955E+14,Milk Creek at Camp Adams,9.95316,179.0231,ECO_3
+WILL,POR,4.51734E+14,"Chehalem Creek at Newberg, OR",11.30458,129.7841,ECO_3
+WILL,POR,4.52149E+14,"North Yamhill Creek near Yamhill, OR",9.290264,204.6839,ECO_1
+WILL,POR,4.52231E+14,"Deep Creek near Sandy, OR",10.55518,191.1752,ECO_3
+WILL,POR,4.52337E+14,"North Fork Deep Creek at Barton, OR",11.1566,173.3572,ECO_3
+WILL,POR,4.52414E+14,"Tickle Creek near Boring, OR",10.85505,185.1665,ECO_3
+WILL,POR,4.52526E+14,"Kellogg Creek at Milwaukie, OR",11.69633,131.221,ECO_3
+WILL,POR,4.52912E+14,"Johnson Creek at Circle Ave, OR",11.22402,165.4437,ECO_3
+WILL,POR,4.53506E+14,"Iler Creek near Forest Grove, OR",9.782215,163.6717,ECO_3
+WILL,POR,4.54321E+14,"Curtin Creek near Vancouver, WA",11.44505,132.4918,ECO_3
+WILL,POR,4.5451E+14,"Whipple Creek near Salmon Creek, WA",11.39629,130.3832,ECO_3
+WILL,POR,4.54543E+14,"South Scappose Creek at Scappose, OR",9.858696,156.8012,ECO_1
+WILL,POR,4.54549E+14,"Salmon Creek near Battleground, WA",10.18012,202.6654,ECO_3
+WILL,POR,4.55122E+14,"Rock Creek near Battleground, WA",10.27029,198.5236,ECO_3
+WMIC,MGB,4072233,"Lancaster Brook at Shawano Avenue at Howard, WI",6.796292,81.43511,ECO_51
+WMIC,MGB,4078085,"Black Otter Creek near Hortonville, WI",6.993164,84.66422,ECO_51
+WMIC,MGB,4081897,"Sawyer Creek at Westhaven Road at Oshkosh, WI",7.39318,83.54754,ECO_53
+WMIC,MGB,4084429,"Mud Creek at Spencer Road at Appleton, WI",7.104436,82.37061,ECO_53
+WMIC,MGB,4084468,"Garners Creek at Park Street at Kaukauna, WI",7.171308,82.09846,ECO_53
+WMIC,MGB,4085046,"Apple Creek at Sniderville, WI",7.146079,80.31915,ECO_53
+WMIC,MGB,40850683,"Ashwaubenon Creek at South Bridge Rd nr Depere, WI",7.105702,78.58366,ECO_53
+WMIC,MGB,40851235,"Bower Creek Trib at Lime Kiln Road nr Bellevue, WI",6.89765,82.58024,ECO_53
+WMIC,MGB,40851325,"Baird Creek at Superior Road at Green Bay, WI",6.833621,83.18407,ECO_53
+WMIC,MGB,4085188,"Rio Creek at Pheasant Road near Rio Creek, WI",6.899378,83.58215,ECO_53
+WMIC,MGB,40851932,"Kewaunee River Trib @ Lowell Road nr Luxemburg, WI",6.772398,84.12357,ECO_53
+WMIC,MGB,4085270,"Jambo Creek at Jambo Creek Road near Mishicot, WI",7.136595,83.31773,ECO_53
+WMIC,MGB,40853145,"Black Creek at Curran Road near Denmark, WI",6.91933,85.39252,ECO_53
+WMIC,MGB,4085322,"Devils River at Rosencrans Road near Maribel, WI",6.866252,85.52141,ECO_53
+WMIC,MGB,40854395,"Point Creek at Ucker Point Road near Newton, WI",7.38638,83.1693,ECO_53
+WMIC,MGB,4085455,"Meeme River at Washington Road near Cleveland, WI",7.327083,85.01874,ECO_53
+WMIC,MGB,4086699,"Pigeon Creek at Williamsburg Dr at Theinsville, WI",8.025625,86.24799,ECO_53
+WMIC,MGB,40869415,"Lincoln Creek at 47th Street at Milwaukee, WI",8.328092,84.96287,ECO_53
+WMIC,MGB,4087030,"Menomonee River at Menomonee Falls, WI",7.871766,88.23931,ECO_53
+WMIC,MGB,408703164,"Lily Creek at Good Hope Road nr Menomonee Falls, WI",8.118302,87.08562,ECO_53
+WMIC,MGB,4087070,"Little Menomonee River at Milwaukee, WI",8.157412,85.65549,ECO_53
+WMIC,MGB,40870856,"Underwood Crk @ Watertown Plank Rd @ Elm Grove, WI",8.169025,88.65446,ECO_53
+WMIC,MGB,4087118,"Honey Creek near Portland Avenue at Wauwatosa, WI",8.352052,87.92551,ECO_53
+WMIC,MGB,4087204,"Oak Creek at South Milwaukee, WI",8.474835,89.46886,ECO_53
+WMIC,MGB,4087213,"Root River at Layton Avenue at Greenfield, WI",8.293793,88.969,ECO_53
+WMIC,MGB,40872393,"Hoods Creek at Brook Road near Franksville, WI",8.507406,90.55103,ECO_54
+WMIC,MGB,4087258,"Pike River at Cth A near Kenosha, WI",8.601041,90.00302,ECO_54
+WMIC,MGB,4087270,"Pike Creek at 43rd Street at Kenosha, WI",8.721246,89.39011,ECO_54
+WMIC,MGB,5527729,"Kilbourn Ditch at 6Oth Street near Kenosha, WI",8.534684,90.41576,ECO_54
+WMIC,MGB,55437901,"Fox River at River Road near Sussex, WI",7.930737,88.88811,ECO_53
+GRSL,SLC,10167800,"Little Cottonwood Creek at Crestwood Park at Salt Lake City, UT",10.45031,68.1701,ECO_13
+GRSL,SLC,4.00927E+14,"Hobble Creek at 800 East at Springville, UT",9.762599,64.2524,ECO_13
+GRSL,SLC,4.00959E+14,"Hobble Creek at Center Street at Springville, UT",9.852899,63.764,ECO_13
+GRSL,SLC,4.01442E+14,"Provo River at 800 North at Salt Lake City, UT",10.19271,57.0811,ECO_13
+GRSL,SLC,4.01653E+14,"Provo River at 3700 North at Provo, UT",9.744991,59.9334,ECO_13
+GRSL,SLC,4.0185E+14,"Provo River at Highway 189 at Provo, UT",9.317397,63.2929,ECO_13
+GRSL,SLC,4.03707E+14,"Big Cottonwood Creek above Water Treatment Plant at Salt Lake City, UT",9.77768,75.1833,ECO_13
+GRSL,SLC,4.03755E+14,"Little Cottonwood Creek at Wheeler Farm at Salt Lake City, UT",10.61287,66.2479,ECO_13
+GRSL,SLC,4.03927E+14,"Little Cottonwood Creek at Murray Park at Salt Lake City, UT",10.9197,63.342,ECO_13
+GRSL,SLC,4.03945E+14,"Big Cottonwood Creek at Cottonwood Mall at Salt Lake City, UT",10.67912,65.4072,ECO_13
+GRSL,SLC,4.04E+14,"Big Cottonwood Creek at 900 East at Salt Lake City, UT",10.95766,62.8354,ECO_13
+GRSL,SLC,4.0414E+14,"Mill Creek at 3060 East at Salt Lake City, UT",10.32838,66.4805,ECO_13
+GRSL,SLC,4.04143E+14,"Mill Creek at 2000 East Salt Lake City, UT",10.43057,65.6695,ECO_13
+GRSL,SLC,4.04218E+14,"Mill Creek at 300 East at Salt Lake City, UT",11.14604,59.9393,ECO_13
+GRSL,SLC,4.04317E+14,"Parleys Creek at Sugarhouse Park at Salt Lake City, UT",10.14125,66.9991,ECO_13
+GRSL,SLC,4.04349E+14,"Emigration Creek at 1200 East at Salt Lake City, UT",10.41168,63.952,ECO_13
+GRSL,SLC,4.0443E+14,"Emigration Creek at 1300 South at Salt Lake City, UT",10.19985,65.4271,ECO_13
+GRSL,SLC,4.05854E+14,"Farmington Creek at Frontage Road at Farmington, UT",10.41957,62.9108,ECO_13
+GRSL,SLC,4.10041E+14,"Baer Creek at Frontage Road at Kaysville, UT",10.41556,64.0995,ECO_13
+GRSL,SLC,4.10148E+14,"Baer Creek at Fruit Heights, UT",9.374179,71.6679,ECO_13
+GRSL,SLC,4.10231E+14,"Holmes Creek at Main Street at Layton, UT",10.07199,66.9393,ECO_13
+GRSL,SLC,4.1025E+14,"North Fork of Holmes Creek at Main Street at Layton, UT",10.10005,66.7661,ECO_13
+GRSL,SLC,4.10342E+14,"Kays Creek at Layton, UT",9.790443,68.1223,ECO_13
+GRSL,SLC,4.10453E+14,"Kays Creek at 1000 East at Layton, UT",9.60524,69.0235,ECO_13
+GRSL,SLC,4.10501E+14,"South Fork of Kays Creek at Layton, UT",9.619557,69.0197,ECO_13
+GRSL,SLC,4.10522E+14,"South Fork Kays Creek at Fernwood Picnic Area at Salt Lake City, UT",4.109386,115.2334,ECO_13
+GRSL,SLC,4.11407E+14,"Ogden River at Washington Avenue at Ogden, UT",9.040518,73.3255,ECO_13
+GRSL,SLC,4.11413E+14,"Ogden River at Valley Drive Ogden, UT",7.461427,86.3472,ECO_13
+GRSL,SLC,4.11413E+14,"Ogden River at Harrison Avenue at Ogden, UT",8.603803,76.8156,ECO_13
+GRSL,SLC,4.14258E+14,"Logan River at Golf Course Road at Salt Lake City, UT",8.279468,51.8872,ECO_13
+MOBL,BIR,2397939,"Chappel Creek at Long Branch Road near Trion, GA",14.81925,150.5394,ECO_67
+MOBL,BIR,2398001,"Town Branch near Summerville, GA",15.17256,151.5479,ECO_67
+MOBL,BIR,2400675,"Unnamed Tributary to Big Wills Creek at State Route 35 near Fort Payne, AL",14.66441,148.6747,ECO_67
+MOBL,BIR,2400725,"Mush Creek near Portersville, AL",14.85199,146.8744,ECO_67
+MOBL,BIR,2400800,"Little Wills Creek at Collins Chapel Road at Collinsville, AL",15.11112,145.3405,ECO_67
+MOBL,BIR,2401350,"Big Canoe Creek at Canoe Creek Road near Springville, AL",15.52301,151.4869,ECO_67
+MOBL,BIR,2401355,"Unnamed Tributary to Big Canoe Creek near Springville, AL",15.70582,148.622,ECO_67
+MOBL,BIR,2401749,"Williams Branch near Jacksonville, AL",15.77967,143.1254,ECO_67
+MOBL,BIR,2401760,"Little Tallaseehatchee Creek near Weaver, AL",15.63712,146.0266,ECO_67
+MOBL,BIR,2403380,"Snow Cr below Anniston , AL",15.82762,145.4091,ECO_67
+MOBL,BIR,2406930,"Shirtee Creek near Odena, AL",16.62473,143.5905,ECO_67
+MOBL,BIR,242339575,"Little Cahaba River near Braggsville, AL",16.19827,141.2236,ECO_67
+MOBL,BIR,2423397,"Little Cahaba River below Leeds, AL",16.19675,141.4988,ECO_67
+MOBL,BIR,2423515,"Patton Creek near Bluff Park below Patton Chapel, AL",16.32841,148.1591,ECO_67
+MOBL,BIR,2423536,"Buck Creek at Buck Creek Road at Alabaster, AL",16.67191,146.7335,ECO_67
+MOBL,BIR,242354650,"Cahaba Valley Creek at Indian Trail Road near Indian Springs, AL",16.49863,146.558,ECO_67
+MOBL,BIR,242354750,"Cahaba Valley Creek at Cross Creek Road at Pelham, AL",16.5074,146.9453,ECO_67
+MOBL,BIR,2423576,"Shades Creek at Lakeshore Drive near Mountain Brook, AL",16.11389,147.1119,ECO_67
+MOBL,BIR,2423581,"Shades Cr at Samford University at Homewood, AL",16.14641,147.104,ECO_67
+MOBL,BIR,2423590,"Unnamed Tributary to Shades Creek near Oxmoor, AL",16.3259,147.105,ECO_67
+MOBL,BIR,2423620,"Little Shades Creek at State Highway 150 near Bessemer, AL",16.4894,148.0889,ECO_67
+MOBL,BIR,2423729,"Dry Creek at Spring Creek Road near Montevallo, AL",16.80789,146.1674,ECO_67
+MOBL,BIR,242372950,"Spring Creek at County Road 16 near Moores Crossroads, AL",16.74519,146.9018,ECO_67
+MOBL,BIR,2456900,"Fivemile Creek at Fivemile Road near Huffman, AL",15.91332,148.2914,ECO_67
+MOBL,BIR,2456980,"Fivemile Creek at Lawson Road near Tarrant City, AL",16.0152,147.3525,ECO_67
+MOBL,BIR,2458150,"Village Creek at East Lake in Birmingham, AL",16.07654,147.1266,ECO_67
+MOBL,BIR,2461200,"Valley Creek at Cleburn Avenue at Powderly, AL",16.50649,143.9981,ECO_67
+MOBL,BIR,2461670,"Five Mile Creek at Nevel Rd near McCalla, AL",16.6721,149.0465,ECO_67
+NECB,BOS,1072540,"Little River near Lebanon, ME",7.343891,127.0129,ECO_59
+NECB,BOS,1072650,"Greatworks River near North Berwick, ME",7.737813,126.1022,ECO_59
+NECB,BOS,1072845,"Isinglass River Batchelder Road near center Strafford, NH",7.614109,127.1846,ECO_59
+NECB,BOS,1072904,"Bellamy River at Bellamy Road near Dover, NH",8.217413,117.7189,ECO_59
+NECB,BOS,1073260,"Lamprey River Cotton Rd near Deerfield, NH",7.894763,122.5952,ECO_59
+NECB,BOS,1073458,"North River at Route 152 near Nottingham, NH",8.021586,120.4666,ECO_59
+NECB,BOS,10734833,"Little River at Cartland Road at Lee, NH",8.188313,117.3165,ECO_59
+NECB,BOS,1089743,"Little Suncook River Blackhall Road at Epsom, NH",7.589587,127.8726,ECO_59
+NECB,BOS,1090477,"Black Brook Dunbarton Rd near Manchester, NH",7.796537,115.8631,ECO_59
+NECB,BOS,1094005,"Baboosic River Bedford Road near Merrimack, NH",8.148045,115.4026,ECO_59
+NECB,BOS,1095220,"Stillwater River near Sterling, MA",7.958818,124.3266,ECO_59
+NECB,BOS,1096544,"Stony Brook at School Street at Chelmsford, MA",8.794436,120.1635,ECO_59
+NECB,BOS,10965852,"Beaver Brook at North Pelham, NH",8.408139,119.9925,ECO_59
+NECB,BOS,1096710,"Assabet River at Allen Street at Northborough, MA",8.779476,120.5149,ECO_59
+NECB,BOS,1096945,"Elizabeth Brook off White Pond Road near Stow, MA",8.75765,121.1985,ECO_59
+NECB,BOS,1097270,"Fort Pond Brook at River Road near South Acton, MA",8.909693,121.7857,ECO_59
+NECB,BOS,1097476,"Sudbury River at Concord Street at Ashland, MA",9.038047,121.8817,ECO_59
+NECB,BOS,1101500,"Ipswich River at South Middleton, MA",9.48084,123.0612,ECO_59
+NECB,BOS,1102345,"Saugus River at Saugus Ironworks at Saugus, MA",9.688122,122.4736,ECO_59
+NECB,BOS,1102500,"Aberjona River (head of Mystic River) at Winchester, MA",9.573009,121.5167,ECO_59
+NECB,BOS,11032058,"Charles River at Maple Street at North Bellingham, MA",9.277867,124.2639,ECO_59
+NECB,BOS,1105000,"Neponset River at Norwood, MA",9.636638,121.9312,ECO_59
+NECB,BOS,1105504,"East Branch Neponset River at Canton, MA",9.726118,125.635,ECO_59
+NECB,BOS,1105581,"Monatiquot River at River Street at Braintree, MA",9.834538,129.1011,ECO_59
+NECB,BOS,1106468,"Matfield River at North Central Street at East Bridgewater, MA",9.88087,129.2303,ECO_59
+NECB,BOS,1109000,"Wading River (head of Threemile River) near Norton, MA",9.798933,122.5147,ECO_59
+NECB,BOS,1109595,"Middle River off Sutton Lane at Worcester, MA",8.291189,126.1626,ECO_59
+NECB,BOS,1110000,"Quinsigamond River at North Grafton, MA",8.645103,121.0024,ECO_59
+NECB,BOS,1112262,"Mill River at Summer Street near Blackstone, MA",9.24404,124.9934,ECO_59
+NECB,BOS,1193340,"Blackledge River above Lyman Brook near North Westchester, CT",9.162451,136.2463,ECO_59
