@@ -115,7 +115,6 @@ w <- sqrt(runif(1000))*exp(2*pi*runif(1000)*1i)
 plot(w,xlim=c(-1,1),ylim=c(-1,1),pch=1,xlab="",ylab="",axes=F)
 lines(z)
 rm(th,w,z)
-q()
 ```
 
 The last chunk, introduced using R for complex arithmetic functions. In this case imaginary and real points were plotted together, then "random" numbers were plotted to fit inside the already plotted disc, but since it was not uniform, a second method was preformed so that the points were more uniform.
