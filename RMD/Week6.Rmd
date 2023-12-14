@@ -1,0 +1,144 @@
+  ---
+title: "Package `Reshape`"
+author: "Song S. Qian"
+date: "October 2, 2023"
+output: pdf_document
+---
+
+# Front Matters
+
+
+```{r, echo=FALSE, results='hide'}
+source("FrontMatter.R")
+packages(reshape)
+```
+
+# Package `reshape`
+
+Package `reshape` provides a unified approach to aggregation, based on
+an extended formula notation.  The core idea is to create a "melted"
+version of a dataset using the `melt` function, which can then be cast
+(using function `cast`) into an object with the desired orientation.
+This means that we want to rearrange the form (not the content) of the
+data to suit the need of analysis.
+
+Before using the package, we need to familiarize the "anatomy" of a
+dataset. We started by thinking of data in terms of vector, matrix, and
+data frame.  In a data frame, observations are in rows and variables
+are in columns.  To reshape a dataset, we can classify variables into
+"identifier" and "measured" variables. 
+
+An identifier (`id`) identifies the unit that the measurements take
+place.  Id variables are usually discrete. A measured variable
+represents what is measured on that unit, typically the response or
+predictor variables. 
+
+For example, in the `iris` dataset, we have fout measured variables
+(`Sepal.Length, Sepal.Width, Petal.Length, Petal.Width`) and one id
+variables (`Species`).  Later we reshaped the data to have three
+columns, `Value, Variable`, and `Species`.  In this reshaped dataset,
+the column `Value` is the measured variable and `Variables, Species`
+are id variables.  In other words, we can generalize the data
+classification to one measured variable and the rest are id variables.
+
+## Melting data
+The dataset with one column of measured variable values and id variables is the most basic data form which we can generate new forms. 
+
+To produce the basic form of dataset is not a simple task.  The process of creating it is called melting.  The `reshape` package provides the function `melt` to carry out the task.  For example,  
+```{r}
+iris.melt <- melt(iris, id = "Species",
+                  measured=c("Sepal.Width", "Sepal.Length", "Petal.Length","Petal.width"))
+head(iris.melt)
+```
+The only assumption when using `melt` is that all measured variables
+are in the same type (e.g., numeric, factor, date).
+
+The dataset `iris.melt` is now a molten data, ready to be cast into
+different forms.  In some cases, your datasets are already in the
+molten form.  All you need to do is to make sure that the value column
+is named `value`. 
+
+## Casting molten data
+We now have a molten dataset and we can cast it into different forms. All we need is to tell the function `cast` what form we need using a
+formula. 
+
+The casting formula describes the shape of the output format.  The general form of a formula includes two groups of variables separated by a tilde.  Variables on the left-hand side of the tilde are column variables and those on the right-hand side are row variables.  For example,  
+
+```{r}
+cast(iris.melt, Species ~ variable, length)
+cast(iris.melt, Species ~ variable, mean)
+```
+Summarizes the sample size and mean.
+
+The function `dcast` casts a molten data into data frame format.  The minimum input are (1) a molten data and (2) a formula.  The formula can also take $\cdot$ (a single dot) and $\cdots$ (three dots) to represent no variable and all other variables (not already included in the formula).
+
+```{r}
+cast(iris.melt, Species ~ variable)
+cast(iris.melt, ... ~ variable)
+cast(iris.melt, Species+variable ~ .)
+```
+
+What if we want to return to the original data frame?  In this case, the molten data lacks one piece of information:
+```{r}
+iris$rep <- rep(1:50, 3)
+iris.melt2 <- melt(iris, id=c("Species", "rep"),
+                   measured=c("Sepal.Width", "Sepal.Length", "Petal.Length","Petal.width"))
+cast(iris.melt2, Species+rep ~ variable)
+```
+
+## The French Fries Example
+
+```{r}
+ffm <- melt(french_fries, id=1:4, na.rm=T)
+
+### Counting non-missing values:
+cast(ffm, .~., length)
+
+### counting by treatment
+cast(ffm, treatment ~ . , length)
+cast(ffm, . ~ treatment, length)
+
+### rep by treatment
+cast(ffm, rep ~ treatment)
+
+### treatment by rep:
+cast(ffm, treatment ~ rep)
+
+cast(ffm, treatment + rep ~ .)
+cast(ffm, rep + treatment ~ .)
+cast(ffm, . ~ rep+treatment)
+```
+
+Summary:
+```{r}
+cast(ffm, time+rep+subject+treatment + variable ~ .)
+cast(ffm, rep+treatment~variable)
+cast(ffm, rep+treatment~variable, mean)
+cast(ffm, rep+treatment~variable, sd)
+cast(ffm, treatment ~ ., c(mean, sd))
+cast(ffm, treatment ~ ., summary)
+cast(ffm, treatment ~ variable + result_variable, c(mean, sd))
+cast(ffm, treatment + variable ~ result_variable, c(mean, sd))
+```
+
+Conditional operator
+
+```{r}
+cast(ffm, treatment~rep|variable, mean)
+```
+# Package `reshape2`
+
+`reshape2` is a reboot of the `reshape` package, a new package for reshaping data that is much more focused and faster.
+
+This version improves speed at the cost of functionality.
+
+What's new in `reshape2`:
+
+-- considerably faster and more memory efficient thanks to a much better underlying algorithm that uses the power and speed of
+subsetting to the fullest extent, in most cases only making a single copy of the data. `cast`is replaced by two functions depending on the output type: `dcast` produces data frames, and `acast` produces matrices/arrays. 
+
+-- multidimensional margins are now possible: `grand_row` and `grand_col` have been dropped: now the name of the margin refers to the variable that has its value set to (all).
+
+-- some features have been removed such as the `cast` operator, and the ability to return multiple values from an aggregation function.
+
+-- a new cast syntax which allows you to reshape based on functions of variables (based on the same underlying syntax as plyr): better development practices like namespaces and tests.

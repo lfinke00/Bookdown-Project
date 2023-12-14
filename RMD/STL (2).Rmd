@@ -1,106 +1,137 @@
 ---
-title: "STL HW 7"
-author: "Lucas Finke"
-date: "12/8/2023"
-output:
-  pdf_document: default
-  html_document:
-    df_print: paged
-editor_options: 
-  chunk_output_type: console
+title: "STL"
+author: "Song Qian"
+date: "11/8/2023"
+output: pdf_document
 ---
-
-
-```{r Packages, include=FALSE, results='hide', tidy=TRUE}
-setwd("C:/Users/Lucas/Downloads/Kuhnert+Venables-R_Course_Notes/Session1/Session1/")
-source("FrontMatter.R")
-packages(foreign)
-packages(arm)
-install.packages("tidyverse")
-install.packages("dplyr")
-```
-
-In the chunk below, I am calling on/setting up the Heidelberg data and picking TP to use for this assignment. 
-
-```{r}
-setwd("C:/Users/Lucas/Downloads/Kuhnert+Venables-R_Course_Notes/Session1/Session1")
-wvldata <- tibble::as_tibble(read.csv(paste(dataDIR, "Heidelbergdata.csv", sep="/"), 
-                    header=TRUE, stringsAsFactors=FALSE, na.strings = "#N/A"))
-names(wvldata)
-names(wvldata)<-c(
-"Date", "Days741001","SampleWindow","Flow","SS","TP","SRP", 
-"NO23","TKN","Chloride","Sulfate","Silica","Conductivity",
-"Future","Month")
-typeof(wvldata$Date)
-wvldata[wvldata<0] <-  NA
-```
-
-Now the Data needs to be processed, but in order to do that, the dates must be fixed. In this next chunk I really only need the year and the month, but I decided to include the week and weekends as well as a "just in case". The data was changed into Rdate, months, year, weekend, etc. In this section, a new data set for monthly mean values and the time series needed to be created in order to run the STL plots. 
-
-
-```{r}
-wvldata$Rdate <- as.Date(wvldata$Date,format="%m/%d/%Y %H:%M")
-##  wvldata$mnth <- ordered(format(wvldata$Rdate, "%m"), levels=month.abb)
-  wvldata$Month2<-format(wvldata$Rdate, "%m")
-  wvldata$yrmn <- format(wvldata$Rdate, "%Y-%b")
-  wvldata$yrwk <- format(wvldata$Rdate, "%Y-%U")
-  wvldata$week <- format(wvldata$Rdate, "%U")
-  wvldata$wknd <- format(wvldata$Rdate, "%w")
-  ## weekend = no sampling
-  wvldata$wknd <- wvldata$wknd==0 | wvldata$wknd==6
-  wvldata$julian <- format(wvldata$Rdate, "%j")
-  wvldata$yr <- format(wvldata$Rdate, "%Y")
-  monthly_means <- aggregate(TP ~ yr + Month2, data = wvldata, FUN = mean, na.rm = TRUE)
-   tpts <- ts(data=monthly_means$TP, start=c(1985,1), end=c(2017,12), frequency=12)
-
-```
-  
-Now that the data set is set up and ready, it is time to processing the data into STL plots to look at the data, but first I need stlplus. 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 packages(stlplus)
+
+median.polish.ts <- function(data.ts, ylab="", plt=T){
+  # median polishing for missing value imputation
+  medpolish(matrix(data.ts, ncol=12, byrow=T), eps=0.001, na.rm=T)->temp.2w
+  print(names(temp.2w))
+  year.temp <- rep(seq(start(data.ts)[1], end(data.ts)[1]), each=12)
+  month.temp <- rep(1:12, length(seq(start(data.ts)[1], end(data.ts)[1])))
+  # plotting median polishing results
+  if (plt){
+    par(mfrow=c(2,1))
+    plot(seq(start(data.ts)[1], end(data.ts)[1]),
+         temp.2w$overall+temp.2w$row, type="l",
+         xlab="Year", ylab=ylab, main="De-seasonalized Trend")
+    plot(seq(1,12), temp.2w$overall+temp.2w$col, type="l",
+         xlab="Month", ylab=ylab, main="Seasonal Changes")
+  }
+  data.ts[is.na(data.ts)]<-temp.2w$overall +
+    temp.2w$row[year.temp[is.na(data.ts)]-start(data.ts)[1]+1]+
+      temp.2w$col[month.temp[is.na(data.ts)]]
+  data.ts[is.na(data.ts)]<-temp.2w$overall
+  invisible(data.ts)
+}
 ```
 
-## The STL Data
+## The CO~2~ Data
 
-Here  the classic R implementation of STL (function `stl`) based on Cleveland's original S-Plus code is used to process the Heidelberg data:
+STL: seasonal-trend decomposition using loess (Cleveland, Cleveland, McRae, and Terpenning, 1990. *Journal of Official Statistics*, 6(1): 3-73)
 
-In this chunk, all of the STL plots are being processed for TP to look at how it changes per month per year over different seasonal periods, as well as trend lines, cycles, and rembycycle for the time span in the time series, so in this case 1985-2017. 
+Here is the classic R implementation of STL (function `stl`) based on Cleveland's original S-Plus code:
+```{R STL}
+data <- carbon.dioxide
+ylab <- "Carbon Dioxide (ppm)"
+aspect <- "xy"
+the.fit <- stl(data, s.window = 25, s.degree = 1, t.window = 120,
+                   t.degree = 1)
+
+    sfit <- the.fit$time.series[,1]
+    tfit <- the.fit$time.series[,2]
+    fit.time <- time(data)
+    car.subseries <- factor(cycle(data), label = month.abb)
+    obj1.df <- data.frame(y=sfit, x=fit.time, cat=car.subseries)
+
+    obj1 <- xyplot(sfit ~ fit.time | car.subseries, layout = c(12, 1), panel = function(x, y){
+        panel.xyplot(x, y, type = "l")
+        panel.abline(h = mean(y))}, 
+##        aspect = aspect, 
+        xlab = "Year", ylab = ylab)
+
+    obj2.df <- data.frame(y=tfit, x=fit.time)
+    obj2 <- xyplot(tfit ~ fit.time, panel = function(x, y)
+        panel.xyplot(x, y, type = "l"), xlab = "", aspect = "xy", ylab = "")
+
+    n <- length(data)
+    the.fit.trend <- the.fit$time.series[,2] - mean(the.fit$time.series[,2])
+    fit.components <- c(the.fit.trend, the.fit$time.series[,1], the.fit$time.series[,3])
+    fit.time <- rep(time(data), 3)
+    fit.names <- ordered(rep(c("Trend", "Seasonality", "Residuals"), c(n, n, n)),
+                         c("Trend", "Seasonality", "Residuals"))
+
+    obj3.df <- data.frame(x=fit.time, y=fit.components, series=fit.names)
+    obj3 <- xyplot(fit.components ~ fit.time | fit.names, panel = function(x, y){
+        panel.grid(h = 5)
+        panel.xyplot(x, y, type = "l")
+        }, 
+        aspect=0.75, layout = c(3, 1), ylim = c(-1, 1) * max(abs(fit.components)),
+        xlab = "", ylab = ylab)
+    print(obj1, position = c(0, 0, 1, 0.5), more = T)
+    print(obj3, position = c(0, 0.5, 1, 1), more = F)
+
+```
+Examples from R package `stlplus`.
 
 ```{r STLplus}
-TP_stl <- stlplus(tpts, t = as.vector(time(tpts)), n.p = 12,
+
+co2_stl <- stlplus(co2, t = as.vector(time(co2)), n.p = 12,
   l.window = 13, t.window = 19, s.window = 35, s.degree = 1,
   sub.labels = substr(month.name, 1, 3))
 
-plot(TP_stl, ylab = "TP", xlab = "Time (years)")
-plot_seasonal(TP_stl)
-plot_trend(TP_stl)
-plot_cycle(TP_stl)
-plot_rembycycle(TP_stl)
+plot(co2_stl, ylab = "CO2 Concentration (ppm)", xlab = "Time (years)")
+plot_seasonal(co2_stl)
+plot_trend(co2_stl)
+plot_cycle(co2_stl)
+plot_rembycycle(co2_stl)
 
 # post-trend smoothing
 
-TP_stl_pt <- stlplus(tpts, t = as.vector(time(tpts)), n.p = 12,
+co2_stl_pt <- stlplus(co2, t = as.vector(time(co2)), n.p = 12,
   l.window = 13, t.window = 19, s.window = 35, s.degree = 1,
   sub.labels = substr(month.name, 1, 3),
   fc.degree = c(1, 2), fc.window = c(201, 35),
-  fc.name = c("long-term","so. osc."))
+  fc.name = c("long-term", "so. osc."))
 
-plot(TP_stl_pt, scales = list(y = list(relation = "free")),
-  ylab = "TP", xlab = "Time (years)",
+plot(co2_stl_pt, scales = list(y = list(relation = "free")),
+  ylab = "CO2 Concentration (ppm)", xlab = "Time (years)",
   aspect = 0.25, type = c("l", "g"))
 
+# with NAs
+
+y <- co2
+y[201:224] <- NA
+
+y_stl <- stlplus(y, l.window = 13, t.window = 19, s.window = 35,
+  s.degree = 1, sub.labels = substr(month.name, 1, 3))
+
+plot(y_stl, ylab = "CO2 Concentration (ppm)", xlab = "Time (years)", type = c("l", "g"))
+plot_seasonal(y_stl)
+plot_trend(y_stl)
+plot_cycle(y_stl)
+plot_rembycycle(y_stl)
+
+# if you don't want to use a time series object:
+y_stl <- stlplus(y, t = as.vector(time(y)), n.p = 12,
+  l.window = 13, t.window = 19, s.window = 35, s.degree = 1,
+  sub.labels = substr(month.name, 1, 3))
 
 # with an outlier
-y2 <- tpts
+y2 <- co2
 y2[200] <- 300
 
 y2_stl <- stlplus(y2, t = as.vector(time(y2)), n.p = 12,
   l.window = 13, t.window = 19, s.window = 35, s.degree = 1,
   sub.labels = substr(month.name, 1, 3), outer = 10)
 
-plot(y2_stl, ylab = "TP", xlab = "Time (years)")
+plot(y2_stl, ylab = "CO2 Concentration (ppm)", xlab = "Time (years)")
 plot_seasonal(y2_stl)
 plot_trend(y2_stl)
 plot_cycle(y2_stl)
@@ -108,37 +139,24 @@ plot_rembycycle(y2_stl)
 
 # compare to R's stl
 
-x1 <- stlplus(tpts, t = as.vector(time(tpts)), n.p = 12,
+x1 <- stlplus(co2, t = as.vector(time(co2)), n.p = 12,
   l.window = 13, t.window = 19, s.window = 11, s.degree = 1,
   sub.labels = substr(month.name, 1, 3))
 
-x2 <- stl(tpts, l.window = 13, t.window = 19, s.window = 11, s.degree = 1)
+x2 <- stl(co2, l.window = 13, t.window = 19, s.window = 11, s.degree = 1)
 
 # will be different due to interpolation differences
 plot(seasonal(x1) - seasonal(x2))
 
 # but not if all jump parameters are 1
-x1 <- stlplus(tpts, t = as.vector(time(tpts)), n.p = 12,
+x1 <- stlplus(co2, t = as.vector(time(co2)), n.p = 12,
   l.window = 13, t.window = 19, s.window = 11, s.degree = 1,
   sub.labels = substr(month.name, 1, 3),
   s.jump = 1, t.jump = 1, l.jump = 1)
 
-x2 <- stl(tpts, l.window = 13, t.window = 19, s.window = 11, s.degree = 1,
+x2 <- stl(co2, l.window = 13, t.window = 19, s.window = 11, s.degree = 1,
   s.jump = 1, t.jump = 1, l.jump = 1)
 
 plot(seasonal(x1) - seasonal(x2))
 ```
 
-In the above chunk, here are things I have seen with the plots.
-
-TP_stl: most graphs show a steady trend line except for a tiny spike of increase around 1990 specifically for raw TP. The raw TP does have a slight decrease in its total starting around 2005 and slowly, but steadily decreasing up until 2017.
-
-Centered Season + Remained: almost all of the months looks the same in this plot with trend lines being near 0 or 0.1, however, much like the TP_Stl, we can see an outlier (value of about 0.6) in June 1989, but steadies out in July. 
-
-Trend Vs Time: Much like the above, there is a spike in June of 1989 for both the trend and the remainder. The Remainder graph stays pretty level throughout the years, however the trend fluctuates but overall decreases from 1985 to 2017.
-
-Seasonal vs time: In this plot, it compares each month to each other, providing us with visuals on which months throughout the years had the most variance in TP. As expected from the plots before, June seems to have the most variance with approximate value of about 0.145, which August has the least amount of variance at roughly 0.025. Another visual that we are seeing from this plot is that November had the overall lowest consistently, but March did reach down into those number as well in the earlier years of the data. 
-
-plot_rembycycle(TP_stl): This plot ideally gives the same trend information as the centered season plot, but using remainder vs time. 
-
-After these plots were established, I used the outlier code in TP to see what would come out of this, as well as comparing the STL plots. 

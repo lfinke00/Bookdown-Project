@@ -1,0 +1,204 @@
+---
+title: "Loops in R"
+author: "Song S. Qian"
+date: "November 16, 2022"
+output: pdf_document
+---
+
+```{r, echo=FALSE, results='hide'}
+source("FrontMatter.R")
+packages(reshape)
+```
+
+# Introduction
+‘Looping’, ‘cycling’, ‘iterating’ or just replicating instructions is quite an old practice that originated well before the invention of computers. It is nothing more than automating a certain multi-step process by organizing sequences of actions (‘batch’ processes) and grouping the parts in need of repetition. Even for `calculating machines,' as computers were called in the pre-electronics era, pioneers like Ada Lovelace, Charles Babbage and others, devised methods to implement such iterations.
+
+In modern – and not so modern – programming languages, where a program is a sequence of instructions, labeled or not, the loop is an evolution of the ‘jump’ instruction which asks the machine to jump to a predefined label along a sequence of instructions. The beloved and nowadays deprecated `goto` found in Assembler, Basic, Fortran and similar programming languages of that generation, was a means to tell the computer to jump to a specified instruction label: so, by placing that label before the location of the `goto` instruction, one obtained a repetition of the desired instruction a loop.
+
+Yet, the control of the sequence of operations (the program flow control) would soon become cumbersome with the increase of `goto` and corresponding labels within a program. Specifically, one risked of loosing control of all the `goto`s that transferred control to a specific label (e.g. “from how many places did we get here”?) Then, to improve the clarity of programs, all modern programming languages were equipped with special constructs that allowed the repetition of instructions or blocks of instructions. In the present days, a number of variants exist:
+- Loops that execute for a prescribed number of times, as controlled by a counter or an index, incremented at each iteration cycle; these pertain to the `for` family;
+- Loops based on the onset and verification of a logical condition (for example, the value of a control variable), tested at the start or at the end of the loop construct; these variants belong to the `while` or `repeat` family of loops, respectively.
+
+# Loops in R
+Every time some operation/s has to be repeated, a loop may come in handy. We only need to specify how many times or upon which conditions those operations need execution: we assign initial values to a control loop variable, perform the loop and then, once finished, we typically do something with the results.
+
+But when are we supposed to use loops? Couldn’t we just replicate the desired instruction for the sufficient number of times?
+
+Well, our personal and arbitrary rule of thumb is that if you need to perform an action (say) three times or more, then a loop would serve you better; it makes the code more compact, readable and maintainable and you may save some typing. Say you discover that a certain instruction needs to be repeated once more than initially foreseen: instead of re-writing the full instruction, you may just alter the value of a variable in the test condition.
+
+There are at least three loop constructs in R:
+- `for` loop
+- `while` loop
+- `repeat` loop
+
+In all loop constructs, we have a number of operations (code) to be repeatedly run until a condition is met.  
+## The `for` loop
+In a `for` loop, the condition is presented in form of a vector.  The most frequently used vector is `1:n`.  The code
+`for (i in 1:n){...}` instructs R to run the code inside the curly brackets when `i` is part of the vector `1:n`.  For example,
+```{r}
+set.seed(101)
+u1 <- rnorm(30)
+usq <- 0
+for (i in 1:10)
+  {
+  usq[i] <- u1[i] * u1[i]
+  }
+usq
+i
+```
+A bad example of using the `for` loop is to replace, e.g., -999.999, with NAs:
+```{r}
+data <- c(rnorm(100), -999.999)
+n <- length(data)
+for (i in 1:n){
+  if (data[i] == -999.999) data[i] <- NA
+}
+```
+This is a bad example because we have simpler means to deal with the problem (`data <- ifelse(data== -999.999, NA, data)`).  However, something similar to the "bad" `for` loop example can be very effective.  In the Midterm exam, we need to replace missing values labeled using several different values (-999.999, -99.99, -99) with NAs.  Instead of going through columns of the data frame one at a time, we can use a `for` loop.  Suppose that the data frame name is `df` and we need to through several columns:
+```
+cols <- c(3, 5:10)
+for (i in cols){
+  df[,i] <- ifelse(df[,i] == -999.999 | df[,i] == -99.99 | df[,i] == -99, NA, df[,i])  
+}
+```
+In this example, we know which culumn needs to be checked and use the `for` loop to go through them one at a time.  
+
+The `for` loop is by far the most popular and its construct implies that the number of iterations is fixed and known in advance.  For example, conduct a Monte Carlo simulation with a predetermined number of iterations.
+
+## `while` and `repeat`
+In a `for` loop, we know exactly how many iterations.  In some cases, we want the loop to repeat until we meet conditions unknown to us before the looping starts.  The `while` loop has the following construct:
+
+```
+while (condition){
+...
+}
+```
+
+The `condition` is evaluated first.  If it is met, the code inside the curly brackets will not be executed.  Otherwise, R evaluates code in the code block and reevaluates the condition.  The process continues until the condition is met.
+
+The `repeat` construct is similar to the `while` loop, but the code inside the curly brackets will be executed at least once.  That is , the condition is evaluated last:
+```
+repeat
+{
+...
+if (condition) break
+}
+
+## An example of `for` loop
+
+In a recent project, I need to import data from a number of spreadsheets, each recorded raw data from weekly test results of drinking water microcystin toxin concentrations. The project was to re-analyze the raw data using an improved method. Importing these spreadsheets is a difficult task because of the messy structure.  Because the importing must be repeated, I wrote a function to import the raw data, clean them up, and organize the data into a format I wanted: data frame with columns representing variables and rows representing observations (water samples).
+
+```{r}
+## reading input data and name it as "workingdata"
+## the data frame should have columns named "conc", ## the actual known
+##           concentration (standard solutions)
+## "training", ## standard solution indicator (training=6 for unknown concentrations)
+## "ABS", ## the response (optical density).
+## "dLF" ## the dilution factor
+
+input <- function(file=paste(dataDIR,"PWS March 12 2018 Justin MDL 1.xlsx",
+                             sep="/")){
+    ##read in data from excel sheet and strip out first two columns
+    temp <- read_excel(file, col_names=F)
+    ## decide whether the first row is empty
+    if (names(temp)[1] == "...1") {
+        col1 <- 22:29
+        col2 <- 1:32
+    } else {
+        col1 <- 21:28
+        col2 <- 1:31
+    }    
+    tmp1 <- as.numeric(unlist(temp[col1, 3:14]))
+    tmp1 <- matrix(tmp1, nrow=8)
+    ##removes empty columns - if they exist
+    tmp <- apply(tmp1, 2, sum, na.rm=T) == 0
+    tmp1 <- tmp1[,!tmp]
+    ##read in calculated result, keeping the 2-4th column of data
+    tmp2 <- temp[-(col2),2:4]
+    ##                   skip=31, header=T)[,2:7]
+    ## next two lines are only relevant if cells or lines are blank (eg, messed up sample)
+    tmp <- apply(tmp2, 1, FUN=function(x) sum(!is.na(x)))!=1
+    n <- dim(tmp2)[1]
+    tmp2 <- unlist(tmp2[tmp,])
+    tmp2 <- data.frame(smpl=tmp2[1:n],
+                       ABS=as.numeric(tmp2[(n+1):(2*n)]),
+                       Conc=as.numeric(tmp2[(2*n+1):(3*n)]))
+    tmp2$smpl <- as.vector(tmp2$smpl)
+    tmp2$smpl[is.na(tmp2$smpl)] <- "missing"             
+    ## check on data set to verify there is even row count
+    if (dim(tmp1)[2]%%2 !=0) stop("Number of rows must be even")
+    ## two replicates are used - this gives the unique number of samples
+    dm1 <- dim(tmp1)[2]/2
+    ## reorganizes the 2-column OD values into a single column
+    tmp1 <- as.vector(tmp1)
+
+    ##
+    n <- length(tmp1) - 2*dim(tmp2)[1]
+    ## if n<0, there is an error
+  if (n<0)    stop ("Check data")
+  ## when have n>0, means more OD data than concentration data (ie, missing values)
+  if (n > 0){
+    nas <- as.data.frame(matrix(NA, nrow=n/2, ncol=dim(tmp2)[2]))
+    names(nas) <- names(tmp2)
+    tmp2 <- rbind(tmp2, nas)
+  }
+
+  ## Matching up the ODs and the calculated concentration values in dataframe
+  rws <- NULL
+  for (i in 1:dm1) # i for each water sample
+    rws <- c(rws, rep(((i-1)*8+1):(i*8), 2))
+  tmp2 <- tmp2[rws,]
+  tmp2 <- tmp2[!is.na(tmp2$ABS), ]               
+  tmp2$ABS <- tmp1[tmp1!=0]  #ABS observed (OD)
+
+  # Skip this part - for now - 10.10.18
+  ## 2 reference abs
+  #refabs <- tmp2$Abs.obs[tmp2$conc==0 & !is.na(tmp2$conc)]
+  #b0b1.1 <- tmp2$ABS/refabs[1]
+  #b0b1.2 <- tmp2$ABS/refabs[2]
+  #b0b1.3 <- tmp2$ABS/mean(refabs)
+
+  #Create dataframe with just data used for calibration
+  calib <- data.frame(#y1=b0b1.1, y2=b0b1.2, y3=b0b1.3,
+                      conc=tmp2$Conc, ABS = tmp2$ABS)
+  calib$smpl <- tmp2$smpl  #X.1 is first column from excel (unlabeled)
+  ##  calib.data <- calib.data[calib.data$conc!=0,]
+  calib$conc[substring(calib$smpl, 1, 8)!="Standard"] <- NA
+  calib$smpl[calib$smpl=="QCS"] <- "Positive Control"
+  calib$smpl[is.na(calib$smpl)] <- "noName"               
+  ## keeping only the relevant data for this project
+  tmp <- (substring(calib$smpl, 1, 8)=="Standard"|
+                                calib$smpl=="Positive Control"|
+                                calib$smpl=="QCS"|
+                                calib$smpl=="LCRC"|
+                                calib$smpl=="LRB")
+  return(calib[tmp,])
+}
+```
+Now, we can copy the files names from Windows' File Explorar or Mac's Finder to use a `for` loop to import all data:
+```{r}
+StoneLabData <- c('2018 PWS Oct 31.xlsx',                  'PWS Aug 29 2018_aug 28 redos.xlsx',  'PWS March 12 2018 Justin MDL 1.xlsx',
+'2018 Sept 6 PWS.xlsx'          ,        'PWS Aug 7 2018.xlsx' ,               'PWS May 16 Keara MDL.xpt.xlsx',
+'2018 WBE 1.xlsx'                     ,  'PWS August 14 2018 SL10-48.xlsx',    'PWS May 22 2018 Kevin MDL.xlsx',
+'2018 WBE 2 Diluted (do not use).xlsx',  'PWS August 21 2018.xlsx'      ,      'PWS May 30 Keara MDL .xpt.xlsx',
+'2018 WBE 3.xlsx'                   ,    'PWS Feb 14 2018.xlsx'         ,      'PWS Nov 15 2018.xlsx',
+'2018 WBE 4.xlsx'                   ,    'PWS Feb 28 2018.xlsx'         ,      'PWS Nov 27 2018 and MR.xlsx',
+'2018 WBE 5 No dilution.xlsx'       ,    'PWS Jul 11 2018.xlsx'         ,      'PWS Nov 7 2018.xlsx',
+'2018 WBE2 (5x dilution).xlsx'      ,    'PWS Jul 18 2018.xlsx'         ,      'PWS Oct 10 2018 Excel.xlsx',
+'2018 WBE2 Prescreen full tray.xlsx',    'PWS Jul 24 2018 (2).xlsx'     ,      'PWS Oct 17 2018 excel.xlsx',
+'Aug 15 2018 SL049-56 CC068-72.xlsx',    'PWS Jul 24 2018.xlsx'         ,      'PWS Oct 24 2018.xlsx',
+##'CC redos July 26 2018.xlsx'       ,   
+                  'PWS Jul 3 2018.xlsx'          ,      'PWS Oct 4 2018 excel.xlsx',
+'Halli MDL Aug 2 and redos.xlsx'   ,     'PWS Jul 31 2018.xlsx'         ,      'PWS Sept 11 2018 excel.xlsx',
+'Kevin MDL May 9 2018.xlsx'        ,     'PWS Jun 12 2018 Keara MDL.xlsx',     'PWS Sept 18 2018 excel.xlsx',
+'PWS 2018 August 28.xlsx'          ,     'PWS Jun 19 2018 Kevin MDL.xlsx',     'PWS September 26 2018.xlsx',
+'PWS April 25 2018.xlsx'           ,     'PWS Jun 26 2018.xlsx'          ,     'WBE 2018 1,2,3 Prescreen.xlsx',
+'PWS April 9 2018 Justin MDL.xlsx',      'PWS Jun 5 2018 Kevin MDL.xlsx')
+rawdata <- list()
+for (i in 1:length(StoneLabData)){
+    print(paste(i, " of ", length(StoneLabData), ": ", StoneLabData[i], sep=""))
+    rawdata[[i]] <- input(file=paste(dataDIR, StoneLabData[i], sep="/"))
+}
+save(rawdata, file="rawdata.RData")
+
+```

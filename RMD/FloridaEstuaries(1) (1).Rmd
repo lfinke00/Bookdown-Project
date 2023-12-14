@@ -1,0 +1,296 @@
+---
+title: "Setting Nutrient Criteria for Florida's Estuaries"
+author: "Song S. Qian"
+date: "September 18 & 20, 2023"
+output: pdf_document
+---
+
+This is a RMarkdown document on R data objects for September 20, 2021.
+
+```{r, echo=FALSE}
+source("../../R/FrontMatter.R")
+```
+
+# Introduction
+
+When setting a nutrient criterion, we follow one of the two methods approved by the U.S. EPA.  One is the reference condition approach -- selecting the 75th percentile of nutrient concentration distribution estimated for undisturbed sites considered as representing the  ``reference'' condition.  The other is the dose-response modeling method -- deriving an empirical model for predicting the biological indicator of interest using nutrient concentration as the predictor.  
+
+Because reference sites are increasingly difficult to find and the use of the 75th percentile is difficult to justify, we are more likely to use the dose-response modeling approach.  I discussed the meaning of an environmental standard in a paper (Qian 2015, Environmental Management, 56:24-33), suggesting that a standard or criterion is in reference to a mean concentration of a pollutant.  This conclusion is based on many EPA guidelines on how to set nutrient criteria as well as legal documents.  For example, EPA's document on using reference condition as the basis for nutrient criteria showed the following process of deriving a nutrient criterion:
+
+1. Collecting data from sites that are not disturbed by human activities.
+2. For each site, find annual medians (which is more or less the same as log-mean).
+3. Pool the means of annual medians of all sites to form the reference distribution.
+4. Nutrient criterion is the 75th percentile of these means of annual medians.
+
+In setting nutrient criteria for Florida's estuaries, EPA provided the following instructions,
+
+1. Collecting data from all available sources.
+2. For each estuary, screen data from all sites to select sites that meet the following conditions
+  a. Zero-concentrations should be dropped
+  b. Each site should have at least 4 non-zero observations of TP, TN, Chla, and Turbidity
+  c. Each site should have at least one observation in summer and one in winter, and
+  d. Annual geometric means for each site should be used to develop dose-response models 
+
+# Data
+The data file I obtained has already pre-processed to include only sites within certain distance of selected locations.
+
+```{r}
+sfl <- read.csv(paste(dataDIR, "SouthFlorida.csv", sep="/"), header=T)
+dim(sfl)
+head(sfl)
+
+## small functions to help properly sort by site name
+    to2 <- function(x){
+        ## convert a single or double digit integer to 0x
+        n <- length(x)
+        temp <- character()
+        temp <- ifelse (x<10, paste("0", x, sep=""), x)
+        return(temp)
+    }
+    to3 <- function(x){
+        ## conver a single or double digit integer to 0xx or 00x
+        n <- length(x)
+        temp <- character()
+        temp <- ifelse (x<10, paste("00", x, sep=""),
+                        ifelse(x<100, paste("0", x, sep=""), x))
+        return(temp)
+    }
+    to4 <- function(x){
+        ## conver a single or double digit integer to 0xxx or 00xx or 000x
+        n <- length(x)
+        temp <- character()
+        temp <- ifelse (x<10, paste("000", x, sep=""),
+                        ifelse(x<100, paste("00", x, sep=""),
+                               ifelse(x<1000, paste("0",x,sep=""), x)))
+        return(temp)
+    }
+    toN <- function(x){
+        if (max(x)<100){
+            return(to2(x))
+        }else if(max(x)<1000){
+            return(to3(x))
+        }else if (max(x)<10000){
+            return(to4(x))
+        }else {
+            stop(paste("Write function toX:", max(x)))
+        }
+    }
+
+```
+
+During the pre-processing, sites without proper QA/QC are flagged and should be removed:
+```{r}
+Data <- sfl[sfl[,"Emp_Anal"]=="Yes" & sfl[,"Cluster"]=="Yes",]
+dim(Data)
+```
+We have removed nearly one third of the observations.
+
+Sites with fewer than 4 observations must be dropped:
+```{r}
+    nsize <- table(Data$Site)
+    sites.drop <- names(nsize)[as.vector(nsize) < 4]
+    if(length(sites.drop)>0)
+    Data <- Data[!is.element(Data$Site, sites.drop),]
+dim(Data)
+```
+Each site should have more than 4 observations of TP, TN, Chla, and turbidity.
+```{r}
+    sites.drop <- tapply(Data$TP.S, Data$Site,
+                         function(x) sum(!is.na(x)) < 4) |
+                  tapply(Data$TN.S, Data$Site,
+                         function(x) sum(!is.na(x))<4)   |
+                  tapply(Data$TURB.S, Data$Site,
+                         function(x) sum(!is.na(x))<4)   |
+                  tapply(Data$CHLA, Data$Site,
+                         function(x) sum(!is.na(x))<4)
+    sites.drop <- names(sites.drop)[sites.drop]
+    if(length(sites.drop)>0)
+        Data <- Data[!is.element(Data$Site, sites.drop),]
+    Data$Site <- toN(Data$Site)
+```
+
+dropping 0 concentration values
+```{r}
+    Data$TP.S[Data$TP.S==0] <- NA
+    Data$TN.S[Data$TN.S==0] <- NA
+    Data$TURB.S[Data$TURB.S==0] <- NA
+    Data$CHLA[Data$CHLA==0] <- NA
+```
+Keeping sites with at least 2 years of data:
+```{r}
+    nyear <- tapply(Data$Year, Data$Site,
+                    function(x) length(unique(x)))
+    sites.drop <- names(nyear)[nyear<2]  ## year.min=2
+    if(length(sites.drop)>0)
+        Data <- Data[!is.element(Data$Site, sites.drop),]
+```
+
+Each site must have at least 4 observations in a year to calculate annual means, and at least one in summer and one in winter
+```{r}
+site.yr <- paste(Data$Site, Data$Year)
+    siteyr.drop <-
+        tapply(Data$CHLA, site.yr, function(x) sum(!is.na(x))<4) |
+        tapply(Data$TURB.S, site.yr, function(x) sum(!is.na(x))<4) |
+        tapply(Data$TP.S, site.yr, function(x) sum(!is.na(x))<4) |
+        tapply(Data$TN.S, site.yr, function(x) sum(!is.na(x))<4)
+    siteyr.drop <- names(siteyr.drop)[siteyr.drop]
+    if(length(siteyr.drop)>0)
+        Data <- Data[!is.element(site.yr, siteyr.drop),]
+
+    ## at least one obs in summer and in winter
+    Data$dateR <- as.Date(Data$DateT, format="%Y-%m-%d")
+    Data$Month <- ordered(months(Data$dateR), levels=month.name)
+    Data$Quarter <- quarters(Data$dateR)
+    tmp <- as.numeric(Data$Month)
+    Data$Summer <- 0
+    Data$Summer[tmp>=5 & tmp<=9] <- 1
+
+    siteyr.summ <- paste(Data$Site, Data$Year, Data$Summer)
+    siteyrsum.drop <-
+        tapply(Data$CHLA, siteyr.summ, function(x) sum(!is.na(x))==0) |
+        tapply(Data$TURB.S, siteyr.summ, function(x) sum(!is.na(x))==0) |
+        tapply(Data$TP.S, siteyr.summ, function(x) sum(!is.na(x))==0) |
+        tapply(Data$TN.S, siteyr.summ, function(x) sum(!is.na(x))==0)
+    siteyrsum.drop <- names(siteyrsum.drop)[siteyrsum.drop]
+
+    if (length(siteyrsum.drop)>0)
+        Data <- Data[!is.element(grpyr.summ, grpyrsum.drop),]
+```
+At this point, the person who wrote the code forgot to check for winter.
+
+The next step is to calculate the annual geometric means, as well as the annual frequency of Chla exceeding 5 and 20.  Chla is used as a biological indicator and 5 and 20 $\mu$g/L are two targets.
+
+```{r}
+    ## chla exceeding targets
+    Data$CHLA.grt05 <- Data$CHLA>5
+    Data$CHLA.grt20 <- Data$CHLA>20
+    ## calculating geometric means
+    Data$SegCode <- as.vector(Data$SegCode)
+    Data$WB.CODE <- as.vector(Data$WB.CODE)
+    Data <- Data[order(Data$Site),]
+    segcode <- Data$SegCode[cumsum(table(Data$Site))]
+    wbcode <-  Data$WB.CODE[cumsum(table(Data$Site))]
+    Data$site.yr <- ordered(paste(Data$Site, Data$Year))
+    Data.yrmn <- data.frame(site.yr=levels(Data$site.yr),
+                            TP.log =as.vector(by(log(Data$TP.S),
+                            Data$site.yr, mean, na.rm=T)),
+                            TN.log =as.vector(by(log(Data$TN.S),
+                            Data$site.yr, mean, na.rm=T)),
+                            CHLA.log =as.vector(by(log(Data$CHLA),
+                            Data$site.yr, mean, na.rm=T)),
+                            TURB.log=as.vector(by(log(Data$TURB.S),
+                            Data$site.yr, mean, na.rm=T)),
+                            CHLA.frq05=as.vector(by(Data$CHLA.grt05,
+                            Data$site.yr, mean, na.rm=T)),
+                            CHLA.frq20=as.vector(by(Data$CHLA.grt20,
+                            Data$site.yr, mean, na.rm=T)),
+                            CHLA.n=as.vector(by(!is.na(Data$CHLA.grt05),
+                            Data$site.yr, sum)),
+                            CHLA.x05=as.vector(by(Data$CHLA.grt05,
+                            Data$site.yr, sum, na.rm=T)),
+                            CHLA.x20=as.vector(by(Data$CHLA.grt20,
+                            Data$site.yr, sum, na.rm=T)))
+
+    Data.yrmn$Year <- substring(Data.yrmn$site.yr, 5,8)
+    Data.yrmn$Site <- substring(Data.yrmn$site.yr, 1,3)
+    Data.yrmn$SegID <- segcode[as.numeric(ordered(Data.yrmn$Site))]
+    Data.yrmn$WB.ID <- wbcode[as.numeric(ordered(Data.yrmn$Site))]
+
+    ## standardizng important predictors
+    print(summary(Data.yrmn))
+    varlist <- c("CHLA.log","TP.log","TN.log","TURB.log")
+    cols <- !is.na(match(names(Data.yrmn), varlist))
+    mnval <- apply(Data.yrmn[,cols], 2, mean, na.rm=T)
+    sdval <- apply(Data.yrmn[,cols], 2, sd, na.rm=T)
+    for (i in 1:length(varlist)){
+        Data.yrmn[,varlist[i]] <-
+             (Data.yrmn[,varlist[i]]-mnval[varlist[i]])/sdval[varlist[i]]
+     }
+```
+
+# Using package `reshape`
+
+The same process is repeated using the `melt` and `dcast` functions from package `reshape`.
+
+```{r}
+## Using package reshape
+packages(reshape)
+
+Data <- sfl[sfl[,"Emp_Anal"]=="Yes" & sfl[,"Cluster"]=="Yes",]
+dim(Data)
+
+Data$dateR <- as.Date(Data$DateT, format="%Y-%m-%d")
+Data$Month <- ordered(months(Data$dateR), levels=month.name)
+Data$Quarter <- quarters(Data$dateR)
+tmp <- as.numeric(Data$Month)
+Data$Summer <- 0
+Data$Summer[tmp>=5 & tmp<=9] <- 1
+Data$Winter <- 0
+Data$Winter[tmp>=11 | tmp<=2] <- 1
+
+## melting data into 
+    Data.molten <- melt(Data, id=c("Site","Summer","Winter","Year", "SegCode","WB.CODE"),
+                        measure=c("TP.S","TN.S","CHLA","TURB.S"))
+
+    ## dropping NA concentration values
+    tmp <- !is.na(Data.molten$value)
+    Data.molten <- Data.molten[tmp,]
+
+    ## dropping 0s
+    tmp <- Data.molten$value!=0
+    Data.molten <- Data.molten[tmp,]
+ ## each site should have more than 4 data points for tp, tn,
+    ##   chla, turb
+    casted <- cast(Data.molten, Site ~ variable, length)
+    sites.drop <- apply(casted[,-1], 1, min) < 4
+    names(sites.drop) <- casted[,1]
+    if (sum(sites.drop) > 0)
+        Data.molten <- Data.molten[!is.element(Data.molten$Site,
+                                               names(sites.drop)[sites.drop]), ]
+    
+    ## minimum years = 2
+    casted <- cast(Data.molten, Site ~ Year)
+    sites.drop <- apply(casted[,-1], 1, FUN=function(x)sum(x==0)<2)
+
+    names(sites.drop) <- casted[,1]
+    if (sum(sites.drop) > 0)
+        Data.molten <- Data.molten[!is.element(Data.molten$Site,
+                                               names(sites.drop)[sites.drop]), ]
+
+    ## at least 4 obs to calculate annual means
+    casted <- cast(Data.molten, Site+Year~.)
+    styr.drop <- casted[,3] < 4
+    if (sum(styr.drop)>0){
+        tmp <- is.element(Data.molten$Site, styr.drop$Site[styr.drop]) &
+            is.element(Data.molten$Year, styr.drop$Year[styr.drop])
+        Data.molten <- Data.molten[!tmp,]
+    }
+    
+    ## at least one obs in summer
+    casted <- cast(Data.molten, Site+Year ~ ., subset=Summer==1)
+    styr.drop <- casted[,3] == 0
+    if (sum(styr.drop)>0){
+        tmp <- is.element(Data.molten$Site, styr.drop$Site[styr.drop]) &
+            is.element(Data.molten$Year, styr.drop$Year[styr.drop]) &
+                is.element(Data.molten$Summer, styr.drop$Summer[styr.drop])
+        Data.molten <- data.molten[!tmp,]
+    }
+    ## at least one obs in winter
+    casted <- cast(Data.molten, Site+Year ~ ., subset=Winter==1)
+    styr.drop <- casted[,3] == 0
+    if (sum(styr.drop)>0){
+        tmp <- is.element(Data.molten$Site, styr.drop$Site[styr.drop]) &
+            is.element(Data.molten$Year, styr.drop$Year[styr.drop]) &
+                is.element(Data.molten$Summer, styr.drop$Summer[styr.drop])
+        Data.molten <- data.molten[!tmp,]
+    }
+    casted.save <- cast(Data.molten, SegCode+WB.CODE+Site+Year ~ variable,
+                        function(x) mean(log(x)))
+    casted.save2 <- cast(Data.molten, SegCode+WB.CODE+Site+Year ~ variable,
+                         function(x)return(c(mean(x>5), mean(x>20), length(x))), 
+                         subset=variable=="CHLA")
+```
+
+Can we use package `plyr` for this?  Any thoughts?
+
+

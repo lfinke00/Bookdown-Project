@@ -1,0 +1,366 @@
+---
+title: "R Graphics -- Bivariate Data"
+output: pdf_document
+---
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Front Matters
+  
+This is a RMarkdown document on R data objects for the week of November 22, 2021.
+
+
+```{r, echo=FALSE, results='hide'}
+source("FrontMatter.R")
+packages(tidyverse)
+packages(lattice)
+packages(foreign)
+data.restore (paste(dataDIR, "visualizing.data", sep="/"))
+```
+
+# Bivariate Data
+A bivariate data set contains paired measurements of two numerical variables. The goal of analyzing bivariate data is to understand how one variable (response variable) depends on the other (predictor or factor variable).
+
+## Smooth Curves and Banking
+
+The first step of analyzing bivariate data is to plot the measurements on a scatter plot, with the factor (predictor) variable on the x-axis and the response variable on the y-axis.  The second step is to add a smooth curve to the scatterplot  to help better perceive the pattern of the dependence.  
+
+### Loess Curves
+A "nonparametric" smooth curve that goes through the "center" of the scatterplot data cloud.  
+
+```{r}
+book.3.2 <- function()
+	xyplot(cp.ratio ~ area, 
+		data = ganglion,
+		panel = function(x,y){
+			panel.xyplot(x,y)
+			panel.loess(x,y, family = "g")
+		},
+		sub = list("Figure 3.2",cex=.8),
+		xlab = "Area (square mm)",
+		ylab = "CP Ratio",
+		aspect="xy")
+
+book.3.2()
+
+
+ggVD_3.2<-
+  function(){
+    ggplot(ganglion, aes(area, cp.ratio))+geom_point(color="blue")+
+        labs(x="Area (mm^2)", y="CP Ratio")+
+        geom_smooth(formula=y~x, se=FALSE, method="loess")
+  }
+
+ggVD_3.2()
+
+```
+### Banking
+
+Human perception of a curve is based on judgement of the relative orientations (slopes) of the line segments that make up the curve.  The judgement on a curve is optimized when the absolute value of the slopes are centered on 1 (or banking to 45$^\circ$. 
+
+```{r, fig.height=6, fig.width=4.5}
+book.3.3 <- 
+function()
+{
+	x <- seq(-1, 1, length = 100)
+	y <- c(x[1:50]^2, x[51:100])
+	ans1 <- xyplot(y ~ x,
+		aspect = "xy", 
+		scale = list(draw = F),
+		type = "l",
+		xlab = "",
+		ylab = "")
+	print(ans1, position = c(0, 0, 0.85, 1), more = T)
+	ans1 <- xyplot(y ~ x,
+		aspect = "xy", 
+		scale = list(draw = F),
+		xlim=c(-1.2,1.2),
+		type = "l",
+		xlab = "",
+		ylab = "")
+	print(update(ans1, aspect = 5), position = c(0.73, 0.32, 1, 0.68), 
+		more = T)
+	ans1 <- xyplot(y ~ x,
+		aspect = "xy", 
+		scale = list(draw = F),
+		ylim=c(-.2,1.2),
+		type = "l",
+		sub = list("Figure 3.3",cex=.8),
+		xlab = "",
+		ylab = "")
+	print(update(ans1, aspect = 0.05), position = c(0, 0.15, .95, 0.45), more=F)
+	invisible()
+}
+
+book.3.3()
+```
+Another example of banking to 45$^\circ$:
+```{r}
+  book.3.72 <- 
+function()
+	xyplot(carbon.dioxide~time(carbon.dioxide),
+		aspect="xy",
+		type="l",
+		scales=list(x=list(cex=.7),y=list(cex=.7)),
+		ylab = "CO2 (ppm)",
+		sub = list("Figure 3.72",cex=.8),
+		xlab = "Year")
+
+book.3.72()
+
+
+book.3.73 <- 
+function()
+	xyplot(carbon.dioxide ~ time(carbon.dioxide),
+		aspect = 1,
+		type = "l",
+		ylab = "Carbon Dioxide (ppm)",
+		sub = list("Figure 3.73",cex=.8),
+		xlab = "Year")
+
+book.3.73()
+```
+
+### Smoothing Parameter
+
+Loess curve is a diagnostic tool.  It helps us to perceive the pattern.  But the resulting model is not necessarily the true pattern. The shape of the curve is dependent on the smooth parameter. 
+
+```{r, fig.height=6, fig.width=4}
+book.3.9<-
+function()
+{
+	X <- seq(5, 10, length=150)
+	z <- seq(0, 1, length=50)
+	base.y <- 5 + c(-(1-z)^.5, sin(z*2*pi), .5*z^2)
+	true.y <- loess.smooth(X, base.y, degree = 2, family = "g", span = .5, evaluation = 150)$y
+	set.seed(20)
+	Y <- true.y+rnorm(150, 0, .2)
+	fit1 <- loess.smooth(X, Y, degree = 2, family = "g", span = .1, evaluation = 150)
+	fit2 <- loess.smooth(X, Y, degree = 2, family = "g", span = .3, evaluation = 150)
+	fit3 <- loess.smooth(X, Y, degree = 2, family = "g", span = .6, evaluation = 150)
+	alpha <- factor(rep(c(.1,.3,.6),rep(length(X),3)))
+	fits <- c(fit1$y, fit2$y, fit3$y)
+	X <- rep(X,3)
+	Y <- rep(Y,3)
+	xyplot(Y ~ X | alpha, 
+#		prepanel = substitute(function(x, y, subscripts) {
+#			list(dx = diff(x), dy=diff(fits[subscripts]))}),
+		panel = substitute(function(x, y, subscripts){
+			add.line <- trellis.par.get("add.line")
+			panel.xyplot(x, y)
+			panel.lines(x, fits[subscripts], lwd = add.line$lwd,
+				lty = add.line$lty, col = add.line$col)
+		}),
+		strip = function(...) strip.default(..., strip.names = T),
+		layout = c(1, 3),
+		sub = list("Figure 3.9",cex=.8),
+		xlab = "x", 	
+		ylab = "y")
+}
+
+book.3.9()
+```
+### Residuals
+Just as we did in analyzing univariate data, we can decompose a data point into a fit and a residual in analyzing bivariate.  The fit is the response variable location of the smooth curve and the residual is the difference between the response data value and the respective curve value.  If a curve captures the pattern in the data well, the residuals should show no particular pattern.  Consider the following data 
+
+```{r}
+book.3.4 <- function(){
+  	fit <- lm(cp.ratio~area, data = ganglion)
+	xyplot(cp.ratio~area,
+		data = ganglion,
+		panel = function(x, y) {
+	                panel.xyplot(x, y)
+			panel.abline(fit)
+		},
+		aspect=1,
+		sub = list("Figure 3.4",cex=.8),
+		xlab = "Area (square mm)", ylab="CP Ratio")
+}
+book.3.4()
+
+```
+A plot of residuals against `Area` shows that a linear model is inadequate:
+
+```{r}
+book.3.12 <- function(){ 
+    xyplot(lm(cp.ratio~area)$residuals ~ area,
+           data = ganglion,
+           panel = function(x,y){
+               panel.xyplot(x,y)
+               panel.loess(x, y, span=1, family = "g")
+               panel.abline(h=0)
+           },
+           aspect=1,
+           sub = list("Figure 3.12",cex=.8),
+           xlab = "Area (square mm)", 
+           ylab="Residual CP Ratio")
+}
+
+book.3.12()
+```
+
+A nonlinear pattern exists in the residual, suggesting that the relationship between `y` and `x` is not linear.  We can fit a loess curve to show the nature of the nonlinearity:
+
+```{r}
+book.3.2<-
+function()
+	xyplot(cp.ratio ~ area, 
+		data = ganglion,
+		panel = function(x,y){
+			panel.xyplot(x,y)
+			panel.loess(x,y, family = "g")
+		},
+		sub = list("Figure 3.2",cex=.8),
+		xlab = "Area (square mm)",
+		ylab = "CP Ratio",
+		aspect="xy")
+
+book.3.2()
+```
+The loess curve shows a roughly quadratic pattern.  We can now fit a quadratic model to the data and show the residual plot.
+
+```{r}
+book.3.5<-function()
+{
+    attach(ganglion)
+    add.line <- trellis.par.get("add.line")
+    gan.lm <- lm(cp.ratio~area+I(area^2))
+    gan.x <- seq(min(area),max(area),length=50)
+    gan.fit <- gan.lm$coef[1]+gan.lm$coef[2]*gan.x+gan.lm$coef[3]*gan.x^2
+    ans <- xyplot(cp.ratio~area,
+             panel = function(x, y) {
+                      panel.xyplot(x, y)
+                      panel.lines(gan.x, gan.fit, lwd = add.line$lwd,
+                                  lty = add.line$lty, col = add.line$col)
+                  },
+                  sub = list("Figure 3.5",cex=.8),
+                  xlab = "Area (square mm)",
+                  ylab = "CP Ratio", 
+             aspect="xy")
+    detach()
+    ans
+}
+book.3.5()
+
+book.3.13 <- function(){ 
+    xyplot(lm(cp.ratio~area+I(area^2))$residuals ~ area,
+           data = ganglion,
+           prepanel = function(x, y)
+               prepanel.loess(x, y, span=1, family = "g"),
+           panel = function(x,y){
+               panel.xyplot(x,y)
+               panel.loess(x, y, span=1, family = "g")
+               panel.abline(h=0)
+           },	
+           aspect=1,
+           sub = list("Figure 3.13",cex=.8),
+           xlab = "Area (square mm)",
+           ylab="Residual CP Ratio")
+}
+
+book.3.13()
+
+```
+Another assumption we always make is that the residuals have a constant variance, no matter what is the predicted response variable value.  We typically don't know the residual variance at a specific value of the response variable.  Cleveland use the s-l plot:
+```{r}
+book.3.14 <- function()
+{
+    gan.lm <- lm(cp.ratio~area+I(area^2), data = ganglion)
+    xyplot(sqrt(abs(residuals(gan.lm))) ~ gan.lm$fit,
+           panel = function(x,y){
+               panel.xyplot(x,y)
+               panel.loess(x, y, span=2, evaluation=100, family = "g")
+           },
+           aspect=1,
+           sub = list("Figure 3.14",cex=.8),
+           xlab = "Fitted CP Ratio",
+           ylab = "Square Root Absolute Residual CP Ratio")
+}
+
+book.3.14()
+```
+This plot show that the residual variance increases as the predicted CP Ratio (the response variable) increases. Perhaps we can make a log-transformation of the response variable:
+
+```{r}
+book.3.16 <- function(){ 
+    xyplot(log(cp.ratio,2) ~ area, 
+           data = ganglion,
+           panel = substitute(function(x, y) {
+               panel.xyplot(x, y)
+               panel.abline(lm(log(cp.ratio,2)~area, data = ganglion))
+           }),
+           aspect=1,
+           sub = list("Figure 3.16",cex=.8),
+           xlab = "Area (square mm)",
+           ylab = "Log Base 2 CP Ratio")
+}
+
+book.3.16()
+```
+Now we take a look at the residuals:
+
+```{r}
+
+book.3.17 <- function() 
+{
+	gan.lm <- lm(log(cp.ratio,2) ~ area, data = ganglion)
+	xyplot(gan.lm$res ~ ganglion$area,
+		panel = function(x,y){
+			panel.xyplot(x,y)
+			panel.loess(x, y, span=1, evaluation=100, family = "g")
+			panel.abline(h=0)
+		},
+		aspect=1,
+		sub = list("Figure 3.17",cex=.8),
+		xlab = "Area (square mm)",
+		ylab="Residual Log Base 2 CP Ratio")
+}
+book.3.17()
+
+book.3.18 <- function()
+{
+	gan.lm <- lm(log(cp.ratio,2) ~ area, data = ganglion)
+	xyplot(sqrt(abs(gan.lm$res)) ~ gan.lm$fit,
+		panel = function(x,y){
+			panel.xyplot(x,y)
+			panel.loess(x, y, span=2, evaluation=100,
+                                    family = "g")
+		},
+		aspect=1,
+		sub = list("Figure 3.18",cex=.8),
+		xlab = "Fitted Log Base 2 CP Ratio",
+		ylab = "Square Root Absolute Residual Log Base 2 CP Ratio")
+}
+
+book.3.18()
+
+```
+We can also use the rfs plot to show how much variability in the response variable is explained by the predictor:
+```{r}
+book.3.19 <- function()
+	rfs(lm(log(cp.ratio,2) ~ area, data = ganglion),
+		sub = list("Figure 3.19",cex=.8),
+		aspect=2,
+		ylab="Log Base 2 CP Ratio")
+
+book.3.19()
+```
+Lastly, we want to see if the residuals are approximately normal:
+
+```{r}
+book.3.20 <- function()
+qqmath(~lm(log(cp.ratio,2) ~ area, data = ganglion)$residuals,
+		panel = function(x,...){
+			panel.qqmathline(x, distribution = qnorm)
+			panel.qqmath(x,...)
+		},
+		aspect = 1,
+		sub = list("Figure 3.20",cex=.8),
+		xlab = "Unit Normal Quantile",
+		ylab = "Residual Log Base 2 CP Ratio")
+
+book.3.20()
+```
+

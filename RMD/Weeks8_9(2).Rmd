@@ -1,0 +1,1154 @@
+---
+title: "Visualizing Data"
+author: "Song Qian"
+date: "10/17/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+source("FrontMatter.R")
+
+wt.bisquare <- function(u, c=6) {
+ ifelse( abs(u/c) < 1, (1-(u/c)^2)^2, 0)
+}
+
+fnt <- function(data = eth$E, number = 4, ...) {
+     intrv <<- as.data.frame(co.intervals(data, number,
+         ...))
+     mg_y <- sort(unique(data))
+     intervals <- plyr::ldply(mg_y, function(x) {
+         t(as.numeric(x < intrv$V2 & x > intrv$V1))
+     })
+     tmp <- reshape2::melt(cbind(mg_y, intervals), id.var = 1)
+     tmp[tmp$value > 0, 1:2]
+ }
+ 
+
+packages(mgcv)
+packages(MASS)
+packages(maps)
+packages(nlme)
+packages(reshape2)
+packages(foreign)
+## packages(R.matlab)
+packages(lattice)
+packages(survival)
+## packages(caret)
+## packages(qqplotr)
+packages(ggplot2)
+## packages(GGally)
+## packages(cowplot)
+## packages(plotly)
+
+data.restore (paste(dataDIR, "visualizing.data", sep="/"))
+source(paste(dataDIR, "visualizing.scripts", sep="/"))
+```
+## Good Visualization
+```{r}
+book.1.6 <-
+    function()
+	dotplot( variety ~ yield | year * site, 
+		data = barley, 
+		aspect = .4, 
+		sub = list("Figure 1.6",cex=.8),
+		xlab = "Barley Yield (bushels/acre)")
+
+
+book.1.6()
+
+book.1.1 <-
+    function()
+{
+trellis.par.set(list(fontsize=list(text=6),
+	             par.xlab.text=list(cex=1.5),
+                     add.text=list(cex=1.5),
+                     superpose.symbol=list(cex=.5)))
+key <- simpleKey(levels(barley$year), space = "right")
+key$text$cex <- 1.5
+print(
+     dotplot(variety ~ yield | site, data = barley, groups = year,
+             key = key,
+             xlab = "Barley Yield (bushels/acre) ",
+             aspect=0.5, layout = c(1,6), ylab=NULL)
+)
+}
+book.1.1()
+
+book.3.72()
+
+book.3.73()
+```
+
+## Objectives
+1. Using data visualization as a tool for exploratory data analysis -- a necessary step of model formulation based on critical examination of complex data
+2. Mastering graphical principles and visual perceptions
+3. Exploring graphical methods for different types of problems
+
+Tukey (1977):
+
+> Exploratory data analysis is detective work ... . A detective investigating a crime needs both tools and understanding. ...
+
+> Time will keep us from learning about many tool -- we shall try to look at a few of the most general and powerful among the simple ones. ...
+
+> Understanding has different limitations. As many detective stories have made clear, one need quite different sort of detailed understanding to detedt criminals in London's slums, in a remote Welsh villiage, among Parisian aristocrats, in the cattle-raising west, or in the Australia outback. We do not expect a Scotland Yard officer to do well trailing cattle thieves, or a Taxas ranger to be effective in the heart of Birmingham.  Equally, very detailed understandings are needed if we are to be highly effective in dealing with data concerning [different subjects].
+
+> The Scotland Yard detective, however, would be far from useless in the wild west or the outback. He has certain general understandings of conventional detective work that will help him anywhere.
+
+> **In data analysis there are similar general understandings. We can hope to lead you to a few of them. We shall try.**
+
+> The processes of criminal justice are clearly divided between the search for the evidence -- in Anglo-Saxon lands the responsibility of the police and other investigative forces -- and the evaluation of the evicence's strength -- a matter for juries and judges. In data analysis a similar distinction is helpful.  Exploratory data analysis is detective in character. Confirmatory data analysis is judicial or quasi-judicial in character.
+
+> Unless the detective finds the clues, judges or jury has nothing to consider. **Unless exploratory data analysis uncovers indications, usually quantitative ones, there is likely to be nothing for confirmatory data analysis to consider** 
+
+> As all detective stories remind us, many of the circumstances surrounding a crime are accidental or misleading. Equally, many of the indications to be discerned in bodies of data are accidental or misleading. To accept all appearances as conclusive would be destructively foolish, either in crime detection or in data analysis. **To fail to collect all appearances because some -- or even most -- are only accidents would, however, be gross misfeasance deserving (and often receiving) appropriate punishment.**
+
+> Exploratory data analysis can never be the whole story, but nothing else can serve as the foundation stone -- as the first step.
+
+## Cleveland's *The Elements of Graphing Data*
+Focusing on graphical principles and visual perceptions to understand what consist of "good" graphics.
+
+## Cleveland's *Visualizing Data*
+Focusing on graphical methods for different types of data. 
+
+We will use the trellis plots from [Cleveland (1993)](https://www.amazon.com/Visualizing-Data-William-S-Cleveland/dp/0963488406/ref=sr_1_2?keywords=Visualizing+Data&qid=1579538657&s=books&sr=1-2).  Cleveland distributed the S-Plus scripts he used for the book (on Class Blackboard).  The S-Plus Trellis code is largely the same as the code for R package `lattice`. There are some differences, however.  One task of the class is to convert most plots from Cleveland's S-Plus code to R scripts.  (This task was completed when I taught the class a couple of years ago.)  We will use selected figures from the book as exercises for writing R `lattice` and `ggplot2` code.  An important part of the class is to link what we learned to your work. You should be prepared to bring your own data and show how the visualizing methods change your perception of the data.
+
+## Wilkinson's *The Grammar of Graphics*
+This book will give us a general understanding of the object oriented computer programming grammar used in the R package \texttt{ggplot2}.  We will learn the terminology and strategies adapted in \texttt{ggplot2}, but not the computer programming details. 
+
+## Why Visualizing?
+Cleveland, in his other book [*The Element of Graphing Data*](https://www.amazon.com/gp/product/0963488414/ref=dbs_a_def_rwt_bibl_vppi_i0), said, 
+
+> No matter how clever the choice of the information, and no matter how technologically impressive the encoding, a visualization fails if the decoding fails. Some display methods lead to efficient, accurate decoding, and others lead to inefficient, inaccurate decoding. It is only through scientific study of visual perception that informed judgments can be made about display methods.
+
+From that quote, I interpret the process of visualizing data as the process of encoding data (which can't "enter your mind", Fisher, 1922) such that a reader can decode the information behind the data (hence entering the mind of the reader).  Although summary statistics are efficient (as suggested by Fisher), graphical display of data is often essential in communication.  Here are two examples.
+
+First, the classical Anscombe data:
+```{r Anscombe, fig.height=4.5, fig.width=4.5}
+data("anscombe")
+head(anscombe)
+
+summary(anscombe)
+ff <- y ~ x
+mods <- setNames(as.list(1:4), paste0("lm", 1:4))
+for(i in 1:4) {
+  ff[2:3] <- lapply(paste0(c("y","x"), i), as.name)
+  print(ff)
+  ## or   ff[[2]] <- as.name(paste0("y", i))
+  ##      ff[[3]] <- as.name(paste0("x", i))
+  mods[[i]] <- lmi <- lm(ff, data = anscombe)
+  print(anova(lmi))
+  
+  print(summary(mods[[i]]))
+}
+
+## numerical comparisons
+sapply(mods, coef)
+matrix(unlist(lapply(mods, function(fm) coef(summary(fm)))), nrow=2)
+
+## Now, do what you should have done in the first place: PLOTS
+op <- par(mfrow = c(2, 2), mar = 0.1+c(3,3,1,1),
+          oma =  c(0, 0, 2, 0))
+for(i in 1:4) {
+  ff[2:3] <- lapply(paste0(c("y","x"), i), as.name)
+  plot(ff, data = anscombe, col = "red", pch = 1, 
+       ##bg = "orange", cex = 1.2,
+       xlim = c(3, 19), ylim = c(3, 13))
+  abline(mods[[i]], col = "blue")
+}
+mtext("Anscombe's 4 Regression data sets", outer = TRUE, cex = 1.5)
+par(op)
+```
+
+Now a more interesting and modern dataset:
+```{r DataSaurus, fig.height=5, fig.width=5}
+packages(datasauRus)
+
+head(datasaurus_dozen)
+
+## summary:
+datasaurus_dozen %>% 
+    group_by(dataset) %>% 
+    summarize(
+      mean_x    = mean(x),
+      mean_y    = mean(y),
+      std_dev_x = sd(x),
+      std_dev_y = sd(y),
+      corr_x_y  = cor(x, y)
+    )
+
+ggplot(datasaurus_dozen, aes(x=x, y=y, colour=dataset))+
+  geom_point()+
+  theme_void()+
+  theme(legend.position = "none")+
+  facet_wrap(~dataset, ncol=3)
+
+```
+
+## Visualizing Data Terminology
+
+- Visualization -- any kinds of visual representation of information designed to enable communication, analysis, discovery, exploration, etc.
+  - Data visualization -- display of data to enable analysis, exploration, and discovery
+- Inforgraphic -- a multi-section visual representation of information intended to communication one or more specific messages.
+- Map and Spatial visualization -- a depiction of geographical area or a representation of data that pertains to that area
+
+## The Best Statistical Data Visualization Ever
+
+The famous Minard's graph depicting Napoleon's march to Moscow is often said to be the best of statistical visualization ever produced.  Books are written about the graph and numerous articles and blog posts can be found.  You can buy the graph as a piece of art work.  I found the data and R code for producing several figures [\textcolor{blue}{here}](https://github.com/joannecheng/napoleon_analysis).  The best online image of the original plot is [\textcolor{blue}{here}](http://www.datavis.ca/gallery/minard/1812-2.jpg).  Data and R code used for generating [\textcolor{blue}{\texttt{ggplot2} style figure}](http://www.datavis.ca/gallery/re-minard.php) are [\textcolor{blue}{here}](http://www.datavis.ca/gallery/minard/ggplot2/ggplot2-minard-gallery.zip).  
+
+What do you think about this graph?
+
+## Organizing data
+
+To properly visualizing data with variables representing different spatiotemporal scales, we need to organize the data into a data frame. The following example was from a large USGS study on the Effects of Urbanization on Stream Ecosystems.  
+```{R}
+#### EUSE ####
+rtol2 <- read.csv(file=paste(dataDIR, "rtol_MS.csv", sep="/"), header=T)
+
+##packages(car)
+
+xyplot(richtol~nuii|city, data=rtol2, panel=function(x,y,...){
+    panel.xyplot(x, y, ...)
+    panel.lmline(x,y,...)}, ylab="TOLr", xlab="NUII")
+
+```
+In general, we use columns to represent variables and rows to represent observations. Data from multiple spatial and/or temporal scales are often included in different files. For example, the original EUSE data had three sets of data files: (1) measurements of biological and chemical variables from individual watersheds (9 separate files each had multiple observations from 30 watersheds in a region), (2) watershed land use variables (9 regions, each with 30 watersheds), and (3) regional land used history and weather.
+
+When organized into a single data frame, we associate each measurements with its watershed and regional variable values (in the above code, using `[]` sub-script).  The region-level variables are useful in the multilevel models we developed. In the multilevel model, we use data from 30 watersheds in each region to specify the regional model. The regional model coefficients summarizes how stream ecosystem indicators respond to urbanization. The region-specific model coefficients are then linked to regional variables in land use history and weather conditions. 
+
+## Qualities of Great Visualizations
+John Tukey said the following in his book *Exploratory Data Analysis*:
+
+> The greatest value of a picture is when it forces us to notice what we never expected to see.
+
+The five qualities of great visualization: 
+
+1. It is truthful, as it's based on thorough and honest research.
+
+> whenever a designer, journalist, PR person, advertiser, or your own sweet Auntie Julie shows you a visualization with just a few figures that are the result of adding up, rounding, or averaging tons of data, distrust him or her. In a world full of graphics devoid of nuance, crooks thrive. If someone hides data from you, it’s probably because he has something to hide. -- Alberto Cairo (*The Truthful Art*)
+
+An English word *apophenia* was coined by Swiss psychologist Peter Brugger when he penned a chapter in a 2001 book on hauntings and poltergeists. Apophenia, he said, was a weakness of human cognition: the "pervasive tendency … to see order in random configurations," an "unmotivated seeing of connections," the experience of "delusion as revelation." The tendency to be overwhelmed by meaningful coincidences.
+
+2. It is functional, as it constitutes an accurate depiction of the data, and it's built in a way that lets people do meaningful operations based on it (seeing change in time). -- Help your audience interpret it correctly. (Think of pie charts and comparisons of them.)
+
+3. It is beautiful, in the sense of being attractive, intriguing, and even aesthetically pleasing for its intended audience—scientists, in the first place, but the general public, too.
+
+4. It is insightful, as it reveals evidence that we would have a hard time seeing otherwise.
+
+Good visualizations clear the path to making valuable discoveries that would be inaccessible if the information were presented in a different way. Visualizations that offer just obvious and trivial messages are worthless. Implicitly, their designers ask you to invest effort in reading them in exchange for very little return.  There are several kinds of insight. One of them, spontaneous insight, is equivalent to a "eureka" or "a-ha" moment. It's sudden, surprising, and unexpected. Another one, called knowledge-building insight, is based on a gradual and deliberate process of exploration of the information that doesn't necessarily lead to "wow" moments.
+   
+The major paradigm shifts associated with spontaneous insight can create new structures and relationships in a user's understanding of a problem, which can then serve as the schematic structures needed for generating future knowledge-building insights. This newly acquired knowledge can then open the door to even more spontaneous insights.
+
+5. It is enlightening because if we grasp and accept the evidence it depicts, it will change our minds for the better.
+
+## General principles of graphing data
+1. Clear vision 
+  - make data standout, avoid superfluity
+  - use visually prominent graphical elements to show the data
+  - use a pair of scale lines for each variable, make the data rectangle slightly smaller than the scale-line rectangle, tick marks should point outward
+  - do not clutter the interior of the scale-line rectangle
+  - do not overdo the number of tick marks
+  - use a reference line when there is an important value that must be seen across the entire graph, but do not let the line intefere with the data
+  - do not allow data labels in the interior of the scale-line rectangle to interfere with the quantitative data or to clutter the graph
+  - avoid putting notes and keys inside the scale-line rectangle. Put a key outside, and put notes in the caption or in the text
+  - overlapping plotting symbols must be visually distinguishable
+  - superposed data sets must be readily visually assembled
+  - visual clarity must be preserved under reduction and reproduction
+2. Clear understanding - convey a clear message
+  - put major conclusions into graphical form, make captions comprehensive and informative (describe everything that is graphed, draw attention to the important features of the data, and describe the conclusions that are drawn from the data on the graph)
+  - error bars should be clearly explained
+  - when logarithms of a variable are graphed, the scale label should correspond to the tick mark labels
+  - proofread graphs
+  - strive for clarity
+3. Banking to 45$^\circ$  
+  - Aspect ratio of a graph is an important factor for judging rate of change
+  - When the orientations of line segments are judged to decode information about rate change, bank the segments to 45$^\circ$
+4. Scales
+  - Choose the range of the tick marks to include or nearly include the range of the data
+  - Subject to the constraints that scales have, choose the scales so that the data rectangle fills up as much of the scale-line rectangle as possible
+  - It is sometimes helpful to use the pair of scale lines for a variable to show two different scales
+  - Choose appropriate scales when data on different panels are compared
+  - Do not insist that zero always be included on a scale showing magnitude
+  - Use a logarithmic scale when it is important to understand percent change or multiplicative factors
+  - Showing data on a logarithmic scale can cure skewness toward large values
+  - Use a scale break only when necessary. If a break cannot be avoided, use a full scale break. Do not connect numerical values on two sides of a break. Take logs can cure the need for a break.
+5. General strategy
+  - A large amount of quantitative information can be packed into a small region
+  - Graphing data should be an iterative, experimental process
+  - Graph data two or more times when it is needed
+  - Many useful graphs require careful, detailed study
+
+## Univariate Data
+### Displaying distributions
+
+- Quantile plots
+```{r}
+book.2.1 <-
+    function()
+	qqmath(~ height | voice.part,
+               distribution=qunif,
+               data=singer,
+               panel = function(x, ...) {
+                   panel.grid()		
+                   panel.qqmath(x, ...)
+               },
+               layout=c(2,4), 
+               aspect=1,
+               sub = list("Figure 2.1",cex=.8),
+               xlab = "f-value",
+               ylab="Height (inches)")
+
+book.2.1()
+
+ggVD_2.1 <- function(){
+ggplot(singer, aes(sample=height))+
+    stat_qq(distribution=qunif)+
+    facet_wrap(~voice.part, ncol=2)+
+    labs(x = "f-value",
+         y = "Height (inches)") + theme(aspect.ratio=1)
+}
+
+ggVD_2.1()
+```
+
+- Details of a quantile plot:
+  - Empirical quantiles:
+  $$f_i = \frac{i-0.5}{n}$$
+```{R}
+book.2.2 <-
+    function()
+	qqmath(~ sort(singer$height[singer$voice.part=="Tenor 1"]),
+               distribution = qunif, 
+               panel = function(x, ...) {
+                   panel.qqmath(x, type = "b", ...)
+                   ##panel.qqmath(x, col = 0, pch = 16) 
+                   ##panel.qqmath(x, ...)
+               },
+               aspect = 1, 
+               sub = list("Figure 2.2",cex=.8),
+               xlab = "f-value",
+               ylab = "Tenor 1 Height (inches)")
+
+book.2.2()
+
+ggVD_2.2 <- function(){
+    fval.df <- function(x){
+        oo <- order(x)
+        n <- length(x)
+        f <- ((1:n)-0.5)/n
+        return(data.frame(value=x[oo], q=f))
+    }
+    Tenor1 <- fval.df(singer$height[singer$voice.part=="Tenor 1"])
+    ggplot(Tenor1, aes(q, value)) + geom_point() + geom_path() +
+        labs(x = "f-value",
+             y = "Tenor 1 Height (inches)") +
+        theme(aspect.ratio=1)
+}
+
+ggVD_2.2()
+```
+
+- Comparing two data distributions -- the Q-Q plot
+  - Additive shift
+  $$b = t + c$$
+```{R}
+book.2.3 <-
+function()
+{
+	voice.part <- ordered(singer$voice.part, 
+		c("Soprano 1", "Soprano 2", "Alto 1", "Alto 2",
+			"Tenor 1", "Tenor 2", "Bass 1", "Bass 2"))
+	qq(voice.part ~ singer$height,
+		subset=voice.part=="Bass 2" | voice.part=="Tenor 1",
+		aspect=1, 
+		sub = list("Figure 2.3",cex=.8),
+		xlab = "Tenor 1 Height (inches)",
+		ylab = "Base 2 Height (inches)")
+}
+book.2.3()
+
+ggVD_2.3 <- function(){
+    sy <- sort(singer$height[singer$voice.part=="Bass 2"])
+    sx <- sort(singer$height[singer$voice.part=="Tenor 1"])
+    nx <- length(sx)
+    ny <- length(sy)
+    if (ny < nx)sx <- approx(1L:nx, sx, n = ny)$y
+    if (ny > nx)sy <- approx(1L:ny, sy, n = nx)$y
+    pg <- ggplot(data.frame(x=sx, y=sy), aes(x=x,y=y)) +
+        geom_point() + geom_abline()
+    print(pg+theme(aspect.ratio=1))
+}
+ggVD_2.3()
+```
+- Understanding (better encoding) the additive shift
+```{R}
+book.2.4 <-
+function()
+{
+	voice.part <- ordered(singer$voice.part,
+		c("Soprano 1", "Soprano 2", "Alto 1", "Alto 2",
+			"Tenor 1", "Tenor 2", "Bass 1", "Bass 2"))
+	bass.tenor.qq <- qq(voice.part ~ singer$height,
+		subset=voice.part=="Bass 2" | voice.part=="Tenor 1")
+	tmd(bass.tenor.qq,
+		aspect=1,
+		ylab = "Difference (inches)",
+		sub = list("Figure 2.4",cex=.8),
+		xlab = "Mean (inches)")
+}
+book.2.4()
+
+ggVD_2.4 <- function(){
+    sy <- sort(singer$height[singer$voice.part=="Bass 2"])
+    sx <- sort(singer$height[singer$voice.part=="Tenor 1"])
+    nx <- length(sx)
+    ny <- length(sy)
+    if (ny < nx)sx <- approx(1L:nx, sx, n = ny)$y
+    if (ny > nx)sy <- approx(1L:ny, sy, n = nx)$y
+    data <- data.frame(Difference=sy-sx, Mean=(sy+sx)/2)
+    pg <- ggplot(data, aes(Mean,Difference)) +
+        geom_point() + geom_hline(yintercept=0)
+    print(pg+theme(aspect.ratio=1))
+}
+ggVD_2.4()
+```
+
+- Summarizing data distributions -- box plot
+
+```{r}
+book.2.6 <-
+function(){
+	oldpty <- par("pty")
+	par(pty = "s")
+	data <-
+	c(0.9, 1.6, 2.26305, 2.55052, 2.61059, 2.69284, 2.78511, 2.80955, 
+		2.94647, 2.96043, 3.05728, 3.15748, 3.18033, 3.20021, 
+		3.20156, 3.24435, 3.33231, 3.34176, 3.3762, 3.39578, 3.4925,
+		3.55195, 3.56207, 3.65149, 3.72746, 3.73338, 3.73869, 
+		3.80469, 3.85224, 3.91386, 3.93034, 4.02351, 4.03947, 
+	        4.05481, 4.10111, 4.26249, 4.28782, 4.37586, 4.48811, 
+		4.6001, 4.65677, 4.66167, 4.73211, 4.80803, 4.9812, 5.17246,
+		5.3156, 5.35086, 5.36848, 5.48167, 5.68, 5.98848, 6.2, 7.1, 
+		7.4)
+	boxplot(data, rep(NA, length(data)), ylab = "Data")
+	usr <- par("usr")
+	x <- usr[1] + (usr[2] - usr[1]) * 0.5
+	at <- c(0.9, 1.6, 3.2, 3.8, 4.65, 6.2, 7.2)
+	arrows(rep(x * 1.15, 7), at, rep(x, 7), at)
+	mtext("Figure 2.6",1,1,cex=.8)
+	text(rep(x * 1.2, 7), at, adj = 0,
+		labels = c("outside value", "lower adjacent value", 
+			"lower quartile", "median", "upper quartile", 
+			"upper adjacent value", "outside values"))	
+	par(pty = oldpty)
+	invisible()
+}
+
+book.2.6()
+
+ggVD_2.6 <- function(){
+    ydata <- c(0.9, 1.6, 2.26305, 2.55052,
+               2.61059, 2.69284, 2.78511, 2.80955, 2.94647, 2.96043,
+               3.05728, 3.15748, 3.18033, 3.20021, 3.20156, 3.24435,
+               3.33231, 3.34176, 3.37620, 3.39578, 3.49250, 3.55195,
+               3.56207, 3.65149, 3.72746, 3.73338, 3.73869, 3.80469,
+               3.85224, 3.91386, 3.93034, 4.02351, 4.03947, 4.05481,
+               4.10111, 4.26249, 4.28782, 4.37586, 4.48811, 4.6001,
+               4.65677, 4.66167, 4.73211, 4.80803, 4.9812, 5.17246,
+               5.3156, 5.35086, 5.36848, 5.48167, 5.68, 5.98848, 6.2,
+               7.1, 7.4)
+    text <- c("outside value", "lower adjacent value",
+              "lower quartile", "median", "upper quartile",
+              "upper adjacent value", "outside values")
+    at <- c(0.9, 1.6, 3.2,3.8, 4.65, 6.2, 7.2)
+
+    data = data.frame(y = ydata, x = 1)
+
+    p <- ggplot(data, aes(x ="", y)) + stat_boxplot() +
+    annotate("text", x = 1.5, y = at, label = paste("<--", text, sep = ""))
+    print(p)
+}
+
+ggVD_2.6()
+
+book.2.7 <-
+function()
+{
+	data <- round(c(0.9, 1.6, 2.263047,
+		2.550518, 2.610592, 2.69284, 2.785113, 
+		2.809547, 2.946467, 2.96044, 3.057283, 
+		3.15748, 3.180327, 3.200206, 
+		3.20156, 3.244347, 3.332312, 
+		3.341763, 3.3762, 3.395778, 3.492497, 
+		3.551945, 3.562066, 3.65149, 
+		3.7274632, 3.73338, 3.738686, 3.80469, 
+		3.85224, 3.91386, 3.93034, 
+		4.02351, 4.039466, 4.05481, 4.101108, 4.262486, 
+		4.28782, 4.375864, 4.48811, 4.6001, 
+		4.656775, 4.661673, 4.73211, 
+		4.80803, 4.9812, 5.172464, 
+		5.3156, 5.35086, 5.36848, 
+		5.48167, 5.68, 5.98848, 6.2, 
+		7.1, 7.4),5)
+	uq <- quantile(data,.75)
+	lq <- quantile(data,.25)
+	r <- 1.5*(uq-lq)
+	h <- c(lq-r,1.6,lq,uq,6.2,uq+r)
+	writing <- c("lower quartile - 1.5 r",
+		"lower adjacent value",
+		"lower quartile",
+		"upper quartile",
+		 "upper adjacent value",
+		 "upper quartile + 1.5 r")
+	qqmath(~ data,
+		distribution = qunif,
+		panel = substitute(function(x,...) {
+			reference.line <- trellis.par.get("reference.line")
+			panel.abline(h = h, lwd = reference.line$lwd, 
+                            lty = reference.line$lty,
+                            col = reference.line$col)
+			panel.qqmath(x, type="b", ...)
+			panel.text(rep(0,3), h[4:6], writing[4:6], adj=0)
+			panel.text(rep(1,3), h[1:3], writing[1:3], adj=1)
+		}),
+		aspect = 1, 
+		sub = list("Figure 2.7",cex=.8),
+		xlab = "f-value", 
+		ylab = "Data")
+}
+
+book.2.7()
+
+ggVD_2.7 <- function(){
+    data <- round(c(0.9, 1.6, 2.263047,
+                    2.550518, 2.610592, 2.69284, 2.785113, 
+                    2.809547, 2.946467, 2.96044, 3.057283, 
+                    3.15748, 3.180327, 3.200206, 
+                    3.20156, 3.244347, 3.332312, 
+                    3.341763, 3.3762, 3.395778, 3.492497, 
+                    3.551945, 3.562066, 3.65149, 
+                    3.7274632, 3.73338, 3.738686, 3.80469, 
+                    3.85224, 3.91386, 3.93034, 
+                    4.02351, 4.039466, 4.05481, 4.101108, 4.262486, 
+                    4.28782, 4.375864, 4.48811, 4.6001, 
+                    4.656775, 4.661673, 4.73211, 
+                    4.80803, 4.9812, 5.172464, 
+                    5.3156, 5.35086, 5.36848, 
+                    5.48167, 5.68, 5.98848, 6.2, 
+                    7.1, 7.4),5)
+    n <- length(data)
+    uq <- quantile(data,.75)
+    lq <- quantile(data,.25)
+    r <- 1.5*(uq-lq)
+    h <- c(lq-r,1.6,lq,uq,6.2,uq+r)
+    writing <- c("lower quartile - 1.5 r",
+                 "lower adjacent value",
+                 "lower quartile",
+                 "upper quartile",
+		 "upper adjacent value",
+		 "upper quartile + 1.5 r")
+    data = data.frame(y = data, fval=((1:n)-0.5)/n)
+    
+    p<- ggplot(data, aes(fval, y)) + geom_point() +
+        annotate("text", x = 0.125, y = h[4:6], label = writing[4:6]) + 
+        annotate("text", x = 0.875, y = h[1:3], label = writing[1:3])
+    print(p + theme(aspect.ratio=1))
+}
+
+ggVD_2.7()
+```
+- Compare distributions using boxplot
+
+```{r}
+book.2.8 <-
+    function()
+	bwplot(voice.part ~ height,
+               data=singer,
+               aspect=1,
+               sub = list("Figure 2.8",cex=.8),
+               xlab="Height (inches)")
+
+book.2.8()
+
+ggVD_2.8 <- function(){
+    ggplot(singer, aes(voice.part, height)) + geom_boxplot() +
+        coord_flip()+labs(xlab = " Height (inches)")+theme(aspect.ratio=1)
+    
+}
+ggVD_2.8()
+```
+- Compare data distribution to the normal distribution -- normal Q-Q plot
+
+```{R}
+## Quantile plot -- compare data quantiles to the respective uniform distribution quantiles
+book.2.9 <- function(){
+    data <- sort(singer$height[singer$voice.part=="Alto 1"])
+    qqmath(~ data, #qqmath computes the fvalue
+           distribution = qunif,
+           panel = function(x, ...) {
+               panel.grid()
+               panel.qqmath(x, type="b", ...)
+           },
+           aspect = 1, 
+           ylim = range(data, qnorm(ppoints(data), mean(data),
+                                    sqrt(var(data)))),
+           sub = list("Figure 2.9",cex=.8),
+           xlab = "f-value",
+           ylab = "Alto 1 Height (inches)")
+}
+
+book.2.9()
+
+ggVD_2.9 <- function(){
+    fval <- function(x){
+        oo <- order(x)
+        return((((1:max(oo))-0.5)/max(oo))[oo])
+    }
+    data <- (sort(singer$height[singer$voice.part=="Alto 1"]))
+    alto1 <- data.frame(height= data)
+    alto1$f <- fval(data)
+
+    ggplot(alto1, aes(f, height)) +geom_point() +
+        labs(y = "Alto 1 Height (inches)", x = "f-value") +
+        geom_path() + theme(aspect.ratio=1)
+}
+ggVD_2.9()    
+
+## The normal distribution
+book.2.10 <- function(){
+    data <- sort(singer$height[singer$voice.part=="Alto 1"])
+    x <- ppoints(data)
+    y <- qnorm(x, mean(data), sqrt(var(data)))
+    xyplot(y ~ x, 
+           panel = function(x, y){
+               panel.grid()
+               panel.xyplot(x, y, type = "l")
+           },
+           ylim = range(data, y),
+           aspect = 1, 
+           sub = list("Figure 2.10",cex=.8),
+           xlab = "f-value", 
+           ylab = "Normal Quantile Function")
+}
+book.2.10()
+
+ggVD_2.10 <- function(){
+    data <- sort(singer$height[singer$voice.part=="Alto 1"])
+    x <- ppoints(data)
+    y <- qnorm(x, mean(data), sqrt(var(data)))
+    
+    ggplot(data.frame(x, y), (aes(x, y))) + geom_line() +
+        labs(y = "Normal Quantile Function", x = "f-value")+
+        theme(aspect.ratio=1)
+}
+ggVD_2.10()
+```
+- Compare the data quantiles to the respective quantiles of $N(0,1)$. If the data distribution is $N(\mu, \sigma^2)$, the data quantile $y_q$ is
+$$y_q = \mu + \sigma\times z_q$$
+Plotting the data quantiles to the respective quantiles of $N(0,1)$ should result in something resemble a straight line.
+
+```{R}
+book.2.11 <- function(){
+    qqmath(~ height | voice.part,
+           data=singer,
+           prepanel = prepanel.qqmathline,
+           panel = function(x, ...) {
+               panel.grid()
+               panel.qqmathline(x, distribution = qnorm)
+               panel.qqmath(x, ...)
+           },
+           layout=c(2,4),
+           aspect=1, 
+           sub = list("Figure 2.11",cex=.8),
+           xlab = "Unit Normal Quantile",
+           ylab="Height (inches)")
+
+}
+book.2.11()
+
+ggVD_2.11 <- function()
+    ggplot(singer, aes(sample = height)) + stat_qq(distribution = qnorm)+
+        geom_qq_line()+ facet_wrap(. ~ voice.part, ncol = 2) +
+        labs(x = "Unit Normal Quantile", y = "Height (inches)") +
+        theme(aspect.ratio=1)
+ggVD_2.11()
+```
+- Judging the nature of the differences -- additive shift
+  1. Comparing the means
+```{R}
+book.2.12 <- function(){
+    dotplot(tapply(singer$height,singer$voice.part,mean), 
+            aspect=1,
+            sub = list("Figure 2.12",cex=.8),
+            xlab="Mean Height (inches)")
+}
+
+book.2.12()
+
+ggVD_2.12 <- function(){
+    meandot <- data.frame(tapply(singer$height, singer$voice.part, mean))
+    singer.means = data.frame(
+        voice.part=ordered(rownames(meandot),
+                           levels=rev(c("Soprano 1", "Soprano 2",
+                                        "Alto 1", "Alto 2" ,
+                                        "Tenor 1", "Tenor 2",
+                                        "Bass 1", "Bass 2"))),
+        height=meandot[,1])
+    
+    ggplot(singer.means, aes(height,voice.part)) + geom_point() +
+        labs(x = "Mean Height (inches)")  + theme(aspect.ratio=1)
+}
+
+ggVD_2.12()
+```
+  2. Comparing the variances
+```{R}
+book.2.13 <- function(){
+    bwplot(voice.part ~ oneway(height~voice.part, spread = 1)$residuals,
+           data = singer,
+           aspect=0.75,
+           panel = function(x,y){
+               panel.bwplot(x,y)
+               panel.abline(v=0)
+           },
+           sub = list("Figure 2.13",cex=.8),
+           xlab = "Residual Height (inches)")
+}
+
+book.2.13()
+
+ggVD_2.13 <- function(){
+    res.height <- oneway(height ~ voice.part, data = singer,
+                         spread = 1)$residuals 
+    
+    ggplot(singer, aes(voice.part, res.height)) + geom_boxplot() +
+        coord_flip( )+ labs(xlab = "Residual Height (inches)") +
+        theme(aspect.ratio=0.75) 
+}
+ggVD_2.13()
+```
+
+## From Data Exploration to Model
+The voice part data suggest a relationship between oper singers voice and their height -- the lower their voices are the taller the singers are. 
+
+Now how well the model explain the height differences among opera singers?
+
+The r-f spread (rfs) plot
+```{R}
+book.2.17 <- function(){
+    rfs(oneway(height~voice.part, data = singer, spread = 1), 
+        aspect=1, 
+        sub = list("Figure 2.17",cex=.8),
+        ylab = "Height (inches)")
+}
+book.2.17()
+
+ggVD_2.17 <- function(){
+    Fitoneway <- oneway(height~voice.part,
+                        data = singer, spread = 1)
+    fitmean <- Fitoneway$fitted-mean(Fitoneway$fitted)
+    singer.rfs <- data.frame(Fitted_minus_mean=fitmean,                         Residual=Fitoneway$residuals) 
+    singer.m <-melt(singer.rfs) 
+    ggplot(singer.m)+stat_qq(aes(sample = value),
+                             distribution = qunif) +
+        facet_wrap(.~variable) +
+        labs(y = "Height (inches)")+
+        theme(aspect.ratio=1)
+}
+
+ggVD_2.17()
+```
+
+## Multiplicative Shift
+
+The fusion time example: times needed to identify hidden 3-D patterns with and without knowledge of what the pattern is.
+
+```{R}
+## the data
+book.2.19 <-
+  function()
+    qqmath(~ time | nv.vv,
+           data=fusion.time,
+           distribution = qunif,
+           panel = function(x, ...) {
+             panel.grid()
+             panel.qqmath(x, ...)
+           },
+           aspect=1,
+           layout=c(2,1),
+           sub = list("Figure 2.19",cex=.8),
+           xlab = "f-value",
+           ylab="Time (seconds)")
+
+book.2.19()
+
+ggVD_2.19 <- 
+  function()
+    ggplot(fusion.time, aes(sample=time))+
+  geom_point(stat="qq", distribution=qunif)+
+  facet_grid(. ~ nv.vv) +theme(aspect.ratio=1)
+
+ggVD_2.19()
+```
+- Visualizing symmetry
+```{R}
+#2.20: A contrived graph showing a symmetric distribution by quantile
+book.2.20 <-
+    function()
+{
+    data <- 5+qnorm(ppoints(25))
+    ans<-qqmath(~data,
+           distribution = qunif,
+           panel = function(x, ...) {
+             reference.line <- trellis.par.get("reference.line")
+             m <- median(x)
+             panel.segments(c(.1, .9), c(m,m), c(.1, .9),
+                            quantile(x, c(.1, .9)),
+                            lwd = reference.line$lwd,
+                            lty = reference.line$lty,
+                            col = reference.line$col)
+             panel.qqmath(x, type="b", ...)
+             panel.abline(h = m)
+             panel.text(.05, 4.25, "d(0.1)", srt = 90, adj = 0)
+             panel.text(.85, 5.25, "d(0.9)", srt = 90, adj = 0)
+           },
+           aspect = 1, 
+           sub = list("Figure 2.20",cex=.8),
+           xlab = "f-value",
+           ylab = "Data")
+    print(ans)
+  }
+book.2.20()
+
+
+ggVD_2.20 <- 
+    function()
+{
+    qdata <- 5+qnorm(ppoints(25))
+    num <- 1:25
+    data <- data.frame(qdata,num)
+    m <- median(data$qdata)
+    p <- ggplot(data, aes(sample=qdata))+
+      geom_point(stat="qq", distribution=qunif)+
+      geom_path(stat="qq", distribution=qunif)+
+      geom_abline(slope=0, intercept=m)+
+      geom_segment(x=0.1, y=m, xend=0.1,
+                   yend=quantile(data$qdata,0.1), linetype="dotted")+
+      annotate(geom="text",x=0.06, y=((m+quantile(data$qdata,0.1))/2) ,
+               label="d(0.1)", angle=90)+
+      geom_segment(x=0.9, y=m, xend=0.9, yend=quantile(data$qdata,0.9),
+                   linetype="dotted")+
+      annotate(geom="text",x=0.86, y=((m+quantile(data$qdata,0.9))/2) ,
+               label="d(0.9)", angle=90)+
+      theme(aspect.ratio=1)
+      print(p)
+}
+ggVD_2.20()
+
+```
+ (and asymmetry)
+ 
+```{R}
+#2.21: A contrived graph showing quantiles for skewed data
+        
+book.2.21 <-
+  function()
+  {
+    data <- 2 ^ (5 + qnorm(ppoints(25)))
+    ans <- qqmath(~ data,
+           distribution = qunif,
+           panel = function(x, ...) {
+             reference.line <- trellis.par.get("reference.line")
+             m <- median(x)
+             panel.segments(c(.1, .9), c(m,m), c(.1, .9),
+                            quantile(x, c(.1, .9)),
+                            lwd = reference.line$lwd,
+                            lty = reference.line$lty,
+                            col = reference.line$col)
+             panel.qqmath(x, , type="b", ...)
+             panel.abline(h = m)
+             panel.text(.05, 15, "d(0.1)", srt = 90, adj = 0)
+             panel.text(.85, 40, "d(0.9)", srt = 90, adj = 0)
+           },
+           aspect = 1, 
+           sub = list("Figure 2.21",cex=.8),
+           xlab = "f-value",
+           ylab = "Data")
+    ans
+  }
+        book.2.21()
+
+
+ggVD_2.21 <- 
+  function()
+  {
+      q.sk.data <- 2^(5+qnorm(ppoints(25)))
+    num <- 1:25
+    sk.data <- data.frame(q.sk.data,num)
+    m <- median(sk.data$q.sk.data)
+    ggplot(sk.data, aes(sample=q.sk.data))+
+      geom_point(stat="qq", distribution=qunif)+
+      geom_path(stat="qq", distribution=qunif)+
+      geom_abline(slope=0, intercept = m)+
+      geom_segment(x=0.1, y=m, xend=0.1,
+                   yend=quantile(sk.data$q.sk.data,0.1),
+                   linetype="dotted")+
+      annotate(geom="text",x=0.06,
+               y=((m+quantile(sk.data$q.sk.data,0.1))/2) ,
+               label="d(0.1)", angle=90)+
+      geom_segment(x=0.9, y=m, xend=0.9,
+                   yend=quantile(sk.data$q.sk.data,0.9),
+                   linetype="dotted")+
+      annotate(geom="text",x=0.86,
+               y=((m+quantile(sk.data$q.sk.data,0.9))/2) ,
+               label="d(0.9)", angle=90)+
+      theme(aspect.ratio=1)
+  }
+ggVD_2.21()
+```
+Asymmetry data distribution is a sign that the distribution is not normal (let's see the normal Q-Q plot):
+
+```{R}
+#2.22: Normal QQ plots (NV/VV) for fusion time
+book.2.22 <-
+  function()
+    qqmath(~ time | nv.vv,
+           data=fusion.time,
+           prepanel = prepanel.qqmathline,
+           panel = function(x, ...) {
+             panel.grid()
+             panel.qqmathline(x, distribution = qnorm)
+             panel.qqmath(x, ...)
+           },
+           aspect=1,
+           layout=c(2,1),
+           sub = list("Figure 2.22",cex=.8),
+           xlab = "Unit Normal Quantile",
+           ylab="Time (seconds)")
+book.2.22()
+
+
+ggVD_2.22 <- 
+    function()
+        ggplot(fusion.time, aes(sample=time))+
+      stat_qq()+
+          facet_grid(.~nv.vv)+
+          geom_qq_line() + theme(aspect.ratio=1)
+ggVD_2.22()
+```
+
+Another feature: monotone spread -- the larger the mean, the larger the variance.
+```{R}
+##2.23: box plot of fusion time by NV and VV
+book.2.23 <-
+    function()
+        bwplot(nv.vv ~ time,
+               data=fusion.time,
+             aspect = .5,
+             sub = list("Figure 2.23",cex=.8),
+             xlab="Time (seconds)")
+book.2.23()
+
+
+ggVD_2.23 <- 
+    function()
+        ggplot(fusion.time, aes(x=nv.vv, y=time))+
+            stat_boxplot(geom='errorbar', width=0.5, linetype='dashed')+
+            stat_boxplot()+
+            coord_flip()  + theme(aspect.ratio=0.5)
+
+ggVD_2.23()
+```
+
+Skewed distributions with monotone spread are typically differ by multiplicative shifts: 
+$$NV = VV \times a$$
+The log transformation converts a multiplitive relationship to an additive one:
+$$\log(NV) = \log(VV)+\log(a)$$
+
+Now we want to see if the log fusion times are normal:
+```{R}
+book.2.24 <-
+    function()
+        qqmath(~ log(time,2) | nv.vv,
+               data=fusion.time,
+               prepanel=prepanel.qqmathline,
+               panel = function(x, ...) {
+                   panel.grid()
+                   panel.qqmathline(x, distribution = qnorm)
+                   panel.qqmath(x, ...)
+               },
+           aspect=1,
+           layout=c(2,1),
+           sub = list("Figure 2.24",cex=.8),
+           xlab = "Unit Normal Quantile",
+           ylab="Log Time (log 2 seconds)")
+book.2.24()
+
+ggVD_2.24 <- 
+    function()
+{ ## illustrating how the qq_line is estimated
+    int.sl.log <- fusion.time %>% group_by(nv.vv) %>% 
+        summarize(q25    = quantile(log(time,2),0.25, type=5),
+                  q75    = quantile(log(time,2),0.75, type=5),
+                  norm25 = qnorm( 0.25),
+                  norm75 = qnorm( 0.75),
+                  slope.log = (q25 - q75) / (norm25 - norm75),
+                  int.log = q25 - slope.log * norm25) #%>%
+    p <- ggplot(fusion.time, aes(sample=log(time,2)))+
+        stat_qq() + geom_qq_line()+
+        facet_grid(.~nv.vv)+
+        theme(aspect.ratio=1)
+    print(p)
+}
+ggVD_2.24()
+
+```
+Question: how do we compare variances?
+We can use side-by-side boxplots to see if the heights of the boxes are identical (not efficient -- difficult to decode the information). Here is a more effective plot the spread-location (sl) plot:
+
+```{R}
+#2.25: Spread-location plot for fusion times (Sq rt of abs residuals against fitted)
+
+## let's first show monotone spread
+book.2.25 <-
+    function()
+{
+    fusion.time.m <- oneway(time ~ nv.vv, data=fusion.time,
+                            location=median, spread=1)
+    xyplot(sqrt(abs(residuals(fusion.time.m))) ~
+               jitter(fitted.values(fusion.time.m),factor=0.3),
+           aspect=1,
+           panel=substitute(function(x,y){
+             panel.xyplot(x,y)
+             srmads <- sqrt(tapply(abs(residuals(fusion.time.m)),
+                                   fusion.time$nv.vv, median))
+             panel.lines(fusion.time.m$location,srmads)
+           }),
+           sub = list("Figure 2.25",cex=.8),
+           xlab="Jittered Median Time (sec)",
+           ylab="Square Root Absolute Residual Time (square root sec)")
+  }
+book.2.25()
+
+
+
+ggVD_2.25 <- 
+    function(){
+        fusion.time.m <- fusion.time %>%
+        group_by(nv.vv)%>%
+        mutate(med=median(time),
+         res=sqrt(abs(time-med)))
+    sl.line <- fusion.time.m %>%
+    group_by(nv.vv)%>%
+    summarise(location=median(time),
+            res.med=median(res))
+    p <- ggplot(fusion.time.m, aes(x=med,y=res,color=nv.vv)) +
+    geom_jitter(alpha=0.5, width=0.1)+
+    geom_line(data=sl.line, aes(x=location, y=res.med), col="blue")
+    print(p+theme(aspect.ratio=1))
+  }
+ggVD_2.25()
+
+# 2.26: Spread-location plot for log fusion times (Sq rt of abs residuals against fitted)
+
+## now log transformed data should be additive
+book.2.26 <-
+function()
+{
+    fusion.time.m <- oneway(log(time,2) ~ nv.vv,data=fusion.time,
+                            location = median, spread=1)
+	xyplot(sqrt(abs(residuals(fusion.time.m))) ~
+                   jitter(fitted.values(fusion.time.m),factor=0.3),
+		aspect=1,
+		panel=substitute(function(x,y){
+			panel.xyplot(x,y)
+			srmads <- tapply(abs(residuals(fusion.time.m)),
+				fusion.time$nv.vv,median)
+			panel.lines(fusion.time.m$location,srmads)
+		}),
+		sub = list("Figure 2.26",cex=.8),
+		xlab="Jittered Median Log Time (log 2 sec)",
+		ylab="Square Root Absolute Residual Log Time (square root absolute log 2 sec)")
+}
+book.2.26()
+
+ggVD_2.26 <- 
+function(){
+    fusion.time.m.log <- fusion.time %>%
+        group_by(nv.vv)%>%
+  mutate(med.log=median(log(time,2)),
+         res.log=sqrt(abs(log(time,2)-med.log)))
+    sl.line.log <- fusion.time.m.log %>%
+        group_by(nv.vv)%>%
+        summarise(location.log=median(log(time,2)),
+                  res.med.log=median(res.log))
+    ggplot(fusion.time.m.log, aes(x=med.log,y=res.log,color=nv.vv)) +
+        geom_jitter(alpha=0.5, width=0.05)+
+        geom_line(data=sl.line.log, aes(x=location.log, y=res.med.log),
+                  col="blue") + theme(aspect.ratio=1)
+}
+ggVD_2.26() 
+
+```
+A direct assessment using Q-Q plot:
+```{R}
+## first -- comparing fusion time without transformation
+book.2.27 <-
+  function()
+      qq(nv.vv ~ time,
+         data = fusion.time,
+         aspect = 1,
+         sub = list("Figure 2.27",cex=.8),
+         xlab="NV Time (seconds)",
+         ylab="VV Time (seconds)")
+book.2.27()
+
+
+#@flag - runs by piece, but not as a function
+ggVD_2.27 <- 
+function(){
+    q <- function(x, probs = ppoints(100)) {
+        data.frame(q = probs, value = quantile(x, probs))
+    }
+    n <- min(table(fusion.time$nv.vv))
+    fusion.q <- plyr::ddply(fusion.time, "nv.vv",
+                      function(df) q(df$time, ppoints(n)))
+    fusion.df <- recast(fusion.q, q ~ nv.vv, id.var = c(2,1))
+    pg <- ggplot(fusion.df, aes(NV, VV) ) + geom_point() +
+        geom_abline() + coord_fixed(ylim=c(0,45), xlim=c(0,45))
+    print(pg+theme(aspect.ratio=1))
+
+}
+ggVD_2.27()
+
+#2.28: QQ plot comparing NV and VV log fusion times
+
+## comparing log fusion time -- additive
+book.2.28 <-
+    function()
+      qq(nv.vv ~ log(time, 2),
+         data = fusion.time,
+         aspect = 1,
+         sub = list("Figure 2.28",cex=.8),
+         xlab = "Log NV Time (log 2 seconds)",
+         ylab = "Log VV Time (log 2 seconds)")
+book.2.28()
+
+# **This one uses the df created in ggVD.2.27
+
+ggVD_2.28 <- function()
+{
+    q <- function(x, probs = ppoints(100)) {
+        data.frame(q = probs, value = quantile(x, probs))
+    }
+    n <- min(table(fusion.time$nv.vv))
+    fusion.q <- ddply(fusion.time, "nv.vv",
+                      function(df) q(log(df$time, 2), ppoints(n)))
+    fusion.df <- recast(fusion.q, q ~ nv.vv, id.var = c(2,1))
+    pg <- ggplot(fusion.df, aes(NV, VV) ) + geom_point() +
+        geom_abline() + coord_fixed(ylim=c(0,5), xlim=c(0,5))
+    print(pg+theme(aspect.ratio=1))
+}
+```
+

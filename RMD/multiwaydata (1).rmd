@@ -1,0 +1,382 @@
+---
+title: "Multiway Data"
+author: "Song Qian"
+date: "11/14/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("FrontMatter.R")
+packages(lattice)
+packages(foreign)
+packages(gdata)
+data.restore (paste(dataDIR, "visualizing.data", sep="/"))
+
+wt.bisquare <- function(u, c=6) {
+ ifelse( abs(u/c) < 1, (1-(u/c)^2)^2, 0)
+} ## bi-square weights
+
+```
+
+## Multiway data
+The livestock count data (1987): collected for estimating European ammonia emission because animal source of ammonia accounts for 81% of all European emission. 
+
+The data
+```{r}
+    attach(livestock)
+    logcount <- log10(count)
+    new.country <- ordered(country, rev(sort(levels(country))))
+    new.livestock <- ordered(livestock.type,                c("Sheep","Poultry","Pigs","Horses","Cattle"))
+    ans <- dotplot(new.country ~ logcount | new.livestock,
+                   xlab = "Log 10 Number of Livestock",
+                   layout=c(3,2))
+    detach()
+    ans
+```
+
+Another look -- changing the visual perception
+```{R}
+    attach(livestock)
+    logcount <- log10(count)
+    new.country <- reorder.factor(country, logcount, median)
+    new.livestock <- reorder.factor(livestock.type, logcount, median)
+    ans <- dotplot(new.country ~ logcount | new.livestock,
+                   xlab = "Log 10 Number of Livestock",
+                   layout=c(3,2))
+    detach()
+    ans
+```
+
+Two categorical variables and the visual perception of effects of them are asymmetric -- we can better compare values within a panel than values between panels.    
+
+A different comparison
+```{R}
+    attach(livestock)
+    logcount <- log10(count)
+    new.country <- reorder.factor(country, logcount, median)
+    new.livestock <- reorder.factor(livestock.type, logcount, median)
+    ans <- dotplot(new.livestock ~ logcount | new.country,
+                   xlab = "Log 10 Number of Livestock",
+                   layout=c(4,7),
+                   aspect=1/2)
+    detach()
+    ans
+```
+
+
+```{R}
+    attach(livestock)
+    logcount <- log10(count)
+    wt <- rep(1,length(logcount))
+    for(i in 1:10){
+        liv.lm <- lm(logcount~livestock.type+country,weights=wt)
+        wt <- wt.bisquare(liv.lm$res/median(abs(liv.lm$res)),c=6)
+    }
+    liv.effects <- dummy.coef(liv.lm)
+    liv.effects <- sapply(liv.effects,sort)
+    all.effects <- c(liv.effects$livestock.type,NA,liv.effects$country)
+    ans <- dotplot(all.effects,
+                   aspect=1,
+                   xlab = "Log Livestock Effects (log 10 count)")
+    detach()
+    ans
+    rm(wt)
+```
+
+### Additive fit
+What we have examined pointed us to a more quantitative model:
+$$ y_{lc} = \mu+\alpha_l+\beta_c + \epsilon_{lc}$$.
+We want to know, the contribution of country and of livestock type. We redraw the previous two figures by ordering the countries and livestock type by their estimated effects.
+```{R}
+    attach(livestock)
+    logcount <- log10(count)
+    wt <- rep(1,length(logcount))
+    for(i in 1:10){
+        liv.lm <- lm(logcount~livestock.type+country,weights=wt)
+        wt <- wt.bisquare(liv.lm$res/median(abs(liv.lm$res)),c=6)
+    }
+    liv.effects <- dummy.coef(liv.lm)
+    liv.effects <- sapply(liv.effects,"sort")
+    new.country <- ordered(country,names(liv.effects$country))
+    new.livestock <- ordered(livestock.type,names(liv.effects$livestock.type))
+    ans <- dotplot(new.country ~ logcount | new.livestock,
+                   xlab = "Log 10 Number of Livestock",
+                   layout=c(3,2))
+    detach()
+    ans
+```
+and
+```{R}
+
+    attach(livestock)
+    logcount <- log10(count)
+    wt <- rep(1,length(logcount))
+    for(i in 1:10){
+        liv.lm <- lm(logcount~livestock.type+country,weights=wt)
+        wt <- wt.bisquare(liv.lm$res/median(abs(liv.lm$res)),c=6)
+    }
+    liv.effects <- dummy.coef(liv.lm)
+    liv.effects <- sapply(liv.effects,"sort")
+    new.country <- ordered(country,names(liv.effects$country))
+    new.livestock <- ordered(livestock.type,names(liv.effects$livestock.type))
+    ans <- dotplot(new.livestock ~ logcount | new.country,
+                   xlab = "Log 10 Number of Livestock",
+                   layout=c(4,7),
+                   aspect=1)
+    detach()
+    ans
+```
+Fitted values of the log counts:     
+```{R}
+    attach(livestock)
+    logcount <- log10(count)
+    wt <- rep(1,length(logcount))
+    for(i in 1:10){
+        liv.lm <- lm(logcount~livestock.type+country,weights=wt)
+        wt <- wt.bisquare(liv.lm$res/median(abs(liv.lm$res)),c=6)
+    }
+    liv.effects <- dummy.coef(liv.lm)
+    liv.effects <- sapply(liv.effects,"sort")
+    new.country <- ordered(country,names(liv.effects$country))
+    new.livestock <- ordered(livestock.type,names(liv.effects$livestock.type))
+    ans <- dotplot(new.country ~ fitted.values(liv.lm) | new.livestock,
+                   xlab = "Fitted Log 10 Number of Livestock",
+                   layout=c(3,2))
+    detach()
+    ans
+```
+and 
+```{R}
+    attach(livestock)
+    logcount <- log10(count)
+    wt <- rep(1,length(logcount))
+    for(i in 1:10){
+        liv.lm <- lm(logcount~livestock.type+country,weights=wt)
+        wt <- wt.bisquare(liv.lm$res/median(abs(liv.lm$res)),c=6)
+    }
+    liv.effects <- dummy.coef(liv.lm)
+    liv.effects <- sapply(liv.effects,"sort")
+    new.country <- ordered(country,names(liv.effects$country))
+    new.livestock <- ordered(livestock.type,names(liv.effects$livestock.type))
+    ans <- dotplot(new.livestock ~ fitted.values(liv.lm) | new.country,
+                   xlab = "Fitted Log 10 Number of Livestock",
+                   layout=c(4,7),
+                   aspect=1)
+    detach()
+    ans
+```
+
+Residuals:
+```{R}
+	attach(livestock)
+	logcount <- log(count,2)
+	wt <- rep(1,length(logcount))
+	for(i in 1:10){
+	        liv.lm <- lm(logcount~livestock.type+country,weights=wt)
+	        wt <- wt.bisquare(liv.lm$res/median(abs(liv.lm$res)),c=6)
+	}
+	liv.effects <- dummy.coef(liv.lm)
+	liv.effects <- sapply(liv.effects,"sort")
+	new.country <- ordered(country,names(liv.effects$country))
+	new.livestock <- ordered(livestock.type,names(liv.effects$livestock.type))
+	liv.res <- residuals(liv.lm)
+	liv.res[(livestock.type=="Pigs")&(country=="Turkey")] <- NA
+	ans <- dotplot(new.country ~ liv.res | new.livestock,
+		panel = function(x, y) {
+			panel.dotplot(x, y)
+	                panel.abline(v=0)
+		},
+		layout=c(3,2),
+		xlab = "Residual Log 2 Number of Livestock")
+	detach()
+	ans
+```
+and
+```{R}
+    attach(livestock)
+    logcount <- log(count,2)
+    wt <- rep(1,length(logcount))
+    for(i in 1:10){
+        liv.lm <- lm(logcount~livestock.type+country,weights=wt)
+        wt <- wt.bisquare(liv.lm$res/median(abs(liv.lm$res)),c=6)
+    }
+    liv.effects <- dummy.coef(liv.lm)
+    liv.effects <- sapply(liv.effects,"sort")
+    new.country <- ordered(country,names(liv.effects$country))
+    new.livestock <- ordered(livestock.type,names(liv.effects$livestock.type))
+    liv.res <- residuals(liv.lm)
+    liv.res[(livestock.type=="Pigs")&(country=="Turkey")] <- NA
+    ans <- dotplot(new.livestock ~ liv.res | new.country,
+                   panel = function(x, y) {
+                       panel.dotplot(x, y)
+                       panel.abline(v=0)
+                   },
+                   aspect=1,
+                   layout=c(4,7),
+                   sub = list("Figure 6.10",cex=.8),
+                   xlab = "Residual Log 2 Number of Livestock")
+    detach()
+    ans
+```
+## The Barley data:
+```{R}
+	dotplot(variety ~ yield | year * site,
+		data = barley,
+		aspect=.4,
+		xlab = "Barley Yield (bushels/acre)")
+```
+We know that Morris was problematic. If we switch the year labeling for Morris:
+```{R}
+    attach(barley)
+    morris31 <- yield[(site=="Morris")&(year=="1931")]
+    morris32 <- yield[(site=="Morris")&(year=="1932")]
+    new.yield <- yield
+    new.yield[(site=="Morris")&(year=="1931")] <- morris32
+    new.yield[(site=="Morris")&(year=="1932")] <- morris31
+    ans <- dotplot(variety ~ new.yield | year * site, 
+                   xlab = "Barley Yield (bushels/acre)",
+                   aspect=.4)
+    detach()
+    ans
+```
+Displaying yearly differences: 1931 yield minus 1932
+```{R}
+    attach(barley)
+    morris31 <- yield[(site=="Morris")&(year=="1931")]
+    morris32 <- yield[(site=="Morris")&(year=="1932")]
+    new.yield <- yield
+    new.yield[(site=="Morris")&(year=="1931")] <- morris32
+    new.yield[(site=="Morris")&(year=="1932")] <- morris31
+    which <- year=="1931"
+    new.yield.diff <- new.yield[which]-new.yield[!which]
+    ans <- dotplot(variety[which] ~ new.yield.diff |
+                       site[which], 
+                   xlab = "Differences of Barley Yield (bushels/acre)",
+                   layout = c(1,6),
+                   aspect=.4)
+    detach()
+    ans
+```
+There is an interaction between year and site: not all sites had smaller yields in 1932
+```{R}
+    attach(barley)
+    morris31 <- yield[(site=="Morris")&(year=="1931")]
+    morris32 <- yield[(site=="Morris")&(year=="1932")]
+    new.yield <- yield
+    new.yield[(site=="Morris")&(year=="1931")] <- morris32
+    new.yield[(site=="Morris")&(year=="1932")] <- morris31
+    wt <- rep(1,length(yield))
+    for(i in 1:10){
+        barley.lm <- lm(new.yield~variety+year*site,weights=wt)
+        wt <- wt.bisquare(barley.lm$res/median(abs(barley.lm$res)),c=6)
+    }
+    ans <- rfs(barley.lm, 
+               aspect=2,
+               ylab = "Yield (bushels/acre)")
+    detach()
+    ans
+```
+The year-site effects:
+```{R}
+    attach(barley)
+    morris31 <- yield[(site=="Morris")&(year=="1931")]
+    morris32 <- yield[(site=="Morris")&(year=="1932")]
+    new.yield <- yield
+    new.yield[(site=="Morris")&(year=="1931")] <- morris32
+    new.yield[(site=="Morris")&(year=="1932")] <- morris31
+    wt <- rep(1,length(yield))
+    for(i in 1:10){
+        barley.lm <- lm(new.yield~variety+year*site,weights=wt)
+        wt <- wt.bisquare(barley.lm$res/median(abs(barley.lm$res)),c=6)
+    }
+    barley.effects <- dummy.coef(barley.lm)
+    ys.effects <- c(barley.effects$"year:site" +
+                    outer(barley.effects$year,barley.effects$site,"+"))
+    ys.year <- ordered(rep(levels(year),6),levels(year))
+    ys.site <- ordered(rep(levels(site),rep(2,6)),levels(site))
+    n <- length(levels(ys.year))
+    ans <- dotplot(ys.site ~ ys.effects,
+                   ## panel = function(x, y, subscripts, ...) {
+                   ##     do.call("abline", c(list(h = y), trellis.par.get("dot.line")))
+                   ##	panel.superpose(x, y, subscripts, ...)
+                                        #},
+                   groups = ys.year,
+                   aspect = 2/3,
+                   xlab = "Site by Year Effects (bushels/acre)",
+                   key = list(
+                       points = Rows(trellis.par.get("superpose.symbol"), 1:n),
+                       text = list(levels(ys.year)),
+                       columns = n))
+    detach()
+    ans
+```
+The veriety effects:
+```{R}
+    attach(barley)
+    morris31 <- yield[(site=="Morris")&(year=="1931")]
+    morris32 <- yield[(site=="Morris")&(year=="1932")]
+    new.yield <- yield
+    new.yield[(site=="Morris")&(year=="1931")] <- morris32
+    new.yield[(site=="Morris")&(year=="1932")] <- morris31
+    wt <- rep(1,length(yield))
+    for(i in 1:10){
+        barley.lm <- lm(new.yield~variety+
+                            year*site,weights=wt)
+        wt <- wt.bisquare(barley.lm$res/median(abs(barley.lm$res)),c=6)
+    }
+    barley.effects <- dummy.coef(barley.lm)
+    ans <- dotplot(sort(barley.effects$variety),
+                   xlab = "Variety Effects (bushels/acre)", 
+                   aspect=2/3)
+    detach()
+    ans
+```
+Now residuals
+```{R}
+    attach(barley)
+    morris31 <- yield[(site=="Morris")&(year=="1931")]
+    morris32 <- yield[(site=="Morris")&(year=="1932")]
+    new.yield <- yield
+    new.yield[(site=="Morris")&(year=="1931")] <- morris32
+    new.yield[(site=="Morris")&(year=="1932")] <- morris31
+    wt <- rep(1,length(yield))
+    for(i in 1:10){
+        barley.lm <- lm(new.yield~variety+year*site,weights=wt)
+        wt <- wt.bisquare(barley.lm$res/median(abs(barley.lm$res)),c=6)
+    }
+    ans <- dotplot(site ~ residuals(barley.lm) | year * variety,
+                   layout=c(4,5),
+                   aspect=2/3,
+                   panel = function(x, y) {
+                       panel.dotplot(x, y)
+                       panel.abline(v=0)
+                   },
+                   xlab = "Residual Barley Yield (bushels/acre)")
+    detach()
+    ans
+
+    attach(barley)
+    morris31 <- yield[(site=="Morris")&(year=="1931")]
+    morris32 <- yield[(site=="Morris")&(year=="1932")]
+    new.yield <- yield
+    new.yield[(site=="Morris")&(year=="1931")] <- morris32
+    new.yield[(site=="Morris")&(year=="1932")] <- morris31
+    wt <- rep(1,length(yield))
+    for(i in 1:10){
+        barley.lm <- lm(new.yield~variety+year*site,weights=wt)
+        wt <- wt.bisquare(barley.lm$res/median(abs(barley.lm$res)),c=6)
+    }
+    ans <- dotplot(variety ~ residuals(barley.lm) | year * site,
+                   layout = c(2,6),
+                   aspect=2/3,
+                   panel = function(x, y) {
+                       panel.dotplot(x, y)
+                       panel.abline(v=0)
+                   },
+                   xlab = "Residual Barley Yield (bushels/acre)")
+    detach()
+    ans
+
+```
+

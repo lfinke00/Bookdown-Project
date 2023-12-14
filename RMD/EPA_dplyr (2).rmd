@@ -1,0 +1,131 @@
+---
+title: "Week 7"
+author: "Song S. Qian"
+date: "October 11, 2021"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r global_options, echo=F, message=FALSE}
+trellis.par.set(col.whitebg())
+knitr::opts_chunk$set(warning=F, prompt=TRUE, tidy=TRUE)
+```
+# Front Matters
+
+This is a RMarkdown document on R data objects for the week of
+October 13, 2021.
+
+```{r, echo=FALSE, results='hide'}
+source("frontMatter.R")
+packages(tidyverse)
+```
+
+## The EPA Data Processing Example
+
+Reading data:
+```{r}
+sf <- as_tibble(read.csv(paste(dataDIR, "SouthFlorida.csv", sep="/"), header=T))
+```
+EPA requires that the data be processed so that the resulting recommendations of nutrient criteria are based on data with certain standards:
+
+Data Processing Considerations
+- Drop sites with fewer than 4 observations
+- Drop sites with fewer than 4 data points for TP, TN, CHLA, or Turbidity (Turb)
+- Drop observations with 0 concentration values for TP, TN, CHLA, or Turb
+- Drop sites with less than 2 years of records
+- Drop sites without summer or winter observations
+
+After processing, calculating annual geometric means of TP, TN, CHLA, and Turb for each site.
+
+As we discussed in week 4, an EPA staff wrote a long R function to process the data.  The R function checks the requirements one at a time. But the sequence may be wrong.  For example, if we require at least 4 observations to calculate a geometric mean, we should count the number of observations after 0 concentration values are removed.  We will now use "verbs" in package `dplyr` to process the data.
+
+The problem has two steps.  One is data screening (or filtering) to removes sites that do not meet the requirements.
+
+The other is the calculation of site means (summarises).
+
+I will first convert the `DATE` into R date and add a column of season (winter or summer):
+```{r}
+sf<- mutate(sf, 
+       RDate = as.Date(DATE, format="%m/%d/%Y"), 
+       Month = as.numeric(ordered(format(RDate, "%m"))),
+       Summer = Month>=5 & Month<=9)
+```
+
+Let's now filtering out all 0 values and keep only non-missing values:
+```{r}
+sf1 <- filter(sf,  TP.S!=0&TN.S!=0&CHLA!=0&TURB.S!=0)
+
+sf2 <- filter(sf1, !is.na(TP.S) & !is.na(TN.S)&!is.na(CHLA)&!is.na(TURB.S))
+```
+
+We have now removed all 0 and missing values.  The first 2 conditions are now reduced to one (remove site with fewer than 4 observations).  
+```{r}
+sf3 <- group_by(sf2, Site)
+per_site<- summarise(sf3, n=n())
+site.keep <- filter(per_site, n>10)
+sf3 <- filter(sf3, is.element(Site, site.keep$Site))
+```
+I changed the criterion to 10 so that we can actually see the change.
+
+Now we check the requirement of at least 2 years data and 2 observations in winter and 2 observations in summer.  I will try the following:
+- remove the year with fewer than 2 records in winter or summer
+- remove the site with fewer than two years
+  
+```{r}
+sf4 <- group_by(sf3, Site, Year, Summer)
+per_site_yr_sn <- summarise(sf4, n=n())
+site_yr_drop <- filter(per_site_yr_sn, n<2)
+sf4 <- filter(sf4, !is.element(Site, site_yr_drop$Site)|!is.element(Year, site_yr_drop$Year))
+sf4<-group_by(sf4, Site, Year)
+
+## Now count years for each site
+per_site_year <- summarise(sf4, n=n())
+site_drop <- filter(per_site_year, n<4)
+
+## Let's change the rule to fewer than 4 years
+sf5 <- filter(sf4, !is.element(Site, site_drop$Site)|!is.element(Year, site_drop$Year))
+```
+
+Now let's shorten the code:
+
+
+```{r}
+sf <- as_tibble(read.csv(paste(dataDIR, "SouthFlorida.csv", sep="/"), header=T)) %>% 
+      mutate(RDate = as.Date(DATE, format="%m/%d/%Y"), 
+       Month = as.numeric(ordered(format(RDate, "%m"))),
+       Summer = Month>=5 & Month<=9) %>%
+      filter(TP.S!=0&TN.S!=0&CHLA!=0&TURB.S!=0)%>%
+      filter(!is.na(TP.S) & !is.na(TN.S)&!is.na(CHLA)&!is.na(TURB.S)) %>% group_by(Site)
+
+site.drop <- sf %>% summarise(n=n())%>% filter(n<=8)
+
+sf <- sf%>%filter(!is.element(Site, site.drop$Site)) %>% group_by(Site, Year, Summer)
+
+site_yr_drop <- sf %>% summarise(n=n()) %>% filter(n<2)
+
+sf <- sf%>%filter(!is.element(Site, site_yr_drop$Site)|!is.element(Year, site_yr_drop$Year)) %>% group_by(Site, Year)
+
+per_site_year <- summarise(sf, n=n())
+site_drop <- filter(per_site_year, n<4)
+sf <- sf%>%filter(!is.element(Site, site_drop$Site) | !is.element(Year, site_drop$Year))
+```
+
+Finally, we have the right dataset for calculating annual geometric means for each site.
+
+```{r}
+sf_sum <- 
+  sf[, c("Site", "Year", "TP.S", "TN.S", "CHLA", "TURB.S")] %>%
+  mutate(logTP = log(TP.S), 
+         logTN = log(TN.S), 
+         logChl = log(CHLA), 
+         logTURB = log(TURB.S)) %>%
+  group_by(Site, Year) %>%
+  summarise(TPmean=mean(logTP),
+            TNmean=mean(logTN),
+            CHLAmean=mean(logChl),
+            TURBmean=mean(logTURB),
+            n = n())
+```
+

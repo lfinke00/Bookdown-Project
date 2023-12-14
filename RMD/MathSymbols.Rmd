@@ -1,0 +1,217 @@
+---
+title: "Mathematical Symbols in Plots"
+author: "Song S. Qian"
+date: "November 16, 2022"
+output:
+  pdf_document:
+    fig_cap: yes
+    fig_height: 3.5
+    fig_width: 4.75
+    keep_tex: yes
+    toc: yes
+  html_document:
+    df_print: paged
+    toc: yes
+---
+
+```{r, echo=FALSE, results='hide'}
+source("FrontMatter.R")
+packages(tidyverse)
+```
+
+Any R graphics function that draws text should accept both a normal
+string and an R expression, which is typically the result of a call
+to the `expression()` function.  If an expression is specified as 
+the text to draw, then it is interpreted as a mathematical formula 
+and is formatted appropriately.  We cover some simple examples of 
+what can be achieved.  For a complete description of the available 
+features, type
+
+`?plotmath` or `demo(plotmath)` 
+
+in an R session.
+
+When an R expression is provided as text to draw in graphical output,
+the expression is evaluated to produce a mathematical formula.  This
+evaluation us very different from the normal evaluation of R
+expressions: certain names are interpreted as special mathematical
+symbols, e.g., `alpha` is interpreted as the Greek symbol $\alpha$;
+certain mathematical operators are interpreted as literal symbols,
+e.g., a `+` is interpreted as a plus signsymbol; and cetain functions
+are interpreted as mathematical operators, e.g., `sum(x, i==1, n)` is
+interpreted as as $\sum_{i=1}^n x$.  Below are some simple examples.
+
+```{r, fig.align='center', fig.width=6.5, fig.height=5}
+plot(c(0,1), c(0, 1), type="n", ann=F, axes=F)
+text(x=0.5, y=0.9, expression(z[i] == sqrt(x[i]^2 + y[i]^2)))
+text(x=0.5, y=0.7, expression(hat(beta) == (X^t * X)^{-1} * X^t * y))
+text(x=0.5, y=0.5, expression(bar(x) == sum(frac(x[i], n), i==1, n)))
+text(x=0.5, y=0.3, expression(paste("Temperature (", degree, "C) in 2003", sep="")))
+```
+
+If using `paste` inside the function `expression` is not intuitive,
+we can directly use a partial substitution function `bquote`.  Here
+is an example:
+
+```{r}
+cor <- -0.321
+plot(1:10, 1:10, main=bquote("Hello" ~ r[xy] == .(cor) ~ "and" ~ 2*B^2))
+```
+
+All you need to remember is the following rules:
+
+1. Strings -- require quotes wrapped with tilde separator (e.f., "my text" ~ "and more")
+2. Math expressions -- unquoted and follow the rules discussed above (see `?plotmath`)
+3. Numbers -- unquoted when part of math notation
+4. Variables -- use `.()` (pass in string or numeric)
+
+Here is another example:
+
+```{r}
+cor2 <- '-.321'
+ 
+plot(1:10, 1:10, 
+    main = bquote("Eq 1:" ~ y[i] == alpha + beta * x[i] + epsilon[i] ~ "or" ~ .(cor2))
+)
+```
+
+The same works in `ggplot2`:
+```{r}
+require(ggplot2)
+ggplot(data.frame(x=1:10, y=1:10), aes(x, y)) + geom_point()+
+    labs(title = bquote("Eq 1:" ~ y[i] == alpha + beta * x[i] + epsilon[i] ~ "or" ~ .(cor2)),
+         x=expression(x[i]), y=bquote(y[i]))
+```
+
+If you are familiar with $\LaTeX$, equations becomes so much simpler to
+type:
+
+```{r}
+packages(latex2exp)
+a <- seq(-3,3,,100)
+plot(a, a^2, xlab=TeX("$\\alpha$"), ylab=TeX("$\\alpha^2$"))
+
+ggplot(data.frame(x=a, y=a^2), aes(x, y)) + geom_point()+
+    labs(title = TeX("Eq 1: $y_i = \\alpha + \\beta \\times x_i + \\epsilon_i$"),
+         x=expression(x[i]), y=bquote(y[i]))
+
+```
+Here is an example: a figure I used in a poster
+```{r}
+hockey <- function(x, beta0, beta1, phi) return(beta0+beta1*(x-phi)*(x>phi))
+png(file="hockey.png", width=480, height=300)
+plot(c(0, 20), c(2, 25), type="n", ann=F, axes=F)
+curve(hockey(x,  5, 2, 10), add=T)
+text(4.5, 20, TeX("$y=\\beta_0+\\beta_1 x, $"), adj=0)
+text(7.5, 20, TeX("$x \\leq \\phi$"), adj=0)
+
+text(4.5, 18, TeX("$y=\\alpha_0+\\alpha_1 x, $"), adj=0)
+text(7.5, 18, TeX("$x > \\phi$"), adj=0)
+text(5, 16, "Or")
+text(4.5, 14, TeX("$y=\\beta_0+\\alpha_1 (x-\\phi) I(x-\\phi)$"), adj=0)
+text(14, 15, TeX("$\\alpha_1$"))
+text(5, 5.5, TeX("$\\beta_1=0$"), adj=1)
+axis(1, at=10, labels=TeX("$\\phi$"))
+axis(2, at=5, labels=TeX("$\\beta_0$"))
+box()
+dev.off()
+
+## ggplot
+pdf(file="hockey_gg.pdf", width=4.80, height=3.00)
+ggplot(data.frame(x=seq(0, 20, 0.1), y=hockey(seq(0,20,0.1), 5, 2, 10)), aes(x=x, y=y))+
+  geom_line() + 
+  annotate("text", x=4.5, y=20, label=TeX("$y=\\beta_0+\\beta_1 x, $"), adj=0)+
+  annotate("text", x=7.5, y=20, label=TeX("$x \\leq \\phi$"), adj=0)+
+  annotate("text", x=4.5, y=18, label=TeX("$y=\\alpha_0+\\alpha_1 x, $"), adj=0)+
+  annotate("text", x=7.5, y=18, label=TeX("$x > \\phi$"), adj=0)+
+  annotate("text", x=5, y=16, label="Or")+
+  annotate("text", x=4.5, y=14, label=TeX("$y=\\beta_0+\\alpha_1 (x-\\phi) I(x-\\phi)$"), adj=0)+
+  annotate("text", x=14, y=15, label=TeX("$\\alpha_1$"), adj=0)+
+  annotate("text", x=5, y=5.5, label=TeX("$\\beta_1=0$"), adj=1)+
+  scale_x_continuous(name="TP Loading", breaks=10, labels = TeX("$\\phi$")) + 
+  scale_y_continuous(name="TP Concentration", limits = c(0, 25), breaks=5, labels = TeX("$\\beta_0$"))
+dev.off()
+```
+Here are some more examples of combining `ggplot2` and `plotmath`:
+```{r}
+p <- ggplot(data.frame(x=1,y=1, lab="alpha"))
+p + geom_text(aes(x, y, label=lab))
+```
+
+To interpret `lab` as a `plotmath` expression, use `parse`:
+```{r}
+print(p2 <- p + geom_text(aes(x, y, label=lab), parse=T))
+p2+xlab(expression(beta)) + ylab(bquote(alpha)) + labs(title=TeX("$\\gamma$"), hjust='center')
+```
+
+We can also make facet labels using `plotmath` expression:
+```{r}
+ggplot(data=data.frame(x=1:2,y=1:2, f = factor(c("alpha","beta"))),
+       aes(x=x, y=y) ) +
+       geom_point() +
+facet_grid(.~f, labeller= label_parsed)
+```
+
+Now labeling legend:
+```{r}
+d <- data.frame(x=1:10,y=1:10,f=rep(c("alpha","beta"),each=5), stringsAsFactors=FALSE)
+
+value <- 3.1415
+my.labs <- list(bquote(alpha==.(value)),bquote(beta==.(value)))
+
+qplot(x,y,data=d,colour=f) +
+  scale_colour_manual(values=1:2,breaks=c("alpha","beta"),
+                      labels=my.labs)
+```
+
+Here are more examples of using `latex2exp`:
+
+```{r}
+## traditional plots
+x <- seq(0, 4, length.out=100)
+alpha <- 1:5
+
+plot(x, xlim=c(0, 4), ylim=c(0, 10), type='n', 
+     xlab='x', ylab=TeX('$\\alpha  x^\\alpha$, where $\\alpha \\in 1\\ldots 5$'), 
+     main=TeX('Using $\\LaTeX$ for plotting in base graphics!'))
+
+invisible(sapply(alpha, function(a) lines(x, a*x^a, col=a)))
+
+legend('topright', legend=TeX(sprintf("$\\alpha = %d$", alpha)), cex=0.75,
+       lwd=1, col=alpha, bty="n")
+
+## ggplots:
+packages(plyr)
+
+x <- seq(0, 4, length.out=100)
+alpha <- 1:5
+data <- mdply(alpha, function(a, x) data.frame(v=a*x^a, x=x), x)
+
+p <- ggplot(data, aes(x=x, y=v, color=X1)) +
+    geom_line() + 
+    ylab(TeX('$\\alpha  x^\\alpha$, where $\\alpha \\in 1\\ldots 5$')) +
+    ggtitle(TeX('Using $\\LaTeX$ for plotting in ggplot2. I $\\heartsuit$ ggplot!')) +
+    coord_cartesian(ylim=c(-1, 10)) +
+    guides(color=guide_legend(title=NULL)) +
+    scale_color_discrete(labels=lapply(sprintf('$\\alpha = %d$', alpha), TeX)) 
+    # Note that ggplot2 legend labels must be lists of expressions, not vectors of expressions
+
+print(p)
+```
+
+If you are not sure what a line of $\LaTeX$ equation represents, you can
+quickly plot it out
+```{r}
+plot(TeX("A $\\LaTeX$ formula: $\\frac{2hc^2}{\\lambda^5} \\, 
+               \\frac{1}{e^{\\frac{hc}{\\lambda k_B T}} - 1}$"), cex=2)
+```
+
+To see what you can do (or what is supported in the `latex2exp`
+package):
+```{r, fig.height=7}
+latex2exp_supported(plot=TRUE)
+
+## and examples:
+latex2exp_examples()
+```
+

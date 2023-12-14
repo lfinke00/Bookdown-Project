@@ -1,0 +1,341 @@
+---
+title: "Introduction to Functions"
+author: "Song S. Qian"
+date: "October 18 & 20, 2021"
+output: 
+  pdf_document:
+    fig_cap: yes
+    fig_height: 3.5
+    fig_width: 4.75
+    keep_tex: yes
+    toc: yes
+---
+
+```{r, echo=FALSE, results='hide'}
+source("FrontMatter.R")
+```
+
+# Introduction
+
+One aspect of R which makes it different from other statistical software is that R and R packages are based on the computer language S. In other words, we have an entire computer language at our disposal when we program in R, allowing us to easily and elegantly write virtually any function that we want to implement. This page is designed to help the novice R user get a general idea of how to write basic functions.
+
+Basic set up for functions:
+```
+function.name <- function(arguments) {
+purpose of function 
+i.e. computations involving the arguments
+}
+```
+
+For example, the following code creates a function, called `f1`, for adding a pair of numbers.
+
+## Example 1:
+```{r}
+f1 <- function(x, y) {
+  x+y
+}
+
+f1(3, 4)
+```
+If we have a function which performs multiple tasks and therefore has multiple results to report then we have to include a return statement (with `c()`) inside the function in order to see all the results. In the following example the function `f.bad` does not have a return statement and thus only reports the last of the computations whereas the function `f.good` has a list statement and thus reports all the results.
+
+BEWARE: The `return` statement exits the function. Thus, it is important to include the return statement at the end of the function!
+
+## Example 2:
+```{r}
+f.bad <- function(x, y) {
+ z1 <- 2*x + y
+ z2 <- x + 2*y
+ z3 <- 2*x + 2*y
+ z4 <- x/y
+ z4
+}
+
+f.bad(1, 2)
+
+f.good <- function(x, y) {
+ z1 <- 2*x + y
+ z2 <- x + 2*y
+ z3 <- 2*x + 2*y
+ z4 <- x/y
+ return(c(z1, z2, z3, z4))
+}
+
+f.good(1, 2)
+```
+
+Furthermore, when we have a function which performs multiple tasks (i.e. computes multiple computations) then it is often useful to save the results in a list. Now we can access each result separately by using the list indices (double square brackets).
+
+Note: The variables `z1` and `z2` exist only inside the function `f2` and you can not refer to them outside the function. Thus, we can not make a call to `f3(2, 5)$z1` as is demonstrated at the end of the example.
+
+```{r}
+f2 <- function(x, y) {
+  z1 <- x + y
+  z2 <- x + 2*y
+  return(list(z1, z2)) 
+}
+
+f2(2, 5)
+
+f2(2, 5)[[1]]
+
+f2(2, 5)[[2]]
+
+f2(2, 5)$z1
+```
+
+We are using the same function as before but now we name the elements in the list of results. We then have a choice of accessing the results using either the list indices or the names of the elements in the list.
+
+## Example 4:
+```{r}
+f3 <- function(x, y) {
+  list(result1=x + y, result2=x+2*y)
+}
+
+f3(2, 5) -> rslt
+rslt$result1
+
+f3(2, 5)$result2
+```
+It is often convenient to store the result of function in an object. Let's store the results of the function `f3` applied to the pair `(1, 4)` in an object called `y` which in this case will be a list. If we need to see the names for the objects in the list `y` then we apply the `names` function to `y`. We can access the results stored in the list y either by the name of the elements or by the list indices.
+
+## Example 5:
+```{r}
+y <- f3(1, 4)
+
+names(y)
+y$result2
+y[[2]]
+```
+# Types of arguments
+
+In all the functions created so far we have not put any restrictions on the types of arguments that we can use. This means that we can either use single numbers for each arguments as we have been doing in the examples, or `x` and `y` can be vectors or matrices. The only precaution is that when using vectors or matrices for both `x` and `y` then they must have the same dimension or else the computations will not be performed.
+
+## Example 6:
+```{r}
+#Using vectors 
+v1 <- seq(1:5)
+
+v2 <- seq(2, 12, 2)
+
+f3(x=v1, y=v2)
+
+#Using matrices
+mat1 <- matrix( c(1, 2, 3, 4, 5, 6), ncol=2)
+
+mat2 <- matrix(c(2, 4, 6, 8, 10, 12), ncol = 2)
+
+f3(mat1, mat2)
+```
+
+# Default arguments
+
+It is very easy and often very useful to specify default arguments in a function. In the following example the function f4 is the same as `f3` except that the default arguments in the function are `x=3` and `y=2`. By leaving the arguments blank in the call to `f4` we use the default arguments. If we call `f4` and list a pair of numbers as the arguments then the function will use the first number as `x` and the second as `y`. If we wish to change this ordering we can do this by using the `x=value` and `y=value` for the arguments and then the function will know how to match the numbers to the arguments.
+
+## Example 7:
+```{r}
+f4 <- function(x=3, y=2) {
+  z1 <- x + y
+  z2 <- x + 2*y
+  list(result1=z1, result2=z2)
+}
+
+#using the defaults values for the x and y arguments
+f4()
+
+#using the default value for the y argument
+f4(1,  )$result1
+
+f4(x=1)$result1
+
+#using the default value for the x argument
+f4(, 1)$result1
+
+f4(y=1)$result1
+
+#switching the order of the arguments
+f4(y = 1, x = 2)$result2
+```
+# Recursive Function
+
+A function that calls itself is called a recursive function and this technique is known as recursion.  This special programming technique can be used to solve problems by breaking them into smaller and simpler sub-problems.
+
+An example can help clarify this concept.
+
+Let us take the example of finding the factorial of a number. Factorial of a positive integer number is defined as the product of all the integers from 1 to that number. For example, the factorial of 5 (denoted as 5!) will be
+```
+5! = 1*2*3*4*5 = 120
+```
+This problem of finding factorial of 5 can be broken down into a sub-problem of multiplying the factorial of 4 with 5.
+```
+5! = 5*4!
+```
+Or more generally,
+```
+n! = n*(n-1)!
+```
+Now we can continue this until we reach 0! which is 1.
+```{r}
+# Recursive function to find factorial
+recursive.factorial <- function(x) {
+if (x == 0)    return (1)
+else           return (x * recursive.factorial(x-1))
+}
+```
+
+Here, we have a function which will call itself. Something like `recursive.factorial(x)` will turn into `x * recursive.factorial(x)` until `x` becomes equal to 0.
+
+When `x` becomes 0, we return 1 since the factorial of 0 is 1. This is the terminating condition and is very important.  Without this the recursion will not end and continue indefinitely (in theory). Here are some sample function calls to our function.
+```{r}
+recursive.factorial(0)
+recursive.factorial(5)
+recursive.factorial(10)
+```
+
+Here is another example. 
+
+Random number generators are almost always based on the availability of the uniform random number generator.  For example, if $u$ is a uniform random number ($u \sim U(0,1)$), $x=-\log(u/\lambda)$ is a random number from an exponential distribution with the rate parameter of $\lambda$. To generate random numbers from a normal distribution $x\sim N(\mu, \sigma^2)$, we need to use a method called the acceptance-rejection method in two steps.  
+- First, draw a random number from an exponential distribution with $\lambda=1: e=-\log(u_1)$
+- Second, draw a random number $u_2$ from the uniform distribution between 0 and 1 and calculate a rate $r=e^{-(1-e)^2/2}$
+- If $u_2 \geq r$ take $z=e$ as a normal random number (z\sim N(0,1)$), otherwise go back to step 1.
+
+In practice, we want to simultaneously generate $n$ random numbers, with mean $\mu$ and standard deviation $\sigma$. From $z\sim N(0,1)$ to $x\sim N(\mu, \sigma^2)$ is straightforward: $x=\mu + \sigma\times z$.  The acceptance-rejection process can be implemented using a recursive function:
+```{r}
+my.rnorm <- function(n, mu=0, sigma=1){
+    x <- -log(runif(n))
+    r <- exp(-0.5*(1-x)^2)
+    x <- x[r>=runif(n)]
+    m <- length(x)
+    if (m < n)
+        x <- c(x, my.rnorm(n-m, mu, sigma))
+    return (mu + sigma*x*ifelse(runif(n) < 0.5, -1, 1))               
+}
+
+my.rnorm(10000)-> myrann
+```
+# Two Real Example
+
+## Importing ELISA Test Data
+
+In analyzing microcystin (MC) analysis data from OSU Stone Lab, we need to import raw data from the test kit.  Each test has its own Excel spreadsheet.  Each test has two sets of raw data: the readings of optical density (OD) from water samples (for calculating color absorption) and standard solution MC concentrations (for developing a standard curve). To properly analyze the data, I need to import the raw OD data and the standard solution concentrations.  However, the spreadsheet has a format that cannot be directly imported using `read.table`.  The raw OD data are stored in a block starts at line 22 and the standard solution concentrations are in another block starting at line 33.  There are other complicating factors because of the number of water samples used in each test are different.
+
+I want to import the raw data for the standard solutions, as well as the results for water samples with unknown MC concentrations.  The easy way is to copy and paste the two blocks of data into separate csv files.  But there are 21 such tests and we are looking for more.  I wrote the following function to import the ELISA data:
+```{r}
+input <- function(file){
+##read in data from excel sheet and strip out first two columns
+    temp <- read_excel(file, col_names=F)
+## decide whether the first row is empty
+    if (names(temp)[1] == "...1") {
+        row1 <- 22:29
+        row2 <- 1:32
+    } else {
+        row1 <- 21:28
+        row2 <- 1:31
+    }    
+    tmp1 <- as.numeric(unlist(temp[row1, 3:14]))
+    tmp1 <- matrix(tmp1, nrow=8)
+    ##removes empty columns - if they exist
+    tmp <- apply(tmp1, 2, sum, na.rm=T) == 0
+    tmp1 <- tmp1[,!tmp]
+    ##read in calculated result, keeping the 2-4th column of data
+    tmp2 <- temp[-(row2),2:4]
+    ##                   skip=31, header=T)[,2:7]
+    ## next two lines are only relevant if cells or lines are blank (eg, messed up sample)
+    tmp <- apply(tmp2, 1, FUN=function(x) sum(!is.na(x)))!=1
+    n <- dim(tmp2)[1]
+    tmp2 <- unlist(tmp2[tmp,])
+    tmp2 <- data.frame(smpl=tmp2[1:n],
+                       ABS=as.numeric(tmp2[(n+1):(2*n)]),
+                       Conc=as.numeric(tmp2[(2*n+1):(3*n)]))
+    tmp2$smpl <- as.vector(tmp2$smpl)
+    tmp2$smpl[is.na(tmp2$smpl)] <- "missing"             
+    ## check on data set to verify there is even row count
+    if (dim(tmp1)[2]%%2 !=0) stop("Number of rows must be even")
+    ## two replicates are used - this gives the unique number of samples
+    dm1 <- dim(tmp1)[2]/2
+    ## reorganizes the 2-column OD values into a single column
+    tmp1 <- as.vector(tmp1)
+
+    ##
+    n <- length(tmp1) - 2*dim(tmp2)[1]
+    ## if n<0, there is an error
+  if (n<0)    stop ("Check data")
+  ## when have n>0, means more OD data than concentration data (ie, missing values)
+  if (n > 0){
+    nas <- as.data.frame(matrix(NA, nrow=n/2, ncol=dim(tmp2)[2]))
+    names(nas) <- names(tmp2)
+    tmp2 <- rbind(tmp2, nas)
+  }
+
+  ## Matching up the ODs and the calculated concentration values in dataframe
+  rws <- NULL
+  for (i in 1:dm1) # i for each water sample
+    rws <- c(rws, rep(((i-1)*8+1):(i*8), 2))
+  tmp2 <- tmp2[rws,]
+  tmp2 <- tmp2[!is.na(tmp2$ABS), ]               
+  tmp2$ABS <- tmp1[tmp1!=0]  #ABS observed (OD)
+
+  # Skip this part - for now - 10.10.18
+  ## 2 reference abs
+  #refabs <- tmp2$Abs.obs[tmp2$conc==0 & !is.na(tmp2$conc)]
+  #b0b1.1 <- tmp2$ABS/refabs[1]
+  #b0b1.2 <- tmp2$ABS/refabs[2]
+  #b0b1.3 <- tmp2$ABS/mean(refabs)
+
+  #Create data frame with just data used for calibration
+  calib <- data.frame(conc=tmp2$Conc, 
+                      ABS = tmp2$ABS)
+  calib$smpl <- tmp2$smpl  #X.1 is first column from excel (unlabeled)
+  ##  calib.data <- calib.data[calib.data$conc!=0,]
+  calib$conc[substring(calib$smpl, 1, 8)!="Standard"] <- NA
+  calib$smpl[calib$smpl=="QCS"] <- "Positive Control"
+  calib$smpl[is.na(calib$smpl)] <- "noName"      
+  ## keeping only the relevant data for this project
+  tmp <- (substring(calib$smpl, 1, 8)=="Standard"|
+            calib$smpl=="Positive Control"|
+            calib$smpl=="QCS"|
+            calib$smpl=="LCRC"|
+            calib$smpl=="LRB")
+  return(calib[tmp,])
+}
+input(paste(dataDIR, "StoneLab", "2018 WBE 1.xlsx", sep="/"))
+```
+
+## The Hockey Stick Model
+I use the piece-wise linear model, also known as the hockey stick model, to analyze phenology data related to climate change.  The model consists of two joint line segments.  The objective of fitting a hockey stick model is to estimate the intercepts and slopes of the two lines, as well as the location where the two lines join.  This model is nonlinear.  When fitting a nonlinear model, we often need to calculate the first order derivatives of model coefficients.  The hockey stick model, although simple, has a non-continuous first derivative of the change point, which makes the nonlinear model-fitting process unstable.  To avoid this problem, we can use a small piece of quadratic curve to connect the two line segments.  This quadratic piece can be determined algebraically by (1) setting the length of the curve and (2) constraining the slopes of the curve to be the same as the two line segments at points where they meet.
+
+The function is:
+```{r}
+hockey <- function(x, alpha, beta1, beta2, phi, eps=diff(range(x))/100, delta=T){
+  x <- x-phi ## center the data at the change point
+  if (delta) beta2 <- beta1+beta2
+  x1 <- -eps
+  x2 <- +eps
+  b <- (x2*beta1-x1*beta2)/(x2-x1)
+  cc <- (beta2-b)/(2*x2)
+  a <- alpha1+beta1*x1-b*x1-cc*x1^2
+  alpha2 <- -beta2*x2+(a+b*x2+xx*x2^2)
+  lephi <- (x<= -eps)
+  gephi <- (x>= eps)
+  eqphi <- (x > -eps & x < eps)
+  result <- rep(0, length(x))
+  result[lephi] <- alpha1 + beta1 * x[lephi]
+  result[eqphi] <- a + b*x[eqphi] + cc*x[eqphi]^2
+  result[gephi] <- alpha2 + beta2 * x[gephi]
+  return (result)
+}
+```
+With this function, we can easily fit a hockey stick model in R using the nonlinear regression function `nls`.  I used it to analyze phenological data, such as the timing of the onset of spring.  Using the first bloom dates of a common flowering tree species (lilac) monitored throughout the conuntry, I suggested that the effect of climate change was first shown in the data in the 1980s.  Unfortunately, this function was also used by a "researcher" to link autism to vaccine, after two EPA scientists used it to show an accelerated rate of increase in worldwide autism cases after 1988-89. 
+
+
+# Good function writing practices
+Based on my experience, there are a few good practices that I would recommend keeping in mind when writing function.
+
+* Keep your functions short. Remember you can use them to call other functions!
+    + If things start to get very long, you can probably split up your function into more manageable chunks that call other functions. This makes your code cleaner and easily testable.
+    + It also makes your code easy to update. You only have to change one function and every other function that uses that function will also be automatically updated.
+* Put in comments on what are the inputs to the function, what the function does, and what is the output.
+* Check for errors along the way.
+    + Try out your function with simple examples to make sure it’s working properly
+    + Use debugging and error messages, as well as sanity checks as you build your function.
+

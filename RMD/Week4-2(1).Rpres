@@ -1,0 +1,146 @@
+Comparing Chlarophyll Data from Different Sources
+========================================================
+author: Song S. Qian
+date: September 20, 2023
+
+Objectives
+==================================
+- Graphical comparisons of distributions
+- Graphical display of distributions
+- Two basic differences between two distributions
+  - Additive difference
+  - Multiplicative difference
+  
+```{r,echo=FALSE}
+## load/install packages
+packages<-function(x, repos="http://cran.r-project.org", ...){
+  x<-as.character(match.call()[[2]])
+  if (!require(x,character.only=TRUE)){
+    install.packages(pkgs=x, repos=repos, ...)
+    require(x,character.only=TRUE)
+  }
+}
+base <- "~/Google\ Drive/UT/Teaching/Fall2019/DataManagement/R"
+## base <- "E:/DataManagement/R" ## when in class
+dataDIR <- paste(base, "Data", sep="/")
+## put your data set in the Data subdirectory
+plotDIR <- paste(base, "Figs", sep="/")
+## put created figures in the Figures subdirectory
+setwd(base)
+```
+
+Introduction
+========================================================
+- Neuse River Estuary (NC) was declared to be impaired by algal bloom due to excess nutrient (N) 
+- A TMDL program was developed to reduce N load to the estuary by 1/3
+- The program was implemented in 2000
+- Chlorophyll a concentration target 40 $\mu$g/L
+- A comparison of chlorophyll a concentration before and after the TMDL is needed
+- Data from three sources
+- Are data from different sources comparable?
+
+Data
+========================================================
+- Main sources of data are 
+ - NC Department of Natural Resources
+ - UNC-CH Institute of Marine Sciences
+ - Weyerhaeuser (a company with operations in timberlands, wood products, and cellulose fiber)
+ 
+```{r, echo=FALSE}
+chladata <- read.csv(paste(dataDIR, "estuary.csv", sep="/"), header=T)
+```
+
+A Data Problem
+========================================================
+```{r, echo=FALSE}
+summary(chladata)[, c(16,15)]
+```
+
+- Surface chla and ortho P were recorded as characters
+- Listing the unique values of both shown:
+ - `"nm"` (and ` " nm"`) is used in `SURFCHLA` and `<0.01` was used in `ORTHOP`
+- Either change the original data file or change them in R (preferred)
+
+In R
+========================================================
+```{r}
+attach(chladata)
+surfchla <- as.character(SURFCHLA)
+surfchla[surfchla=="nm" | surfchla==" nm" | surfchla=="" | surfchla==" "] <- NA
+orthop <- as.character(ORTHOP)
+orthop[orthop=="<0.01"] <- 0.01
+orthop[orthop==""] <- NA
+detach()
+chladata$SURFCHLA <- as.numeric(surfchla)
+chladata$ORTHOP <- as.numeric(orthop) 
+```
+
+Displaying Distributions 1
+========================================================
+Boxplots
+
+```{r, echo=FALSE}
+par(mar=c(3,2,3,0.5), las=1, tck=0.01, mgp=c(1.5,0.125, 0))
+boxplot(SURFCHLA ~ SOURCE, data=chladata, main="Chlorophyll a")
+```
+
+Displaying Distributions - 2
+===================================================
+Box plots of log concentrations
+
+```{r, echo=FALSE}
+par(mar=c(3,2,3,0.5), las=1, tck=0.01, mgp=c(1.5,0.125, 0))
+boxplot(log(SURFCHLA) ~ SOURCE, data=chladata, main="log chlorophyll a")
+```
+
+Are chla distributions from the three sources the same?
+
+Comparing Distributions - 1
+=================================================
+Quantile - Quantile plot
+
+```{r, echo=F, width=7, height=4, grdevice=pdf}
+packages(lattice)
+qq1 <- qq(SOURCE~log(SURFCHLA), data=chladata[chladata$SOURCE!="IMS", ], aspect=1)
+qq2 <- qq(SOURCE~SURFCHLA, data=chladata[chladata$SOURCE!="IMS", ], aspect=1)
+print(qq2, position=c(0,0,0.5,1), more=T)
+print(qq1, position=c(0.5,0,1,1), more=F)
+```
+
+Comparing Distributions - 2
+=================================================
+Quantile - Quantile plot
+
+```{r, echo=F, width=7, height=4, grdevice=pdf}
+packages(lattice)
+qq1 <- qq(SOURCE~log(SURFCHLA), data=chladata[chladata$SOURCE!="DWQ", ], aspect=1)
+qq2 <- qq(SOURCE~SURFCHLA, data=chladata[chladata$SOURCE!="DWQ", ], aspect=1)
+print(qq2, position=c(0,0,0.5,1), more=T)
+print(qq1, position=c(0.5,0,1,1), more=F)
+```
+
+Comparing Distributions - 3
+=================================================
+Quantile - Quantile plot
+
+```{r, echo=F, width=7, height=4, grdevice=pdf}
+packages(lattice)
+qq1 <- qq(SOURCE~log(SURFCHLA), data=chladata[chladata$SOURCE!="WEY", ], aspect=1)
+qq2 <- qq(SOURCE~SURFCHLA, data=chladata[chladata$SOURCE!="WEY", ], aspect=1)
+print(qq2, position=c(0,0,0.5,1), more=T)
+print(qq1, position=c(0.5,0,1,1), more=F)
+```
+
+Conclusions
+==================
+- Chlorophyll a distributions from WEY and IMS are mostly the same
+ - Both record values below 1 $\mu$g/L 
+ - IMS had more values at the high end and Weyerhaeoser had more values at the low end
+- Chlorophyll a distributions from DWQ and WEY/IMS likely differ by a multiplicative constant
+ - Concentrations from WEY/IMS should be multiplied by a multipler (>1) before comparing to the same from DWQ 
+
+Observations
+================
+- Different sources handle the detection limit differently 
+ - DWQ records all values below 1 as 1
+ - IMS records all values below 0.01 as `<0.01`

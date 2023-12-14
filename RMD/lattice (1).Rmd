@@ -1,0 +1,515 @@
+---
+title: "The `lattice` Package"
+author: "Song S. Qian"
+date: "October 24, 2024"
+output: pdf_document
+---
+  
+# Front Matters
+  
+This is a RMarkdown document on R data objects for the week of
+October 24, 2022.
+
+
+```{r, echo=FALSE, results='hide'}
+source("FrontMatter.R")
+packages(tidyverse)
+```
+
+# Introduction
+
+Lattice is a self-contained system consisting of functions for producing complete plots.  These functions are included in the package `lattice`.  The lattice system is derived from the Trellis Graphics system.  
+
+Lattice is often seen as graphic "models." In a typical lattice function, we use a formula to describe the plot we want to show (`y ~ x`). For a simple plot, the lattice statement is just like a traditional plot command:
+```{r}
+xyplot(lat~long, data=quakes)
+```
+The lattice function `xyplot` produces an *object* (of class `trellis`) containing the description of the plot. The `print()` method of the class trellis` produces the plot.  
+
+```{r}
+ltlnplot <- xyplot(lat~long, data=quakes, pch=".")
+print(ltlnplot)
+```
+With the object `ltlnplot`, we can use the R function `update()` to make changes to the plot.
+
+```{r}
+ltlnplot2 <- update(ltlnplot, main="Earthquakes in the Pacific Ocean (since 1964)")
+```
+
+There are many types of lattice plots.
+
+# Examples
+
+## Example 1
+Daily PM2.5 concentration data from a station in Maltomore MD is used to study the distribution and trend of air pollution in an urban center.  
+
+```{r}
+pmdata<-read.table(paste (dataDIR, "PM-RAW-DATA.txt", sep="/"),header=TRUE)
+pmdata$rain<-pmdata$Precip > 0
+pmdata$log.wind<-log(pmdata$AvgWind)
+pmdata$z.log.wind<-as.vector(scale(pmdata$log.wind))
+pmdata$z.temp<-as.vector(scale(pmdata$AvgTemp))
+pmdata$log.value<-log(pmdata$value)
+## dates were recorded as days since Jan. 1, 2003
+pmdata$Dates <-  as.Date("2003-01-01") + pmdata$date-1
+pmdata$Weekday <- weekdays(pmdata$Dates, abbreviate=T)
+pmdata$Month <- ordered(months(pmdata$Dates, T), levels=month.abb)
+```
+
+One question asked was whether PM2.5 is a function of temperature.  
+```{r}
+obj1<-xyplot(log.value~AvgTemp, panel=function(x,y,...){
+  panel.grid()
+  panel.xyplot(x,y, col=grey(0.65), cex=0.25, ...)
+  panel.loess(x,y,span=1, degree=1,col=1,...)
+},    scales=list(x=list(cex=0.75, tck=0.2), y=list(cex=0.75, tck=0.2)),
+##               par.settings=trellis.par.temp,
+       data=pmdata, xlab="", ylab="Log PM2.5")
+print(obj1)
+```
+
+At the first glance, we may conclude that PM2.5 is not related to temperature.  The slightly higher PM2.5 at the right end of the graph could be explained by the higher level of trafic in summer.  To see if seasonality is the explanation of the small positive correlation, we can plot PM2.5 by month:
+```{r}
+obj2 <- xyplot(log.value~AvgTemp|Month, panel=function(x,y,...){
+  panel.grid()
+  panel.xyplot(x,y, col=grey(0.65), cex=0.25, ...)
+  panel.loess(x,y,span=1, degree=1,col=1,...)
+  }, layout=c(12, 1),
+       scales=list(y=list(tck=0.2),
+         x=list(relation="free", cex=0.3,tck=0.2, alternating=c(1,2))),
+       ## x-axis relation and font size
+  ##par.settings=trellis.par.temp,
+  data=pmdata, xlab="Average Daily Temperature (F)", ylab="Log PM2.5")
+print(obj2)
+```
+
+Plotting the PM2.5 versus temperture scatter plot by month, is a form of conditional plot: a two dimensional relationship is now conditional on season. 
+
+We can put these two figures together:
+```{r}
+print(obj1, position=c(1/4, 0.3, 3/4, 1), more=T)
+print(obj2, position=c(0, 0, 1,0.35), more=F)
+```
+
+While it is natural to think of the PM2.5 versus temperature conditional on month, the conditioning concept can be applied to any high dimensional data.  Let's take a look of the second example.
+
+## Example 2
+
+Air quality data from R:
+
+```{r}
+data(airquality)
+splom(airquality[,1:4])
+## compared to:
+## pairs(Ozone~Solar.R+Wind+Temp, data=airquality)
+```
+
+This is a 4-dimensional data.  Ozone concentrations are affected by all three variables.  Scatter plots are not adequate to show high dimensional interactions.  The concept of interaction is difficult to visualize.
+
+A conditional plot is a tool for using multipanel bivariate scatter plot to explore the interactions among multiple variables.  The definition of an interaction is that the effect of one variable varies depending on the value of a second variable.  For example, ozone concentration and wind speed has a negative correlation.  If the slope changes as a function of temperature, we say that there is an interaction effect between wind and temperature.  To visualizing the interaction effect, we can use a 3-dimensional plot.  But a 3-D plot is always difficult to show on a 2-D surface.  Bill Cleveland suggested that we can visualizing an interaction effect by using multiple scatter plots.  For example, to visualizing the interaction effect between temperature and wind, we can divide the data into a number of subsets by temperature (temperature low, median, high).  For each subset, we plot ozone against wind.  
+```{r}
+Temperature <- equal.count(airquality$Temp, 3, 0.25)
+xyplot(sqrt(Ozone) ~ Wind|Temperature,
+       data=airquality,
+       panel=function(x,y,...){
+#            panel.loess(x, y, span=1, degree=1, ...)
+            panel.grid()
+            panel.lmline(x, y, col="grey",...)
+            panel.xyplot(x, y, col=1, cex=0.5, ...)
+       },
+       layout=c(3, 1), aspect=1,
+       ylab=list(label="Sqrt Ozone", cex=0.6),
+       xlab=list(label="Wind Speed", cex=0.6)
+)
+```
+We now see that the effect of wind increases as temperature increases. 
+
+Likewise, we can examine the effect of temperature conditional on wind:
+```{r}
+Wind_Speed <- equal.count(airquality$Wind, 3, 0.25)
+xyplot(sqrt(Ozone) ~ Temp|Wind_Speed,
+       data=airquality,
+       panel=function(x,y,...){
+            panel.loess(x, y, span=1, degree=1, ...)
+            panel.grid()
+            panel.lmline(x, y, col="grey",...)
+            panel.xyplot(x, y, col=1, cex=0.5, ...)
+       },
+       layout=c(3, 1), aspect=1,
+       ylab=list(label="Sqrt Ozone", cex=0.6),
+       xlab=list(label="Temperature", cex=0.6)
+)
+```
+
+As wind speed increases, the effect of temperature decreases.
+
+What about the effect of solar radiation?  Can we visualizing a three way interaction?
+```{r}
+Solar_R <- equal.count(airquality$Solar.R, 3, 0.25)
+
+trellis.par.set(theme = canonical.theme("postscript", col=FALSE))
+trellis.par.set(list(layout.widths=list(left.padding=0, right.padding=0,
+                       ylab.axis.padding=0, axis.right=0, key.ylab.padding=0)))
+
+xyplot(sqrt(Ozone) ~ Solar.R|Temperature*Wind_Speed,
+       data=airquality,
+       panel=function(x,y,...){
+#            panel.loess(x, y, span=1, degree=1, ...)
+            panel.grid()
+            panel.lmline(x, y, col="grey",...)
+            panel.xyplot(x, y, col=1, cex=0.5, ...)
+       },
+       aspect=1,
+       ylab=list(label="Sqrt Ozone", cex=0.6),
+       xlab=list(label="Temperature", cex=0.6),
+       scales=list(x=list(alternating=c(1, 2, 1))),
+#       between=list(y=1),
+       par.strip.text=list(cex=0.4), 
+       par.settings=list(axis.text=list(cex=0.4))
+)
+
+xyplot(sqrt(Ozone) ~ Wind|Solar_R*Temperature,
+             data=airquality,
+             panel=function(x,y,...){
+#            panel.loess(x, y, span=1, degree=1, ...)
+               panel.grid()
+               panel.lmline(x, y, col="grey",...)
+               panel.xyplot(x, y, col=1, cex=0.5, ...)
+             },
+             aspect=1,
+             ylab=list(label="Sqrt Ozone", cex=0.6),
+             xlab=list(label="Wind Speed", cex=0.6),
+             scales=list(x=list(alternating=c(1, 2, 1))),
+                                        #       between=list(y=1),
+             par.strip.text=list(cex=0.4),
+             par.settings=list(axis.text=list(cex=0.4)))
+
+xyplot(sqrt(Ozone) ~ Temp|Wind_Speed*Solar_R,
+       data=airquality,
+       panel=function(x,y,...){
+#            panel.loess(x, y, span=1, degree=1, ...)
+            panel.grid()
+            panel.lmline(x, y, col="grey",...)
+            panel.xyplot(x, y, col=1, cex=0.5, ...)
+       },
+       aspect=1,
+       ylab=list(label="Sqrt Ozone", cex=0.6),
+       xlab=list(label="Temperature", cex=0.6),
+       scales=list(x=list(alternating=c(1, 2, 1))),
+#       between=list(y=1),
+       par.strip.text=list(cex=0.4),
+       par.settings=list(axis.text=list(cex=0.4)))
+```
+# An Overview of the Lattice Package
+
+- Panel -- rectangular drawing area (one or multiple panels),
+- Data are divided into packet(s) and assigned to each panel, and
+- Panel function -- the function that does the plotting.
+
+## Using Lattice Package
+1. Call a high-level lattice plotting function,
+2. The lattice function produces a plotting object, 
+3. Call the `print.lattice` or `plot.lattice` function to produce the plot.
+
+All lattice plotting functions use a formula to specify the plot.  The simplest formula `y~x` specifies the y- and x-axis variables.  For example:
+```{r}
+d <- data.frame(x=0:9, y=1:10, z=rep(c("a","b"), 5))
+head(d)
+xyplot(y~x, data=d)
+```
+The first argument is the formula and argument `data=d` specifies the data frame containing the plotting data.  The resulting plot is very similar to the plot produced by the traditional plotting function `plot`.  The advantage of lattice plotting functions lies in their capability of using a conditional variable (e.g., month in the PM2.5 example).  A conditional variable is to divide the data into packets.  In the simple data we just created, we can use variable `z` as a conditional variable.
+```{r}
+xyplot(y~x|z, data=d)
+## or
+xyplot(y~x, group=z, data=d)
+```
+When a conditional variable is specified, the data are split into packets.  In this case, the variable `z` has two unique values, so we have two packets of data.  Using the conditioning operator `|` in the formular, `xyplot` will create two panels of plots.  Using `group`, the two packets of data will be plotted in the same panel with different plotting symbols or colors.  
+
+## Using Lattice Functions
+A list of commonly used latice functions:
+-`xyplot` -- scatter plots
+-`dotplot` -- Cleveland dot plots
+-`histogram` -- histograms
+-`barchart` -- bar and column charts
+-`splom` -- scatter plot matrix
+-`levelplot` -- image plots
+-`contourplot  -- contours
+-`qq` -- quantile-quantile plots
+-`qqmath` -- quantile-quantile plots, comparing data distribution to a standard probability dsitribution
+-`cloud` -- perspective (3-D) plots
+
+## Custom Panel Functions
+The panel function allows customizing a plot, such as superimposing points, lines, text, and other objects.  For example, to add a diagonal line to the two panel xyplot, we use:
+```{r}
+xyplot(y~x|z, data=d,
+       panel=function(x, y, ...){
+         panel.abline(0, 1, col="red")
+         panel.xyplot(x, y, ...)
+       })
+```
+
+As an example, let's take a look of the [2015 data of births in the US](https://www.nber.org/data/vital-statistics-natality-data.html). It is a .csv file of about 3Gb. I read it into my desktop (MacPro with 32Gb of RAM) and simplified the data.
+
+```{r}
+## natality2015 <- read.csv(paste(dataDIR, "natl2015.csv", sep="/"))
+## natlABB2015 <- natality2015[,c("dob_mm","dob_tt", "dob_wk", "dmeth_rec","mager9")]
+## save(natlABB2015, file=paste(dataDIR, "abbnatality2015.RData", sep="/"))
+load(paste(dataDIR, "abbnatality2015.RData", sep="/"))
+```
+Let's use histogram or barchart to see the frequency distribution of births over a typical week in 2015.
+```{r}
+birth.dow <- table(natlABB2015$dob_wk)
+barchart(birth.dow)
+histogram(~dob_wk, data=natlABB2015)
+```
+One interesting question is about the birth distribution over a week: why there are fewer births over the weekend?
+
+```{r}
+dob.dm.tbl <- table(wk=natlABB2015$dob_wk, mm=natlABB2015$dmeth_rec)
+barchart(dob.dm.tbl)
+barchart(dob.dm.tbl, stack=F)
+barchart(dob.dm.tbl, stack=F, horizontal = F)
+barchart(dob.dm.tbl, horizontal = F, group=F)
+```
+
+The same can be shown using histogram:
+```{r}
+natlABB2015$dmeth_rec[natlABB2015$dmeth_rec==9] <- NA
+histogram(~dob_wk|dmeth_rec, data=natlABB2015)
+histogram(~dob_wk|factor(dmeth_rec), data=natlABB2015)
+
+natlABB2015$dmeth_rec<- as.character(natlABB2015$dmeth_rec)
+natlABB2015$dmeth_rec[natlABB2015$dmeth_rec=="1"] <- "V"
+natlABB2015$dmeth_rec[natlABB2015$dmeth_rec=="2"] <- "C"
+```
+Why the number of births is lower over the weekend?
+
+Are there monthly patterns?
+```{r}
+dob.mm.wk <- table(week=natlABB2015$dob_wk, month=natlABB2015$dob_mm, method=natlABB2015$dmeth_rec)
+dotplot(dob.mm.wk)
+dotplot(dob.mm.wk, auto.key=T)
+```
+Again, why low number of births in weekends?
+
+```{r}
+dob.age.wk <- table(week=natlABB2015$dob_wk, age=natlABB2015$mager9, method=natlABB2015$dmeth_rec)
+dotplot(dob.age.wk, auto.key=T)
+dotplot(log(dob.age.wk), auto.key=T)
+```
+
+## The Example That Started Trellis
+
+The `barley` dataset -- 
+> These data are yields in bushels per acre, of 10 varieties of barley grown in 1/40 acre plots at University Farm, St. Paul, and at the five branch experiment stations located at Waseca, Morris, Crookston, Grand Rapids, and Duluth (all in Minnesota). The varieties were grown in three randomized blocks at each of the six stations during 1931 and 1932, different land being used each year of the test.
+
+> Immer et al. (1934) present the data for each Year*Site*Variety*Block. The data here is the average yield across the three blocks.
+
+> Immer et al. (1934) refer (once) to the experiment as being conducted in 1930 and 1931, then later refer to it (repeatedly) as being conducted in 1931 and 1932. Later authors have continued the confusion.
+
+```{r, fig.height=8}
+dim(barley)
+head(barley)
+
+     dotplot(variety ~ yield | site, data = barley)
+     dotplot(variety ~ yield | site, data = barley, groups=year)     
+     dotplot(variety ~ yield | site, data = barley, groups=year, 
+             aspect=0.5, layout=c(1,6))
+     key <- simpleKey(levels(barley$year), space = "right")
+     key$text$cex <- 1.5
+     dotplot(variety ~ yield | site, data = barley, groups = year,
+             key = key,
+             xlab = "Barley Yield (bushels/acre) ",
+             aspect=0.5, layout = c(1,6), ylab=NULL)
+```
+
+Now we want to save it into a PDF file:
+```{r}
+pdf(file=paste(plotDIR, "barley.pdf", sep="/"), height=8, width=5)
+trellis.par.set(theme = canonical.theme("postscript", col=FALSE))
+trellis.par.set(list(fontsize=list(text=6),
+	             par.xlab.text=list(cex=1.5),
+                     add.text=list(cex=1.5),
+                     superpose.symbol=list(cex=.5)))
+     key <- simpleKey(levels(barley$year), space = "right")
+     key$text$cex <- 1.5
+     dotplot(variety ~ yield | site, data = barley, groups = year,
+             key = key,
+             xlab = "Barley Yield (bushels/acre) ",
+             aspect=0.5, layout = c(1,6), ylab=NULL)
+dev.off()
+```
+
+## An Example of Graphical Exploratory Data Analysis
+
+The foodweb for the animal species in an ecosystem is a description of
+who eats whom.  A chain is a path through the web. It begins with a
+species that is eaten by no other, moves to a species that the first
+species eats, moves next to a species that the second species eats,
+and so forth until the chain ends at a species that preys on no
+other. If there are 7 species in the chain then there are 6 links
+between species, and the length of the chain is 6. The mean chain
+length of a web is the mean of the lengths of all chains in the web.
+
+Ecosystems can be categorized based on their spatial dimensions: two-,
+three-, or mixed-dimensional ecosystems. The following plots analyze
+the mean chain length data from 113 ecosystems. 
+
+```{r}
+library(foreign)
+library(lattice)
+library(survival)  # using this library for date object
+data.restore (paste(dataDIR, "visualizing.data", sep="/"))
+
+## quantile plot
+book.2.34 <-
+function()
+	qqmath(~ mean.length | dimension,
+		distribution = qunif,
+		data=food.web,
+	        panel = function(x, ...) {
+			panel.grid()
+	                panel.qqmath(x, ...)
+	        },
+		layout=c(1,3),
+		aspect=1,
+		sub = list("Figure 2.34",cex=.8),
+		xlab = "f-value",
+		ylab="Chain Length")
+
+book.2.35 <-
+function()
+{
+	foo.m <- oneway(mean.length~dimension, data = food.web, location = median, spread=1)
+	set.seed(19)
+	xyplot(sqrt(abs(residuals(foo.m))) ~ jitter(fitted.values(foo.m),factor=0.3),
+		aspect=1,
+	        panel = substitute(function(x,y){
+			panel.xyplot(x,y)
+			srmads <- tapply(abs(residuals(foo.m)),
+				food.web$dimension, median)
+			panel.lines(foo.m$location,srmads)
+		}),
+		sub = list("Figure 2.35",cex=.8),
+		xlab="Jittered Median Chain Length",
+		ylab="Square Root Absolute Residual Chain Length")
+}
+
+
+book.2.36 <-
+function()
+	qqmath(~ mean.length | dimension,
+		data=food.web,
+		prepanel = prepanel.qqmathline,
+	        panel = function(x, ...) {
+			panel.grid()
+	                panel.qqmathline(x, distribution = qnorm)
+	                panel.qqmath(x, ...)
+	        },
+		layout=c(1,3),
+		aspect=1, 
+		sub = list("Figure 2.36",cex=.8),
+		xlab = "Unit Normal Quantile",
+		ylab="Chain Length")
+book.2.37 <-
+function()
+{
+	foo.m <- oneway(log(mean.length, 2) ~ dimension, data = food.web, location = median, spread = 1)
+	set.seed(19)
+	xyplot(sqrt(abs(residuals(foo.m))) ~ jitter(fitted.values(foo.m), factor = 0.3),
+	        panel = substitute(function(x, y) {
+			panel.xyplot(x, y)
+			add.line <- trellis.par.get("add.line")
+			panel.lines(foo.m$location, tapply(y, food.web$dimension, median), 
+				lty = add.line$lty, lwd = add.line$lwd, col = add.line$col)
+		}),
+		aspect = 1,
+		sub = list("Figure 2.37",cex=.8),
+		xlab = "Jittered Median Log 2 Chain Length",
+		ylab = "Square Root Absolute Residual Log 2 Chain Length")
+}
+
+book.2.38 <-
+function()
+	qqmath(~ log(mean.length,2) | dimension,
+		data=food.web,
+		prepanel = prepanel.qqmathline,
+	        panel = function(x, ...) {
+			panel.grid()
+	                panel.qqmathline(x, distribution = qnorm)
+	                panel.qqmath(x, ...)
+	        },
+		layout=c(1,3),
+		aspect=1, 
+		sub = list("Figure 2.38",cex=.8),
+		xlab = "Unit Normal Quantile",
+		ylab="Log 2 Chain Length")
+book.2.39 <-
+function()
+{
+	foo.m <- oneway(1/mean.length ~ dimension, data = food.web, location = median, spread = 1)
+	set.seed(19)
+	xyplot(sqrt(abs(residuals(foo.m))) ~ jitter(fitted.values(foo.m), factor = 0.3),
+	        panel = substitute(function(x,y) {
+			panel.xyplot(x,y)
+	                add.line <- trellis.par.get("add.line")
+			panel.lines(foo.m$location, tapply(y, food.web$dimension, median),
+			lty = add.line$lty, lwd = add.line$lwd, col = add.line$col)
+		}),
+		aspect = 1,
+		sub = list("Figure 2.39",cex=.8),
+		xlab = "Jittered Median Link Fraction",
+		ylab = "Square Root Absolute Residual Link Fraction")
+}
+book.2.4 <-
+function()
+{
+	voice.part <- ordered(singer$voice.part,
+		c("Soprano 1", "Soprano 2", "Alto 1", "Alto 2",
+			"Tenor 1", "Tenor 2", "Bass 1", "Bass 2"))
+	bass.tenor.qq <- qq(voice.part ~ singer$height,
+		subset=voice.part=="Bass 2" | voice.part=="Tenor 1")
+	tmd(bass.tenor.qq,
+		aspect=1,
+		ylab = "Difference (inches)",
+		sub = list("Figure 2.4",cex=.8),
+		xlab = "Mean (inches)")
+}
+book.2.40 <-
+function()
+	qqmath(~ (1/mean.length) | dimension,
+	       data = food.web,
+	       panel = function(x, ...){
+			panel.grid()
+			panel.qqmath(x, ...)
+			panel.qqmathline(x, distribution = qnorm)
+	       },
+	       layout = c(1, 3),
+	       aspect = 1,
+		sub = list("Figure 2.40",cex=.8),
+	       xlab = "Unit Normal Quantile", 
+	       ylab = "Link Fraction")
+book.2.41 <-
+function()
+{
+	res <- oneway((1/mean.length)~dimension, data = food.web, spread = 1)$residuals
+	qqmath(~ res | food.web$dimension,
+		distribution = substitute(function(p) quantile(res, p)),
+		panel=function(x,...){
+			panel.grid()
+			panel.abline(0, 1)
+			panel.qqmath(x, ...)
+		},
+		layout=c(1,3),
+		aspect=1,
+		sub = list("Figure 2.41",cex=.8),
+		xlab = "Pooled Residual Link Fraction",
+		ylab = "Residual Link Fraction")
+}
+
+book.2.42 <-
+function()
+	rfs(oneway((1/mean.length)~dimension, data = food.web, spread = 1),
+		sub = list("Figure 2.42",cex=.8),
+		aspect=1,
+		ylab = "Link Fraction")

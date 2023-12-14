@@ -1,0 +1,63 @@
+---
+title: "Visualizing Data"
+author: "Song Qian"
+date: "10/31/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+source("frontmatter.R")
+```
+## Cleveland's *The Elements of Graphing Data*
+
+[Cleveland (1994)](https://www.amazon.com/gp/product/0963488414/ref=dbs_a_def_rwt_bibl_vppi_i0): 
+
+> When a graph is constructed, information is *encoded*.  The *visual decoding* of this encoded information is *graphical perception*.  The encoding is the vital link, the raison d'etre, of the graph. No matter how intelligent the choice of information, no matter how ingenious the encoding of the information, and no matter how technologically impressive the production, a graph is a failure if the visual decoding fails. To have a scientific basis for graphing data, graphical perception must be understood. Informed decisions about how to encode data must be based on knowlede of the visual decoding process.
+
+Such knowledge of visual decoding process is summarized in a "model" for graphical perception
+
+## The Grpahical Perception Model
+
+A collection of visual operations that are to be considered in the study of a display method
+
+1. Quantitative and categorical information
+
+  Example: the dot plot of the Barley Data
+
+2. Scale information and physical information
+
+  Scale -- values and units of quantitative information, names of categorical information
+
+  Physical -- geometry of graphical elements and a breakup of the data into subsets according to the categories
+
+3. Pattern perception and table look-up
+
+  Visual decoding of scale information is table look-up (focusing on individual values of quantitative and categorical variables)
+
+  Visual decoding of physical information is pattern perception (detect and assemble geometric objects to see patterns)
+
+4. Three operations of pattern perception
+  i. Detection -- visual recognition of a geometric aspect that encodes a physical value
+  ii. Assemble -- visual grouping of detected graphical elements
+  iii. Estimation -- visual assessment of the relative magnitudes of two or more quantitative physical values
+
+5. Three operations of table look-up
+  i. Scanning -- look up the scale value to a fixed point along the scale line
+  ii. Interpolation -- estimate the distance from the point to the tick mark to the left or to the right as a fraction of the distance between tick marks
+  iii. matching -- matching the estimated value to category values
+  
+6. Using the model to study display methods -- using the model (visual operations) to judge the performance of display methods.
+
+## Examples
+- Superposed curves -- perceiving differences between curves
+  - Perception of individual curves is easy
+  - Perception of the difference between two curves is difficult (hence inefficient)
+    The estimation of the differences between two curves can be inaccurate, hence preventing effective pattern perception
+  - Table look-up for differences of superposed curves is inefficient
+  - Remedies
+    - add a panel of differences
+    - juxtapose curves on separate panels to avoid distortion of pattern perception caused by superposition
+
+- Color encoding
+  - 
+  
