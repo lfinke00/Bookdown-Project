@@ -1,0 +1,68 @@
+---
+title: "Lab 3"
+author: "Lucas Finke"
+date: "2023-09-18"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo= FALSE}
+setwd("C:/Users/Lucas/Downloads/Kuhnert+Venables-R_Course_Notes/Session1/Session1/")
+source("FrontMatter.R")
+```
+Intalling packages.
+
+```{R Animals ALL}
+setwd("C:/Users/Lucas/Downloads/Kuhnert+Venables-R_Course_Notes/Session1/Session1/")
+read.csv("df.RData")
+attach(AnimalsALL)
+plot(body,brain,xlab="Average body weight (kg)", ylab="Average brain weight (gm)")
+plot(body,brain,xlab="Average body weight (kg)", ylab= "Average brain weight (gm)", log="xy")
+identify(body,brain,row.names(AnimalsALL))
+plot(log(body),log(brain),pch=4)
+abline(lsfit(log(body),log(brain)),lty=1)
+abline(ltsreg(log(body),log(brain)),lty=2)
+legend(locator(1),legend=c("OLS line","LTS line"),lty=1:2)
+```
+Using AnimalsALL from the previous lab, comparing the results in a log scale in both directions.Then identifying which Animals happen to be outliers in the regression, which happen to be dinosaurs. After plotting, a legend was created using a locator.
+
+
+```{R Survey Data}
+require(MASS)
+attach(survey)
+plot(survey)
+plot(Exer)
+table(Exer)
+names(Exer) <- c("Freq","None","Some")
+pie(as.integer(c(115,24,98)),labels=c("Freq","None","Some"),col=1:3)
+legend("topright",c("Freq","None","Some"),fill=1:3)
+```
+
+Using Data from Adelaide University's first year students survey results to create a table, plot, and pie chart with their responses to see which one provides a better visual of the data. From there, a legend with the responses were made. 
+
+```{R Banknote}
+require('rtools43')
+install.packages("remotes")
+installed.packages('rtools43')
+remotes::install_github("cran/alr3")
+```
+```{r}
+require(alr3)
+data(banknote)
+attach(banknote)
+pairs(banknote)
+pairs(banknote[,-1],panel=
+        function(x,y,fake) {
+xy <- cbind(x,y)
+points(xy[fake==0,],pch=15)
+points(xy[fake==1,],pch=0)
+}, fake=Y)
+coplot(var1 ~ var2 | Y,data=banknote)
+```
+
+Using the old package of alr3 to detect counterfeit banknotes and plotting the lengths to separate the fakes. Then using a coplot to see if the legal notes are undected.
