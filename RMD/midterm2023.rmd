@@ -1,0 +1,342 @@
+---
+title: Midterm/HW5 -- Processing Daily Monitoring Data From 
+       Heidelburg University’s Load Monitoring Program
+author: ""
+date: "10/18/2022"
+output: 
+  pdf_document: 
+    number_sections: yes
+editor_options: 
+  chunk_output_type: console
+---
+
+# Front Matters
+A few years ago, I initiated this R Markdown (Rmd) file with the intention of generating a daily flow and concentration dataset. The primary objective was to utilize the daily loading data to assess several nutrient load estimation methods employed by the US Geological Survey (USGS). The USGS relies on available daily flow data to estimate nutrient concentrations for days when water quality sampling data is not available. This load estimation is essential because water quality is typically monitored on a weekly or biweekly basis. It's worth noting that almost all USGS methods for load estimation are predicated on the assumption that flow data can reliably predict nutrient concentrations. However, I harbor significant doubts about the validity of this assumption.
+
+For the purpose of this exercise, you have been tasked with performing exploratory data manipulation to uncover meaningful insights within the dataset.
+
+Here are the steps you should follow:
+
+- As your objective is not to evaluate load estimation methods, revise the document as you see fit.
+
+- Replace the current data file in this Rmd template with the Heidelberg monitoring data you downloaded during Week 2.
+
+- Complete any incomplete lines of R code to carry out the intended analysis.
+
+- After finishing all the coding work, reorganize the order of the code chunks to present a coherent narrative for the data story.
+
+As an optional enhancement, you can select another stream from the Heidelberg tributary list and repeat the same analysis to investigate if the data story remains consistent.
+
+
+```{r Packages, include=FALSE, results='hide', tidy=TRUE}
+setwd("C:/Users/Lucas/Downloads/Kuhnert+Venables-R_Course_Notes/Session1/Session1/")
+source("FrontMatter.R")
+packages(foreign)
+packages(arm)
+```
+
+## Nutrient Loading and Flow from Maumee
+
+Heidelberg University monitors water quality on several tributaries near Lake Erie.  These long-term intensive monitoring data are often used for estimating loadings of various pollutants to Lake Erie.  Because the Maumee River basin is the primary agriculture watershed and its loadings of nutrients to Lake Erie western basin are considered as the most important factor in predicting harmful algal blooms in the lake.  In fact, almost all predictions of HABs are based on spring and summer loadings of TP from Maumee River.
+
+Because most monitoring programs do not measure water quality daily, calculating loadings of TP based on weekly or less frequently sampled data is a topic of study for many years.  Currently, the dominant approach is to develop a regression model using available TP concentration data as the response variable and corresponding flow as the predictor.  The model is then used to ``estimate'' TP (or other pollutants) concentrations for days without monitoring data.
+
+The concentration--flow relationship is often noisy.  As a result, the simple log-log linear regression is often inadequate.  Many authors developed load estimation methods for load estimation. Frequently, the Heidelberg monitoring data were used as a test case. To use the Heidelberg data to test a load estimation method, we often sample a subset of the data to build the load estimation model and predict annual loads by predicting the concentrations for the days set-aside during model fitting.  I found that almost all load estimation models failed to consider estimation uncertainty.  This uncertainty can be reflected in the differences in a concentration-flow model when fit using different subsets of the Waterville data.
+
+### Objectives
+The project is to prepare the Waterville data for a study on estimating the uncertainty in the estimated TP loading using various sampling schedules.  The uncertainty is represented in the estimation standard deviation.
+
+ ### MY OBJECTIVE
+In this project, I will use the provided code as an outline, fill in the missing code, and analyze the data. Instead of just looking at the TP load, I will be looking at all of the nutirents daily loads as well.
+
+### Methods
+There are two sources of uncertainty in an estimated annual TP load.  One is the model prediction error and the other is the sampling variation.  Most existing methods ignore both. Some authors discussed the model prediction error but often limited to the residual variance. No attention was given to the sampling error.
+
+In this project, we will focus on the sampling error.  To evaluate variation due to sampling design, we can use simulation.  For example, when evaluating a monthly sampling plan, we can repeatedly sample the data within a calendar month.
+
+The project will include: 
+- Exploratory data analysis
+- Adding categorical variables to represent two sampling plans
+  
+#### Importing data
+
+In the section below, the Heidelberg data was used to create dataset with correct names and filter out any null variables. In this dataset, Date, Days Since 741001, Sample window, Flow, Suspended solids, Total Phosphorus, Soluble Reactive Phosphorus, Nitrite + Nitrate, Total Kjeldahl Nitrogen, Chloride, Sulfate, Silica, Conductivity, Future, and Month. 
+
+```{r}
+setwd("C:/Users/Lucas/Downloads/Kuhnert+Venables-R_Course_Notes/Session1/Session1")
+wvldata <- tibble::as_tibble(read.csv(paste(dataDIR, "Heidelbergdata.csv", sep="/"), 
+                    header=TRUE, stringsAsFactors=FALSE, na.strings = "#N/A"))
+names(wvldata)
+names(wvldata)<-c(
+"Date", "Days741001","SampleWindow","Flow","SS","TP","SRP", 
+"NO23","TKN","Chloride","Sulfate","Silica","Conductivity",
+"Future","Month")
+typeof(wvldata$Date)
+wvldata[wvldata<0] <-  NA
+```
+
+Now the Data is almost ready to be processed, however the dates are not in a "good" format, so the next chunk includes cahnging the format of the date as well as ordering the data into Rdate, months, year, weekend, etc. 
+
+#### Processing dates
+
+```{r}
+wvldata$Rdate <- as.Date(wvldata$Date,format="%m/%d/%Y %H:%M")
+  wvldata$mnth <- ordered(format(wvldata$Rdate, "%b"), levels=month.abb)
+  wvldata$yrmn <- format(wvldata$Rdate, "%Y-%b")
+  wvldata$yrwk <- format(wvldata$Rdate, "%Y-%U")
+  wvldata$week <- format(wvldata$Rdate, "%U")
+  wvldata$wknd <- format(wvldata$Rdate, "%w")
+  ## weekend = no sampling
+  wvldata$wknd <- wvldata$wknd==0 | wvldata$wknd==6
+  wvldata$julian <- format(wvldata$Rdate, "%j")
+  wvldata$yr <- format(wvldata$Rdate, "%Y")
+```
+ 
+  Now that the dates are processed, we can go ahead and start plotting the data to make sense out of it. Therefore, we should start with basic plots.
+  
+#### Basic plots
+
+```{r}
+  plot(TP ~ Rdate, data=wvldata, type="l", las=1, xlab="Date", ylab="TP", log="y")
+  plot(SRP ~ Rdate, data=wvldata, type="l", xlab="Date", ylab="SRP", las=1, log="y")
+  plot(SRP/TP ~ Rdate, data=wvldata, type="l", xlab="Date", ylab="SRP:TP", las=1, log="y")
+  abline(h=1, col="red")
+  
+  plot(SRP/TP ~Rdate, data=wvldata, type="l")
+  abline(h=1, col="red")
+  ## Discussing a potential problem in the SRP values
+
+trellis.par.set(theme=col.whitebg())
+  xyplot(TP~Flow, data=wvldata)
+  xyplot(log(TP)~log(Flow), data=wvldata)
+  xyplot(log(SRP)~log(Flow), data=wvldata)
+
+  xyplot(log(TP)~log(Flow)|mnth, data=wvldata)
+  xyplot(log(SRP)~log(Flow)|mnth, data=wvldata)
+```
+
+From the first graph, or Total Phosphorus, we can infer that TP is generally decreasing from the 1970s to present day. However, it still has it rises and falls throughout the years.
+
+The second plot, or SRP, from 1970 to present day, is also decreasing in smaller amounts. from the graph, it looks as though it stay somewhat level in its decline.
+
+The third plot, or the STP/TP plot, falls inline with the other two plots above in which has a small decline throughout the years, but generically stay somewhat level. 
+
+The fourth plot, or SRP/TP, we are seeing a spike roughly around 2016, and a smaller spike in the 1970s. However the rest of the plot remains somewhat level throughout the years.
+
+The above xyplots proves that the regression cannot be used for prediction, since the data showed no correlation, which is why a reshape is necessary. 
+
+#### Use `reshape2`
+Using `reshape`, we trim the data to include only the necessary variables and calculating daily averages for days with multiple measurements.
+
+
+
+```{r}
+packages(reshape2)
+wvl.molten <- melt(as.data.frame(wvldata), id=c("Rdate", "mnth","yrmn","yrwk","julian","yr","wknd", "week"),  measure.vars=c("Flow","SS","TP","SRP","NO23","TKN")) 
+
+tmp <- wvl.molten$yr > "1981"
+
+wvl.daily <- dcast(wvl.molten, Rdate+mnth+yrmn+yrwk+julian+yr+wknd+week~variable, mean)  ## calculating daily mean of all measured variables here
+
+## now finding missing days in the data
+tmp <- range(wvl.daily$Rdate)
+date <- seq(tmp[1], tmp[2], 1)
+  length(date)
+temp.dates <- data.frame(Rdate=date, 
+                  mnth=ordered(format(date, "%b"), levels=month.abb), 
+                       yrmn = format(date, "%Y-%b"), 
+                       yrwk = format(date, "%Y-%U"),
+                       week = format(date, "%U"),
+                       wknd = format(date, "%w")==0 | format(date, "%w")==6, ## weekend = no sampling
+                       julian = format(date, "%j"), 
+                       yr = format(date, "%Y")
+                   )
+
+wvl.daily <- tibble::as_tibble(wvl.daily) ## this is the data set you use 
+
+## melt it again so you can calculate monthly and annual medians later
+wvl.molten2 <- melt(wvl.daily, id=c("Rdate", "mnth","yrmn","yrwk","wknd","julian", "week","yr"), 
+                    measure.vars=c("Flow","SS","TP","SRP","NO23","TKN"))
+```
+The above reshaped the files and the daily means were calculated to fill in any unknowns using dcast. Then, the data was melted to be used in the later files. 
+
+#### Calculating Daily Loads
+The following was made to calculate the daily loads for each of the variables.
+```{r}
+  wvl.daily$TPload <- wvl.daily$TP * wvl.daily$Flow * 0.0283168 * 0.001 * 86400 ## calculating loads: concentration (mg/L) times flow (cfs)
+  ## converting the units mg/L to kg/m^3 and cubic feet per second to m^3/day -> kg/day
+  wvl.daily$TNload <- (wvl.daily$TKN=wvl.daily$NO23)* wvl.daily$Flow * 0.0283168 * 0.001* 86400 ## TN  = (wvl.daily$TKN+wvl.daily$NO23)
+  wvl.daily$TKNload <- wvl.daily$TKN * wvl.daily$Flow * 0.0283168 * 0.001 * 86400
+  wvl.daily$SRPload <- wvl.daily$SRP * wvl.daily$Flow * 0.0283168 * 0.01 * 86400
+
+  ## plot daily data
+  xyplot(log(TPload) ~ Rdate, data=wvl.daily)
+  xyplot(log(SRPload) ~ Rdate, data=wvl.daily)
+  xyplot(log(TKNload) ~ Rdate, data=wvl.daily)
+
+## plotting monthly geometric means
+  plot(tapply(log(wvl.daily$TPload), wvl.daily$yr, mean, na.rm=T))
+## annual geometric means 
+  plot(tapply(log(wvl.daily$SRPload+0.08), wvl.daily$yr, mean, na.rm=T))
+## do you see an increase in SRP in recent years (since 2000)? 
+```
+Plotting the daily, monthly, and yearly means were used to evaluate the nutrients. From the logplot, an increase in SRP is visible in recent years
+
+The cumulative sum is calculated by the function `cumsum`
+
+I will be using the function 'cumsum' for not only TP, but for TKN, and SRP.
+
+```{r}
+  tp.cumsum <- tapply(wvl.daily$TPload, wvl.daily$yr, cumsum)
+tp.cumsum <- tapply(wvl.daily$TKNload, wvl.daily$yr, cumsum)
+tp.cumsum <- tapply(wvl.daily$SRPload, wvl.daily$yr, cumsum)
+   
+```
+  
+A few missing values in flow and/or concentration resulted in the cumulative loads unusable.  We need to either omit the missing values or replace them with sensible estimates.  Because I am interested in examining the cumulative nutrient loadings to Lake Erie, omitting the missing values is unacceptable.  As a result, I want to impute the missing values with sensible estimates.  (The word "impute" is used here as a statistical terminology, as in "missing value imputation.") At least two methods can be used. 
+
+1. Using the median of non-missing values within the same month to replace missing values. 
+
+```{R impute 1}
+packages(tidyverse)
+
+wvl.daily.naM <- group_by(wvl.daily, yrmn) %>% 
+  mutate(TP = ifelse(is.na(TP), median(TP, na.rm=T), TP), 
+         SRP = ifelse(is.na(SRP), median(SRP, na.rm=T), SRP))
+```
+
+You can also try using weekly median (why not mean?). 
+
+2. Median polishing.
+
+A more common method for imputation of missing values in a data with a two-way table structure is the use of the median polishing (Mosteller and Tukey, 1977). In this data, we do have a two-way structure: year versus season, because of the cyclical nature of seasonality.  We expect same seasons in different years to be more similar than different months in the same year.  As a result, we can use both the seasonality and long-tern trend to help imputing missing values. Median polishing is an exploratory data analysis tool.  In this case, nutrient loading has a seasonal pattern and a long-term trend.  We can use week or month to describe the season and year to describe the long-term trend.  In other words, nutrient load is affected by two factors.  A simple way to explore the effects of these factors is to assume that their effects are additive. Such that, we can decompose a weekly mean load as a sum of three terms: the long-term trend, the seasonal trend, and the remainder.  If we use week as a measure of seasonal effect, we are interested in estimating the weekly medians for all years and the data can be transformed into a matrix with rows representing years and columns representing weeks.
+
+
+```{r}
+wvl.weekly <- dcast(wvl.molten2, yr+week ~ variable, median, na.rm=T)
+year.weeks <- tapply(wvl.weekly$TP, wvl.weekly$yr, length)
+
+to2 <- function(x){
+## converts a single digit integer `x` to character "0x"
+    return(ifelse (x<10, paste("0",x, sep=""), as.character(x)))
+}
+
+## construct a matrix of TP for median polish
+TP.weekly <- matrix(NA, nrow=length(year.weeks), ncol=max(year.weeks))
+  for (i in 1:length(year.weeks)){
+    for (j in 1:max(year.weeks)){
+      temp <- wvl.weekly$yr==names(year.weeks)[i] & wvl.weekly$week==to2(j-1)
+      if (sum(temp)>0)
+        TP.weekly[i,j] <- wvl.weekly$TP[temp]
+    }
+  }
+
+## now use the R function `medpolish`
+med.TP <- medpolish(TP.weekly, na.rm=T)
+```
+
+The resulting object `med.TP` contains the row (year) and column (season measured by week) effects and the overall median.  To replace a missing value of TP, we go back to the daily data file and find the missing value.  The year and week associated with the missing value will be used to extract the row and column effect:
+
+```{r}
+## TP
+  temp <- is.na(wvl.daily$TP)
+  if (sum(temp) >0){
+    row.yr <- as.numeric(wvl.daily$yr)-min(as.numeric(wvl.daily$yr))+1
+    col.wk <- as.numeric(wvl.daily$week) + 1
+    wvl.daily$TP[temp] <- med.TP$overall + med.TP$row[row.yr[temp]] + med.TP$col[col.wk[temp]]
+  }
+```
+
+Now we need to do the same for `SRP`, `TKN`, `NO23`, and `flow`.  To
+make the process tidy, I will write a function.
+
+```{r}
+## an R function for median polishing
+NAimpute <- function(col, daily=wvl.daily, 
+                     weekly=wvl.weekly){
+    yr.wks <- tapply(weekly[,col], weekly$yr, length)
+    wkly <- matrix(NA, nrow=length(yr.wks), 
+                   ncol=max(yr.wks))
+    for (i in 1:length(yr.wks)){
+      for (j in 1:max(yr.wks)){
+        temp <- weekly$yr==names(yr.wks)[i] & 
+          weekly$week==to2(j-1)
+        if (sum(temp)>0)
+        wkly[i,j] <- weekly[temp, col]
+      }
+    }
+    med <- medpolish(wkly, na.rm=T)
+    tmp <- is.na(daily[,col])
+    print(paste("Number of NAs to be imputed:", sum(tmp)))
+    if (sum(tmp)>0){
+      row.yr <- as.numeric(daily$yr)-min(as.numeric(daily$yr))+1
+      col.wk <- as.numeric(daily$week) + 1
+      daily[tmp, col] <- med$overall + med$row[row.yr[tmp]] + med$col[col.wk[tmp]]    
+    }
+    return(daily[,col])
+  }
+```
+
+With this function, we can process the data easily:
+```{r}
+  wvl.daily$TP <- NAimpute(col="TP")
+  wvl.daily$SRP <- ifelse(wvl.daily$SRP<0, 0, wvl.daily$SRP)
+  wvl.daily$SRP <- NAimpute(col="SRP")
+  wvl.daily$Flow <- NAimpute(col="Flow")
+  wvl.daily$NO23 <- NAimpute(col="NO23")
+  wvl.daily$TKN <- NAimpute(col="TKN")
+```
+
+With missing values imputed, I will now calculate daily loads and the cumulative loads
+(Note: units are not corrected in the following code). Because discharge data for the missing days in the Heidelberg file can be obtained from USGS record (not done here), we should only impute missing values of nutrient concentrations. 
+
+
+
+```{r loading calculation, message=FALSE, warning=FALSE}
+## So if the column are messed up, do wvl.daily$TP$TP just for the first one
+  wvl.daily$TPld <-  wvl.daily$TP * wvl.daily$Flow * 0.0283168 * 0.001 * 86400
+  wvl.daily$cumldTP <- unlist(tapply(wvl.daily$TPld, wvl.daily$yr, cumsum))
+  wvl.daily$SRPld <-  wvl.daily$SRP * wvl.daily$Flow * 0.0283168 * 0.01 * 86400
+  wvl.daily$cumldSRP <- unlist(tapply(wvl.daily$SRPld, wvl.daily$yr, cumsum))
+  wvl.daily$TKNld <- wvl.daily$TKN * wvl.daily$Flow * 0.0283168 * 0.001 * 86400
+  wvl.daily$cumldTKN <- unlist(tapply(wvl.daily$TKNld, wvl.daily$yr))
+  wvl.daily$NO23ld <- wvl.daily$NO23 * wvl.daily$Flow
+  wvl.daily$cumldNO23 <-  unlist(tapply(wvl.daily$NO23, wvl.daily$yr, cumsum))
+  wvl.daily$cumldFLW <-  unlist(tapply(wvl.daily$Flow, wvl.daily$yr, cumsum))
+```
+Daily loads from each nutrient were calculated by multiplying the daily nutrients by the flow and the conversion, then a cumulative daily load was calculated too. 
+
+Now I tried many plots. One very useful plot is what we will learn later in the semester: conditional plot.
+```{R plots}
+  xyplot(cumldTP ~ as.numeric(julian), data=wvl.daily, group=yr)
+  xyplot(cumldTKN ~ as.numeric(julian), data=wvl.daily, group=yr)
+  xyplot(cumldSRP ~ as.numeric(julian), data=wvl.daily, group=yr)
+  xyplot(cumldNO23 ~ as.numeric(julian), data=wvl.daily, group=yr)
+
+  xyplot(cumldTP~ as.numeric(mnth)|yr, data=wvl.daily, subset=as.numeric(wvl.daily$yr)>14)
+  xyplot(log(cumldTP)~ as.numeric(mnth)|yr, data=wvl.daily, subset=as.numeric(wvl.daily$yr)>14)
+  xyplot(cumldSRP~ as.numeric(mnth)|yr, data=wvl.daily, subset=as.numeric(wvl.daily$yr)>14)
+  xyplot(cumldTKN~ as.numeric(mnth)|yr, data=wvl.daily, subset=as.numeric(wvl.daily$yr)>14)
+  xyplot(cumldNO23~ as.numeric(mnth)|yr, data=wvl.daily, subset=as.numeric(wvl.daily$yr)>14)
+
+  xyplot(cumldTP~ as.numeric(julian)|yr, data=wvl.daily, subset=as.numeric(wvl.daily$yr)>14)
+  xyplot(cumldSRP~ as.numeric(julian)|yr, data=wvl.daily, subset=as.numeric(wvl.daily$yr)>14)
+  xyplot(cumldTKN~ as.numeric(julian)|yr, data=wvl.daily, subset=as.numeric(wvl.daily$yr)>14)
+  xyplot(cumldNO23~ as.numeric(julian)|yr, data=wvl.daily, subset=as.numeric(wvl.daily$yr)>14)
+
+  xyplot(cumldFLW~ as.numeric(julian)|yr, data=wvl.daily, #subset=as.numeric(wvl.daily$yr)>14, 
+         xlab="Julian Days", ylab="Flow", cex=0.5)
+
+```
+Since the last two lines are very similar, I decided to omit the last one from the original code.  
+
+The calculated nutrient loadings are time series data. We can turn them into `ts` class:
+```{R}
+TPld <-  ts(wvl.daily$TPld, start=c(1982,1), freq=365.25)
+plot(TPld)
+```
+
+## Results and Discussion
+Now discuss what you see in the cumulative loading plots. The exercise shows that data are generally uninformative until you interrogate them, torture them if necessary.
+
+Most of the Results and Discussion are located above and below the chunks. 
